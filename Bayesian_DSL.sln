@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bayesian_DSL", "Bayesian_DSL\Bayesian_DSL.pyproj", "{C82BFF89-4B25-413C-879E-D6C5F3929837}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bayesian_Fit_Exp", "Bayesian_Fit_Exp\Bayesian_Fit_Exp.pyproj", "{44E584F9-F54B-43CD-A722-FFF0ED425392}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C82BFF89-4B25-413C-879E-D6C5F3929837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82BFF89-4B25-413C-879E-D6C5F3929837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44E584F9-F54B-43CD-A722-FFF0ED425392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44E584F9-F54B-43CD-A722-FFF0ED425392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C9ECD3B0-D6A1-48D0-9E63-BBB762F4744B}
+	EndGlobalSection
+EndGlobal
