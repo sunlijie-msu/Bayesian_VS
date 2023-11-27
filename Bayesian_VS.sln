@@ -7,6 +7,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bayesian_DSL", "Bayesian_DS
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bayesian_Fit_Exp", "Bayesian_Fit_Exp\Bayesian_Fit_Exp.pyproj", "{44E584F9-F54B-43CD-A722-FFF0ED425392}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SimpleTest", "Test\SimpleTest.pyproj", "{573F5596-7169-4FD4-BD47-4E8EA04D89F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,8 @@ Global
 		{C82BFF89-4B25-413C-879E-D6C5F3929837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44E584F9-F54B-43CD-A722-FFF0ED425392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44E584F9-F54B-43CD-A722-FFF0ED425392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{573F5596-7169-4FD4-BD47-4E8EA04D89F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{573F5596-7169-4FD4-BD47-4E8EA04D89F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
