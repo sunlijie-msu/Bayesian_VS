@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 from random import sample
 import scipy.stats as sps
 from scipy.stats import poisson
@@ -23,8 +24,9 @@ project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
 peak = '31S4156'
-fakeTau = '_0fs' # '_0fs' or '_5fs' or '_10fs'
+fakeTau = '_10fs' # '_0fs' or '_5fs' or '_10fs'
 
+# Load data fullrange csv files and model fullrange csv files and model parameter values csv files
 data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
 data_peakrange = data_fullrange[130:240, :] # Select data in the peak range by rows
 
@@ -131,15 +133,16 @@ model_parameter_values_test = model_parameter_values[rndsample, :]
 
 # plots a list of profiles in the same figure. Each profile corresponds to a simulation replica for the given instance.
 
-plt.rcParams['font.size'] = 19
-plt.rcParams['font.family'] = 'Times New Roman'
+plt.rcParams['font.size'] = 60
+font_family_options = ['Times New Roman', 'Georgia', 'Cambria', 'Courier New', 'serif']
+plt.rcParams['font.family'] = font_family_options
 # plt.rcParams['font.weight'] = 'bold'
 
 print("[Step 2: Plot model training runs (prior) vs data.]")
-fig, ax_prior = plt.subplots(figsize=(15, 5))
+fig, ax_prior = plt.subplots(figsize=(36, 12))
 fig.subplots_adjust(left=0.07, bottom=0.16, right=0.97, top=0.95)
 
-p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', markersize=1, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
+p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 
 # Get min and max model counts in each bin
 model_lowcount = model_y_values_fullrange_train.min(axis=0)
@@ -150,16 +153,20 @@ smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=1.5)
 # Plot shaded region between min and max
 p2 = ax_prior.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
                      color='red', alpha=0.3, linewidth=0, zorder=1)
-ax_prior.set_ylabel('Counts per 1 keV', fontsize=22)
-ax_prior.set_xlabel('Energy (keV)', fontsize=22)
-ax_prior.legend(['Prior', 'Data'], fontsize=24, loc='upper left')
-ax_prior.tick_params(axis='both', which='major', labelsize=22)
+ax_prior.set_ylabel('Counts per 1 keV', fontsize=60)
+ax_prior.set_xlabel('Energy (keV)', fontsize=60)
+ax_prior.legend(['Prior', 'Data'], fontsize=60, loc='upper left')
+ax_prior.tick_params(axis='both', which='major', labelsize=60)
 # ax.tick_params(direction='in')
 xmin = min(data_x_values_fullrange) + 70
 xmax = max(data_x_values_fullrange) - 89.5
 ax_prior.set_xlim(xmin, xmax)
 ymax = max(data_y_values_fullrange) + 7
 ax_prior.set_ylim(0, ymax)
+
+# Adjust the width of the frame
+for spine in ax_prior.spines.values():
+    spine.set_linewidth(2)  # Set the linewidth to make the frame wider
 plt.savefig(peak + '_prior.png')
 # plt.show()
 
@@ -167,10 +174,16 @@ plt.savefig(peak + '_prior.png')
 # (No filter) Fit an emulator via 'PCGP'
 print("[Step 3: Model emulation.]")
 emulator_1 = emulator(x=data_x_values_peakrange, theta=model_parameter_values_train, f=model_y_values_peakrange_train.T, method='PCGP', args={'epsilon': 0.0000000001})
-# this takes time. f can be from an analytic function too
+# f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
+# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting independent Gaussian process models to the principal component scores.
+# 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed.
+# 3) PCGPR.py uses scikit-learn GPs instead of custom implementation.
+# 4) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed in our case, I suppose.
+# 5) PCSK.py: Principal Components Stochastic Kriging emulator accounts for simulation noise, estimates noise-adjusted PCs, models simulation noise in GP fitting, avoids overfitting to noise. This leads to better dimension reduction, surrogate fitting, and prediction accuracy when the simulator outputs are noisy.
+
 print("[Step 4: Diagnostics plots.]")
 pred_emu = emulator_1.predict(data_x_values_peakrange, model_parameter_values_test)  # predict at some parameter values and x values
 pred_m, pred_var = pred_emu.mean(), pred_emu.var()  # Returns the mean and variance at theta and x in the prediction. pred_var represents the diagonal elements of the emulator covariance matrix, namely, the predictive variances.
@@ -182,16 +195,16 @@ print("pred_m_tr:", pred_m_tr.shape, "pred_var_tr:", pred_var_tr.shape)  # pred_
 n = pred_m.shape[1]  # returns the number of columns in pred_m = 162
 std_err_f_test = ((pred_m - model_y_values_peakrange_test.T)/np.sqrt(pred_var)).flatten()
 std_err_nf_test = np.mean((pred_m - model_y_values_peakrange_test.T)/np.sqrt(pred_var), axis=0)
-fig, axs_emu1 = plt.subplots(1, 2, figsize=(15, 5))
+fig, axs_emu1 = plt.subplots(1, 2, figsize=(36, 12))
 fig.subplots_adjust(left=0.07, bottom=0.15, right=0.97, top=0.95)
 xs = np.repeat(data_x_values_peakrange, n)
-axs_emu1[0].scatter(xs, std_err_f_test, alpha=0.5)
+axs_emu1[0].scatter(xs, std_err_f_test, alpha=0.5, s=70)
 axs_emu1[0].plot(xs, np.repeat(0, len(xs)), color='red')
 axs_emu1[0].set_xlabel(r'Energy (keV)')
 axs_emu1[0].set_ylabel(r'${(\hat{\mu}_{test} - \mu_{test})}/{\hat{\sigma}_{test}}$')
-axs_emu1[1].scatter(np.arange(0, n), std_err_nf_test)
+axs_emu1[1].scatter(np.arange(0, n), std_err_nf_test, s=200)
 axs_emu1[1].plot(np.arange(0, n), np.repeat(0, n), color='red')
-axs_emu1[1].set_xlabel(r'Test id')
+axs_emu1[1].set_xlabel(r'Test run')
 plt.savefig(peak + '_residual.png')
 #  plt.show()
 
@@ -201,9 +214,9 @@ errors_tr = (pred_m_tr - model_y_values_peakrange_train.T).flatten()
 sst_test = np.sum((model_y_values_peakrange_test.T.flatten() - np.mean(model_y_values_peakrange_test.T.flatten()))**2)
 sst_tr = np.sum((model_y_values_peakrange_train.T.flatten() - np.mean(model_y_values_peakrange_train.T.flatten()))**2)
 
-fig, axs_emu2 = plt.subplots(1, 2, figsize=(15, 5))
-fig.subplots_adjust(left=0.07, bottom=0.15, right=0.97, top=0.91)
-axs_emu2[0].scatter(model_y_values_peakrange_test.T, pred_m, alpha=0.5)
+fig, axs_emu2 = plt.subplots(1, 2, figsize=(36, 12))
+fig.subplots_adjust(left=0.07, bottom=0.15, right=0.97, top=0.89)
+axs_emu2[0].scatter(model_y_values_peakrange_test.T, pred_m, alpha=0.3)
 if peak == '31S1248':
     bin_count_max = 90
 if peak == '31S3076':
@@ -211,13 +224,13 @@ if peak == '31S3076':
 if peak == '31S4156':
     bin_count_max = 18
 axs_emu2[0].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
-axs_emu2[0].set_xlabel('Simulator counts in each bin (test)')
-axs_emu2[0].set_ylabel('Emulator counts in each bin (test)')
+axs_emu2[0].set_xlabel('Simulator bin counts (test)')
+axs_emu2[0].set_ylabel('Emulator bin counts (test)')
 axs_emu2[0].set_title(r'$r^2=$' + str(np.round(1 - np.sum(errors_test**2)/sst_test, 3)))
-axs_emu2[1].scatter(model_y_values_peakrange_train.T, pred_m_tr, alpha=0.5)
+axs_emu2[1].scatter(model_y_values_peakrange_train.T, pred_m_tr, alpha=0.3)
 axs_emu2[1].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
-axs_emu2[1].set_xlabel('Simulator counts in each bin (training)')
-axs_emu2[1].set_ylabel('Emulator counts in each bin (training)')
+axs_emu2[1].set_xlabel('Simulator bin counts (training)')
+axs_emu2[1].set_ylabel('Emulator bin counts (training)')
 axs_emu2[1].set_title(r'$r^2=$' + str(np.round(1 - np.sum(errors_tr**2)/sst_tr, 3)))
 plt.savefig(peak + '_R2.png')
 # plt.show()
@@ -227,8 +240,8 @@ mu = 0
 variance = 1
 sigma = np.sqrt(variance)
 x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
-fig, axs_emu3 = plt.subplots(1, 3, figsize=(15, 5))
-fig.subplots_adjust(left=0.07, bottom=0.13, right=0.97, top=0.90)
+fig, axs_emu3 = plt.subplots(1, 3, figsize=(36, 12))
+fig.subplots_adjust(left=0.07, bottom=0.13, right=0.97, top=0.89)
 axs_emu3[0].hist((pred_m - model_y_values_peakrange_test.T).flatten(), bins=100)
 axs_emu3[0].set_title(r'$\hat{\mu}_{test} - \mu_{test}$')
 axs_emu3[1].hist(std_err_f_test, density=True, bins=80)  # standardized error
@@ -302,87 +315,92 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-number_of_mcmc_samples = 80000
+total_mcmc_samples = 160000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
-                                               y=data_y_values_peakrange,
-                                               x=data_x_values_peakrange,
-                                               thetaprior=Prior_DSL31S_1248,
-                                               # method='directbayes',
-                                               method='directbayeswoodbury',
-                                               # method='mlbayeswoodbury',
-                                               yvar=obsvar,
-                                               args={'theta0': np.array([[1100, 1248.4, 1.0, 1.0]]),  # initial guess
-                                                          'sampler': 'metropolis_hastings',
-                                                          # 'sampler': 'LMC',
-                                                          # 'sampler': 'PTLMC',
-                                                          'numsamp': number_of_mcmc_samples,
-                                                          'numchain': 8,
-                                                          'stepType': 'normal',
-                                                          # 'burnSamples': 1000
-                                                          # 'stepParam': np.array([1, 0.01, 0.01, 0.01])
-                                                          }
-                                              )
+                                           y=data_y_values_peakrange,
+                                           x=data_x_values_peakrange,
+                                           thetaprior=Prior_DSL31S_1248,
+                                           # method='directbayes',
+                                           method='directbayeswoodbury',
+                                           # method='mlbayeswoodbury',
+                                           yvar=obsvar,
+                                           args={'theta0': np.array([[1100, 1248.4, 1.0, 1.0]]),  # initial guess
+                                                     'sampler': 'metropolis_hastings',
+                                                     # 'sampler': 'LMC',
+                                                     # 'sampler': 'PTLMC',
+                                                     'numsamp': total_mcmc_samples,
+                                                     'numchain': 8,
+                                                     'stepType': 'normal',
+                                                     # 'burnSamples': 1000
+                                                     # 'stepParam': np.array([1, 0.01, 0.01, 0.01])
+                                                     }
+                                            )
 
 if peak == '31S3076':
     calibrator_1 = calibrator(emu=emulator_1,
-                              y=data_y_values_peakrange,
-                              x=data_x_values_peakrange,
-                              thetaprior=Prior_DSL31S_3076,
-                              method='directbayeswoodbury',
-                              yvar=obsvar,
-                              args={'theta0': np.array([[1.0, 3076.4, 1.0, 1.0, 0.0]]),  # initial guess
-                                                          'sampler': 'metropolis_hastings',
-                                                          'numsamp': number_of_mcmc_samples,
-                                                          'numchain': 8,
-                                                          'stepType': 'normal'
-                                                          # 'burnSamples': 1000,
-                                                          # 'stepParam': np.array([0.1, 0.02, 0.01, 0.01, 0.1])
-                                                         }
-                              )
+                                           y=data_y_values_peakrange,
+                                           x=data_x_values_peakrange,
+                                           thetaprior=Prior_DSL31S_3076,
+                                           method='directbayeswoodbury',
+                                           yvar=obsvar,
+                                           args={'theta0': np.array([[1.0, 3076.4, 1.0, 1.0, 0.0]]),  # initial guess
+                                                     'sampler': 'metropolis_hastings',
+                                                     'numsamp': total_mcmc_samples,
+                                                     'numchain': 8,
+                                                     'stepType': 'normal'
+                                                     # 'burnSamples': 1000,
+                                                     # 'stepParam': np.array([0.1, 0.02, 0.01, 0.01, 0.1])
+                                                     }
+                                            )
 if peak == '31S4156':
     calibrator_1 = calibrator(emu=emulator_1,
-                                               y=data_y_values_peakrange,
-                                               x=data_x_values_peakrange,
-                                               thetaprior=Prior_DSL31S_4156,
-                                               # method='directbayes',
-                                               method='directbayeswoodbury',
-                                               # method='mlbayeswoodbury',
-                                               yvar=obsvar,
-                                               args={'theta0': np.array([[0.0, 4155.84, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                          'sampler': 'metropolis_hastings',
-                                                          # 'sampler': 'LMC',
-                                                          # 'sampler': 'PTLMC',
-                                                          'numsamp': number_of_mcmc_samples,
-                                                          'numchain': 8,
-                                                          'stepType': 'normal',
-                                                          'burnSamples': 1000,
-                                                          'verbose': True
-                                                          # 'stepParam': np.array([1, 0.01, 0.01, 0.01])
-                                                          }
-                                              )
+                                           y=data_y_values_peakrange,
+                                           x=data_x_values_peakrange,
+                                           thetaprior=Prior_DSL31S_4156,
+                                           # method='directbayes',
+                                           method='directbayeswoodbury',
+                                           # method='mlbayeswoodbury',
+                                           yvar=obsvar,
+                                           args={'theta0': np.array([[0.0, 4155.84, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                                     'sampler': 'metropolis_hastings',
+                                                     # 'sampler': 'LMC',
+                                                     # 'sampler': 'PTLMC',
+                                                     'numsamp': total_mcmc_samples,
+                                                     'numchain': 8,
+                                                     'stepType': 'normal',
+                                                     'burnSamples': 1000,
+                                                     'verbose': True
+                                                     # 'stepParam': np.array([1, 0.01, 0.01, 0.01])
+                                                     }
+                                            )
+    # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\utilitiesmethods\metropolis_hastings.py
+    # if verbose:
+            # if i % 1000 == 0:
+            #     print("At sample {}, acceptance rate is {}.".format(i, n_acc/i))
 
 
 print("[Step 7-1: Plot predictions with calibrated parameters.]")
 
 def plot_pred_interval(calib):
     pred = calib.predict(data_x_values_peakrange)
-    rndm_m = pred.rnd(s=number_of_mcmc_samples//2)
-    fig, ax_post_predict = plt.subplots(figsize=(15, 5))
+    rndm_m = pred.rnd(s=total_mcmc_samples)
+    fig, ax_post_predict = plt.subplots(figsize=(36, 12))
     fig.subplots_adjust(left=0.07, bottom=0.16, right=0.97, top=0.95)
 
-    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', markersize=1, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
+    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 
     posterior_y_upper = np.percentile(rndm_m[:, 0: num_bins_peak], 97.5, axis=0)
     posterior_y_lower = np.percentile(rndm_m[:, 0: num_bins_peak], 2.5, axis=0)
     posterior_y_median = np.percentile(rndm_m[:, 0: num_bins_peak], 50, axis=0)
-
-    p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, zorder=1)
+    print("posterior_prediction_y_median: ", posterior_y_median)
+    
+    p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=1)
     p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
-    ax_post_predict.tick_params(axis='both', which='major', labelsize=22)
-    ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=22)
-    ax_post_predict.set_xlabel('Energy (keV)', fontsize=22)
-    ax_post_predict.legend(['Prediction Mean', '95% Credible Interval', 'Data'], fontsize=24, loc='upper left')
+    ax_post_predict.tick_params(axis='both', which='major', labelsize=60)
+    ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60)
+    ax_post_predict.set_xlabel('Energy (keV)', fontsize=60)
+    ax_post_predict.legend(['Prediction Mean', '95% Credible Interval', 'Data'], fontsize=60, loc='upper left')
     xmin = min(data_x_values_fullrange) + 70
     xmax = max(data_x_values_fullrange) - 89.5
     # ax_post_predict.tick_params(direction='out')
@@ -390,6 +408,31 @@ def plot_pred_interval(calib):
     ymax = max(data_y_values_fullrange) + 7
     ax_post_predict.set_xlim(xmin, xmax)
     ax_post_predict.set_ylim(0, ymax)
+    
+
+    # Add a linear background out of peak range
+    slope_value = -0.00143767862
+    intercept_value = 10.46893546
+    linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
+    linear_y_values_middle = slope_value * linear_x_values + intercept_value
+    linear_y_values_upper = linear_y_values_middle + 0.32  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle - 0.26  # Adjust this value as needed
+
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=1)
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
+
+    linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
+    linear_y_values_middle = slope_value * linear_x_values + intercept_value
+    linear_y_values_upper = linear_y_values_middle + 0.24  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle - 0.26  # Adjust this value as needed
+
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=1)
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
+    
+    # Adjust the width of the frame
+    for spine in ax_post_predict.spines.values():
+        spine.set_linewidth(2)  # Set the linewidth to make the frame wider
+
     plt.savefig(peak + '_prediction.png')
     # plt.show()
 
@@ -397,57 +440,74 @@ plot_pred_interval(calibrator_1)
 
 print("[Step 7-2: Plot posterior samples.]")
 def plot_theta(calib, whichtheta):
-    fig, axs_trace = plt.subplots(1, 3, figsize=(15, 5))
-    fig.subplots_adjust(left=0.07, bottom=0.16, right=0.97, top=0.95, wspace=0.3)
-    cal_theta = calib.theta.rnd(number_of_mcmc_samples//2)
+    fig, axs_trace = plt.subplots(3, 1, figsize=(30, 30))
+    fig.subplots_adjust(left=0.09, bottom=0.07, right=0.96, top=0.97, wspace=0.3)
+    cal_theta = calib.theta.rnd(total_mcmc_samples)
     axs_trace[0].plot(cal_theta[:, whichtheta])
-    axs_trace[0].set_xlabel("Iteration", fontsize=22)
-    axs_trace[0].set_ylabel(r"$\tau$ (fs)", fontsize=22)
+    axs_trace[0].set_xlabel("Iteration", fontsize=60)
 
-    axs_trace[1].boxplot(cal_theta[:, whichtheta])
-    axs_trace[1].set_xlabel(r"$\tau$", fontsize=22)
-    axs_trace[1].set_ylabel(r"$\tau$ (fs)", fontsize=22)
+    axs_trace[0].set_ylabel(r"$\tau$ (fs)", fontsize=60)
+    axs_trace[0].set_xlim([0, total_mcmc_samples/100])
 
-    axs_trace[2].hist(cal_theta[:, whichtheta], bins=200, range=[0, 20])
-    axs_trace[2].set_xlabel(r"$\tau$ (fs)", fontsize=22)
-    axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=22)
-    axs_trace[2].set_xlim([0, 20])
+    axs_trace[1].boxplot(cal_theta[:, whichtheta], vert=False)
+    axs_trace[1].set_xlabel(r"$\tau$ (fs)", fontsize=60)  
+    axs_trace[1].set_ylabel(r"$\tau$", fontsize=60)
+    axs_trace[1].set_yticklabels([])
+    axs_trace[1].set_xlim([0, 25])
+
+    axs_trace[2].hist(cal_theta[:, whichtheta], bins=250, range=[0, 25])
+    axs_trace[2].set_xlabel(r"$\tau$ (fs)", fontsize=60)
+    axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=60)
+    axs_trace[2].set_xlim([0, 25])
     
-    axs_trace[0].tick_params(axis='both', which='major', labelsize=22)
-    axs_trace[1].tick_params(axis='both', which='major', labelsize=22)
-    axs_trace[2].tick_params(axis='both', which='major', labelsize=22)
+    axs_trace[0].tick_params(axis='both', which='major', labelsize=60)
+    axs_trace[1].tick_params(axis='both', which='major', labelsize=60)
+    axs_trace[2].tick_params(axis='both', which='major', labelsize=60)
     
     samples = cal_theta[:, whichtheta]
     sorted_samples = np.sort(samples)
     percentiles = [16, 50, 84, 90]
-    for percentile in percentiles:
-        index = int(np.round(len(sorted_samples) * (percentile / 100.0)) - 1)
-        value = sorted_samples[index]
-        print(f"{percentile}th percentile: {value:.2f}")
+    
+    # Open a file in write mode for samples
+    with open(peak + '_samples.dat', 'w') as samples_file:
+        # Write the samples to the file
+        np.savetxt(samples_file, samples, delimiter='\t')
+
+    # Open a file in write mode for percentiles
+    with open(peak + '_percentiles.txt', 'w') as file:
+        for percentile in percentiles:
+            index = int(np.round(len(sorted_samples) * (percentile / 100.0)) - 1)
+            value = sorted_samples[index]
+        
+            # Write the percentile and value to the file
+            file.write(f"{percentile}th percentile: {value:.2f}\n")
+
+    # Save the plot
     plt.savefig(peak + '_trace.png')
+
     # plt.show()
 
 plot_theta(calibrator_1, 0)
 
 
-print("[Step 7-3: Plot 2D posteriors of parameters.]")
+print("[Step 7-3: Plot 2D posterior distributions of parameters.]")
 if peak == '31S1248':
-    theta_prior = Prior_DSL31S_1248.rnd(number_of_mcmc_samples)  # draw 1000 random parameters from the prior
-    theta_post = calibrator_1.theta.rnd(number_of_mcmc_samples)
+    theta_prior = Prior_DSL31S_1248.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Tau', 'Eg', 'Bkg', 'SP'])
     dfprior = pd.DataFrame(theta_prior, columns=['Tau', 'Eg', 'Bkg', 'SP'])
 
 if peak == '31S3076':
-    theta_prior = Prior_DSL31S_3076.rnd(number_of_mcmc_samples)  # draw 1000 random parameters from the prior
-    theta_post = calibrator_1.theta.rnd(number_of_mcmc_samples)
+    theta_prior = Prior_DSL31S_3076.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Tau', 'Eg', 'Bkg', 'SP', 'AC'])
     dfprior = pd.DataFrame(theta_prior, columns=['Tau', 'Eg', 'Bkg', 'SP', 'AC'])
 
 if peak == '31S4156':
-    theta_prior = Prior_DSL31S_4156.rnd(number_of_mcmc_samples)  # draw 1000 random parameters from the prior
-    theta_post = calibrator_1.theta.rnd(number_of_mcmc_samples)
-    dfpost = pd.DataFrame(theta_post, columns=['Tau', 'Eg', 'Bkg', 'SP'])
-    dfprior = pd.DataFrame(theta_prior, columns=['Tau', 'Eg', 'Bkg', 'SP'])
+    theta_prior = Prior_DSL31S_4156.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
+    dfpost = pd.DataFrame(theta_post, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
+    dfprior = pd.DataFrame(theta_prior, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
 
 print("One prior sample: ", theta_prior[0])
 print("One posterior sample:", theta_post[0])
@@ -456,12 +516,14 @@ print("One posterior sample:", theta_post[0])
 
 df = pd.concat([dfprior, dfpost])
 #  It is used to combine multiple DataFrames or Series into a single DataFrame or Series. It can combine the dfprior and dfpost DataFrames vertically.
-pr = ['prior' for i in range(number_of_mcmc_samples)]
-ps = ['posterior' for i in range(number_of_mcmc_samples)]
+pr = ['Prior' for i in range(total_mcmc_samples)]
+ps = ['Posterior' for i in range(total_mcmc_samples)]
 pr.extend(ps)
 df['Distributions'] = pr
 #  The pr and ps lists are created to add a new column 'distribution' to the combined DataFrame indicating whether a row belongs to the prior or posterior distribution.
-plt.rcParams["font.family"] = "Times New Roman"
+
+font_family_options = ['Times New Roman', 'Georgia', 'Cambria', 'Courier New', 'serif']
+plt.rcParams['font.family'] = font_family_options
 # Set Seaborn style
 sns.set(style="white")
 
@@ -470,36 +532,36 @@ g = sns.PairGrid(df, palette=["red", "blue"], corner=True, diag_sharey=False, hu
 
 # Adjust the figure size to make it wider
 fig = g.fig
-fig.set_size_inches(16, 12)
+fig.set_size_inches(40, 30)
 
-# Iterate through all axes 
+# Iterate through all axes
 for ax in g.axes.flat:
    if ax:
        ax.xaxis.set_ticks_position('bottom')
        ax.yaxis.set_ticks_position('left')
-       ax.set_xlabel(ax.get_xlabel(), fontsize=19) 
-       ax.set_ylabel(ax.get_ylabel(), fontsize=19)
+       ax.set_xlabel(ax.get_xlabel(), fontsize=1) 
+       ax.set_ylabel(ax.get_ylabel(), fontsize=1)
 
 
 # Set font for all tick labels   
 for ax in g.fig.axes:
     for label in ax.get_xticklabels():
         label.set_fontname("Times New Roman")
-        label.set_fontsize(19) 
+        label.set_fontsize(50) 
     for label in ax.get_yticklabels():
         label.set_fontname("Times New Roman")
-        label.set_fontsize(19)
+        label.set_fontsize(50)
 
 
-# Add yaxes to 1st column 
+# Add yaxes to 1st column
 for ax in g.axes[:,0]:
     ax.yaxis.set_visible(True)
-    ax.set_ylabel(ax.get_ylabel(), fontsize=19)
+    ax.set_ylabel(ax.get_ylabel(), fontsize=50, fontname='Times New Roman')
 
 # Add xaxes to 4th row
 for ax in g.axes[3,:]: 
     ax.xaxis.set_visible(True)
-    ax.set_xlabel(ax.get_xlabel(), fontsize=19)
+    ax.set_xlabel(ax.get_xlabel(), fontsize=50, fontname='Times New Roman')
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
@@ -511,28 +573,19 @@ g.axes[1, 0].set(ylim=(4154.8, 4157), yticks=np.arange(4155, 4158, 1.0))
 g.axes[2, 0].set(ylim=(0.5, 1.5), yticks=np.arange(0.5, 1.6, 0.25))
 g.axes[3, 0].set(ylim=(0, 2.1), yticks=np.arange(0, 2.1, 0.5))
 
-# # Set ticks for 1st column yaxes  
-# g.axes[0,0].set_yticks(np.arange(0, 31, 5))
-# g.axes[1,0].set_yticks(np.arange(4154.8, 4157, 1.0)) 
-# g.axes[2,0].set_yticks(np.arange(0.5, 1.6, 0.5))
-# g.axes[3,0].set_yticks(np.arange(0, 2.1, 0.5))
 
-# # Set ticks for 4th row xaxes
-# g.axes[3,0].set_xticks(np.arange(0, 31, 5))
-# g.axes[3,1].set_xticks(np.arange(4154.8, 4157, 1.0))
-# g.axes[3,2].set_xticks(np.arange(0.5, 1.6, 0.5)) 
-# g.axes[3,3].set_xticks(np.arange(0, 2.1, 0.5))
-
-# Map the diagonal with kernel density plots
-g.map_diag(sns.kdeplot, fill=True)
+# Map the diagonal with kernel density plots. Rather than using discrete bins, a Kernel density estimation (KDE) plot smooths the observations with a Gaussian kernel, producing a continuous density estimate:
+g.map_diag(sns.histplot, kde=True, bins=100, fill=True)
 
 # Map the lower triangle with kernel density plots
 g.map_lower(sns.kdeplot, fill=True)
 
 # Adjust the layout
-g.fig.subplots_adjust(top=0.96, bottom=0.09, left=0.07, right=0.95, hspace=0.3, wspace=0.3)
+g.fig.subplots_adjust(top=0.96, bottom=0.09, left=0.07, right=0.95, hspace=0.3, wspace=0.35)
 
-g.fig.legend(labels=['Posterior', 'Prior'], fontsize=28)
+# Create legend 
+legend = g.fig.legend(labels=['Posterior', 'Prior'], fontsize=100, loc='upper right', bbox_to_anchor=(0.97, 0.97))
+# g.add_legend(fontsize=100, loc='upper right', title='Distributions', title_fontsize=100)
 
 # Save the figure
 plt.savefig(peak + '_posterior.png')
