@@ -161,7 +161,7 @@ ax_prior.tick_params(axis='both', which='major', labelsize=60)
 xmin = min(data_x_values_fullrange) + 70
 xmax = max(data_x_values_fullrange) - 89.5
 ax_prior.set_xlim(xmin, xmax)
-ymax = max(data_y_values_fullrange) + 7
+ymax = max(data_y_values_fullrange) + 10
 ax_prior.set_ylim(0, ymax)
 
 # Adjust the width of the frame
@@ -222,7 +222,7 @@ if peak == '31S1248':
 if peak == '31S3076':
     bin_count_max = 12
 if peak == '31S4156':
-    bin_count_max = 18
+    bin_count_max = 30
 axs_emu2[0].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
 axs_emu2[0].set_xlabel('Simulator bin counts (test)')
 axs_emu2[0].set_ylabel('Emulator bin counts (test)')
@@ -315,7 +315,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 160000
+total_mcmc_samples = 200000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -405,26 +405,31 @@ def plot_pred_interval(calib):
     xmax = max(data_x_values_fullrange) - 89.5
     # ax_post_predict.tick_params(direction='out')
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
-    ymax = max(data_y_values_fullrange) + 7
+    ymax = max(data_y_values_fullrange) + 10
     ax_post_predict.set_xlim(xmin, xmax)
     ax_post_predict.set_ylim(0, ymax)
     
 
-    # Add a linear background out of peak range
-    slope_value = -0.00143767862
-    intercept_value = 10.46893546
+    # Add a linear background out of peak range for visualization only
+    if fakeTau == '_5fs':
+        slope_value = 0.00014988899
+        intercept_value = 3.618315066
+    if fakeTau == '_10fs':
+        slope_value = -0.00429242422
+        intercept_value = 23.4081953331
+
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle + 0.32  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle - 0.26  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle + 0.4  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle - 0.4  # Adjust this value as needed
 
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=1)
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
 
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle + 0.24  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle - 0.26  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle + 0.4  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle - 0.36  # Adjust this value as needed
 
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=1)
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
