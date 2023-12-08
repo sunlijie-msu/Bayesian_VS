@@ -1,0 +1,8 @@
+16th	percentile	Tau:	4.215193355		
+50th	percentile	Tau:	5.811964074	1.5968	2.3889
+84th	percentile	Tau:	8.20087807		
+90th	percentile	Tau:	9.020014029		
+16th	percentile	OmegaGamma:	12.77981943		
+50th	percentile	OmegaGamma:	18.63421469	5.8544	8.0464
+84th	percentile	OmegaGamma:	26.68064578		
+90th	percentile	OmegaGamma:	29.65597353		

@@ -24,7 +24,7 @@ project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
 peak = '31S4156'
-fakeTau = '_10fs' # '_0fs' or '_5fs' or '_10fs'
+fakeTau = '_5fs' # '_0fs' or '_5fs' or '_10fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
 data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
@@ -132,15 +132,18 @@ model_y_values_peakrange_test = model_y_values_peakrange[rndsample, :]  # model_
 model_parameter_values_test = model_parameter_values[rndsample, :]
 
 # plots a list of profiles in the same figure. Each profile corresponds to a simulation replica for the given instance.
-
+plt.rcParams['axes.linewidth'] = 3.0
 plt.rcParams['font.size'] = 60
 font_family_options = ['Times New Roman', 'Georgia', 'Cambria', 'Courier New', 'serif']
 plt.rcParams['font.family'] = font_family_options
-# plt.rcParams['font.weight'] = 'bold'
+# plt.rcParams['mathtext.default'] = 'regular'
+plt.rcParams['mathtext.fontset'] = 'custom'
+plt.rcParams['mathtext.rm'] = 'Times New Roman'
+plt.rcParams['mathtext.it'] = 'Times New Roman:italic'
 
 print("[Step 2: Plot model training runs (prior) vs data.]")
 fig, ax_prior = plt.subplots(figsize=(36, 12))
-fig.subplots_adjust(left=0.07, bottom=0.16, right=0.97, top=0.95)
+fig.subplots_adjust(left=0.08, bottom=0.18, right=0.97, top=0.96)
 
 p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 
@@ -153,10 +156,10 @@ smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=1.5)
 # Plot shaded region between min and max
 p2 = ax_prior.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
                      color='red', alpha=0.3, linewidth=0, zorder=1)
-ax_prior.set_ylabel('Counts per 1 keV', fontsize=60)
-ax_prior.set_xlabel('Energy (keV)', fontsize=60)
+ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=60)
+ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
 ax_prior.legend(['Prior', 'Data'], fontsize=60, loc='upper left')
-ax_prior.tick_params(axis='both', which='major', labelsize=60)
+ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
 xmin = min(data_x_values_fullrange) + 70
 xmax = max(data_x_values_fullrange) - 89.5
@@ -173,12 +176,23 @@ plt.savefig(peak + '_prior.png')
 
 # (No filter) Fit an emulator via 'PCGP'
 print("[Step 3: Model emulation.]")
-emulator_1 = emulator(x=data_x_values_peakrange, theta=model_parameter_values_train, f=model_y_values_peakrange_train.T, method='PCGP', args={'epsilon': 0.0000000001})
+emulator_1 = emulator(x=data_x_values_peakrange,
+                      theta=model_parameter_values_train,
+                      f=model_y_values_peakrange_train.T,
+                      method='PCGP',
+                      args={'epsilon': 0.0000000001})
+
+
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='indGP')
+
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting independent Gaussian process models to the principal component scores.
+# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting Gaussian Process model to each Princial Component separately.
 # 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed.
 # 3) PCGPR.py uses scikit-learn GPs instead of custom implementation.
 # 4) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed in our case, I suppose.
@@ -202,9 +216,11 @@ axs_emu1[0].scatter(xs, std_err_f_test, alpha=0.5, s=70)
 axs_emu1[0].plot(xs, np.repeat(0, len(xs)), color='red')
 axs_emu1[0].set_xlabel(r'Energy (keV)')
 axs_emu1[0].set_ylabel(r'${(\hat{\mu}_{test} - \mu_{test})}/{\hat{\sigma}_{test}}$')
+axs_emu1[0].set_ylim(-4, 4)
 axs_emu1[1].scatter(np.arange(0, n), std_err_nf_test, s=200)
 axs_emu1[1].plot(np.arange(0, n), np.repeat(0, n), color='red')
 axs_emu1[1].set_xlabel(r'Test run')
+axs_emu1[1].set_ylim(-0.3, 0.3)
 plt.savefig(peak + '_residual.png')
 #  plt.show()
 
@@ -244,9 +260,11 @@ fig, axs_emu3 = plt.subplots(1, 3, figsize=(36, 12))
 fig.subplots_adjust(left=0.07, bottom=0.13, right=0.97, top=0.89)
 axs_emu3[0].hist((pred_m - model_y_values_peakrange_test.T).flatten(), bins=100)
 axs_emu3[0].set_title(r'$\hat{\mu}_{test} - \mu_{test}$')
+axs_emu3[0].set_xlim([-2.5, 2.5])
 axs_emu3[1].hist(std_err_f_test, density=True, bins=80)  # standardized error
 axs_emu3[1].plot(x, sps.norm.pdf(x, mu, sigma), color='red')
 axs_emu3[1].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\hat{\sigma}_{test}}$')
+axs_emu3[1].set_xlim([-4, 4])
 axs_emu3[2].hist(((pred_m - model_y_values_peakrange_test.T)/model_y_values_peakrange_test.T).flatten(), bins=100)  # relative error
 axs_emu3[2].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\mu_{test}}$')
 l = np.arange(-2, 3, 1)/10
@@ -315,7 +333,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 200000
+total_mcmc_samples = 240000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -386,8 +404,8 @@ def plot_pred_interval(calib):
     pred = calib.predict(data_x_values_peakrange)
     rndm_m = pred.rnd(s=total_mcmc_samples)
     fig, ax_post_predict = plt.subplots(figsize=(36, 12))
-    fig.subplots_adjust(left=0.07, bottom=0.16, right=0.97, top=0.95)
-
+    fig.subplots_adjust(left=0.08, bottom=0.18, right=0.97, top=0.96)
+    
     p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 
     posterior_y_upper = np.percentile(rndm_m[:, 0: num_bins_peak], 97.5, axis=0)
@@ -397,9 +415,9 @@ def plot_pred_interval(calib):
     
     p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=1)
     p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
-    ax_post_predict.tick_params(axis='both', which='major', labelsize=60)
-    ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60)
-    ax_post_predict.set_xlabel('Energy (keV)', fontsize=60)
+    ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
+    ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=60)
+    ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
     ax_post_predict.legend(['Prediction Mean', '95% Credible Interval', 'Data'], fontsize=60, loc='upper left')
     xmin = min(data_x_values_fullrange) + 70
     xmax = max(data_x_values_fullrange) - 89.5
@@ -446,7 +464,7 @@ plot_pred_interval(calibrator_1)
 print("[Step 7-2: Plot posterior samples.]")
 def plot_theta(calib, whichtheta):
     fig, axs_trace = plt.subplots(3, 1, figsize=(30, 30))
-    fig.subplots_adjust(left=0.09, bottom=0.07, right=0.96, top=0.97, wspace=0.3)
+    fig.subplots_adjust(left=0.09, bottom=0.07, right=0.96, top=0.97, hspace=0.3)
     cal_theta = calib.theta.rnd(total_mcmc_samples)
     axs_trace[0].plot(cal_theta[:, whichtheta])
     axs_trace[0].set_xlabel("Iteration", fontsize=60)
@@ -462,7 +480,7 @@ def plot_theta(calib, whichtheta):
 
     axs_trace[2].hist(cal_theta[:, whichtheta], bins=250, range=[0, 25])
     axs_trace[2].set_xlabel(r"$\tau$ (fs)", fontsize=60)
-    axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=60)
+    axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=60, labelpad=30)
     axs_trace[2].set_xlim([0, 25])
     
     axs_trace[0].tick_params(axis='both', which='major', labelsize=60)
@@ -474,7 +492,7 @@ def plot_theta(calib, whichtheta):
     percentiles = [16, 50, 84, 90]
     
     # Open a file in write mode for samples
-    with open(peak + '_samples.dat', 'w') as samples_file:
+    with open(peak + '_samples_240k.dat', 'w') as samples_file:
         # Write the samples to the file
         np.savetxt(samples_file, samples, delimiter='\t')
 
@@ -561,12 +579,12 @@ for ax in g.fig.axes:
 # Add yaxes to 1st column
 for ax in g.axes[:,0]:
     ax.yaxis.set_visible(True)
-    ax.set_ylabel(ax.get_ylabel(), fontsize=50, fontname='Times New Roman')
+    ax.set_ylabel(ax.get_ylabel(), fontsize=50, fontname='Times New Roman', labelpad=25)
 
 # Add xaxes to 4th row
 for ax in g.axes[3,:]: 
     ax.xaxis.set_visible(True)
-    ax.set_xlabel(ax.get_xlabel(), fontsize=50, fontname='Times New Roman')
+    ax.set_xlabel(ax.get_xlabel(), fontsize=50, fontname='Times New Roman', labelpad=25)
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
