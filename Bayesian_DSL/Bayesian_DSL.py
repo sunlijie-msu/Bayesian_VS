@@ -24,7 +24,7 @@ project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
 peak = '31S4156'
-fakeTau = '_3fs' # '_0fs' or '_5fs' or '_10fs'
+fakeTau = '_0fs' # '_0fs' or '_5fs' or '_10fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
 data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
@@ -145,7 +145,7 @@ plt.rcParams['mathtext.it'] = 'Times New Roman:italic'
 
 print("[Step 2: Plot model training runs (prior) vs data.]")
 fig, ax_prior = plt.subplots(figsize=(36, 12))
-fig.subplots_adjust(left=0.08, bottom=0.18, right=0.97, top=0.96)
+fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
 
 p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 
@@ -335,7 +335,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 120000
+total_mcmc_samples = 20000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -387,7 +387,7 @@ if peak == '31S4156':
                                                      # 'sampler': 'LMC',
                                                      # 'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
-                                                     'numchain': 12,
+                                                     'numchain': 10,
                                                      'stepType': 'normal',
                                                      'burnSamples': 1000,
                                                      'verbose': True
@@ -406,24 +406,27 @@ def plot_pred_interval(calib):
     pred = calib.predict(data_x_values_peakrange)
     rndm_m = pred.rnd(s=total_mcmc_samples)
     fig, ax_post_predict = plt.subplots(figsize=(36, 12))
-    fig.subplots_adjust(left=0.08, bottom=0.18, right=0.97, top=0.96)
+    fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
     
-    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
+    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=3)  # zorder 2 appears on top of the zorder = 1.
 
     posterior_y_upper = np.percentile(rndm_m[:, 0: num_bins_peak], 97.7, axis=0)
     posterior_y_lower = np.percentile(rndm_m[:, 0: num_bins_peak], 2.3, axis=0)
     posterior_y_median = np.percentile(rndm_m[:, 0: num_bins_peak], 50, axis=0)
     print("posterior_prediction_y_median: ", posterior_y_median)
     
+    # p2 = ax_post_predict.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
+    #                  color='red', alpha=0.3, linewidth=0, zorder=1)
+    
     slope_value = (posterior_y_median[ num_bins_peak - 1]-posterior_y_median[0])/(peakrange_max-peakrange_min)
     intercept_value = posterior_y_median[0] - slope_value * peakrange_min
     
-    p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=1)
-    p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
+    p4 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
+    p3 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=2)
     ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
     ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
-    ax_post_predict.legend(['Prediction Median', '95% Credible Interval', 'Data'], fontsize=60, loc='upper left')
+    ax_post_predict.legend(['95% Credible Interval', 'Prediction Median', 'Data'], fontsize=60, loc='upper left')
     xmin = min(data_x_values_fullrange) + 70
     xmax = max(data_x_values_fullrange) - 89.5
     # ax_post_predict.tick_params(direction='out')
@@ -440,17 +443,16 @@ def plot_pred_interval(calib):
     linear_y_values_upper = linear_y_values_middle * 1.1  # Adjust this value as needed
     linear_y_values_lower = linear_y_values_middle * 0.9  # Adjust this value as needed
 
-    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=1)
-    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
-
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=2)
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
     linear_y_values_upper = linear_y_values_middle * 1.07  # Adjust this value as needed
     linear_y_values_lower = linear_y_values_middle * 0.93  # Adjust this value as needed
 
-    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=1)
-    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
-    
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=2)
+        
     # Adjust the width of the frame
     for spine in ax_post_predict.spines.values():
         spine.set_linewidth(2)  # Set the linewidth to make the frame wider

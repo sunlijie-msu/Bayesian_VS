@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Resonance_Strength", "..\Bayesian_VS\Resonance_Strength\Resonance_Strength.pyproj", "{A902FA77-EF76-422E-A382-73D6C03A0309}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A902FA77-EF76-422E-A382-73D6C03A0309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A902FA77-EF76-422E-A382-73D6C03A0309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D1609BC-D0AF-4892-A8D1-F4717EB3A5A1}
+	EndGlobalSection
+EndGlobal

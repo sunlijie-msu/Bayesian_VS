@@ -53,11 +53,13 @@ print("16% Tau:", percentiles_Tau[0])
 print("50% Tau:", percentiles_Tau[1])
 print("84% Tau:", percentiles_Tau[2])
 print("90% Tau:", percentiles_Tau[3])
-      
+print(percentiles_Tau[1], "+", percentiles_Tau[2]-percentiles_Tau[1], "-", percentiles_Tau[1]-percentiles_Tau[0])
+
 print("16% OmegaGamma:", percentiles_OmegaGamma[0])
 print("50% OmegaGamma:", percentiles_OmegaGamma[1])
 print("84% OmegaGamma:", percentiles_OmegaGamma[2])
 print("90% OmegaGamma:", percentiles_OmegaGamma[3])
+print(percentiles_OmegaGamma[1], "+", percentiles_OmegaGamma[2]-percentiles_OmegaGamma[1], "-", percentiles_OmegaGamma[1]-percentiles_OmegaGamma[0])
 
 plt.rcParams['axes.linewidth'] = 3.0
 plt.rcParams['font.size'] = 60
@@ -213,8 +215,9 @@ for i in range(1, num_bands + 1):
         )
 
 # Assuming percentile_ranges contains all the percentiles from 2 to 98
-plt.plot(T9_values, percentile_ranges[50], label='50th Percentile', color='blue', linewidth=1)
-
+plt.plot(T9_values, percentile_ranges[50], label='$^{30}$P$(p,\\gamma)^{31}$S Median', color='blue', linewidth=1)
+plt.plot(T9_values, percentile_ranges[16], label='68% Credible Interval', color='#55cc55', linewidth=2, linestyle='--')
+plt.plot(T9_values, percentile_ranges[84], color='#55cc55', linewidth=1, linestyle='--')
 
 plt.xlim(0.1, 0.4)  # Set x-axis limits
 plt.ylim(1e-9, 1e3)  # Set y-axis limits
@@ -224,7 +227,8 @@ plt.tick_params(axis='both', which='major', direction='out', length=16, width=2)
 plt.xlabel("Temperature (GK)", fontsize=80, labelpad=45, fontfamily="Times New Roman")
 plt.ylabel("Reaction Rate (cm$^3$ s$^{-1}$ mol$^{-1}$)", fontsize=80, labelpad=40, fontfamily="Times New Roman")
 plt.yscale('log')
-plt.axhline(y=0.006672004, color='#55cc55', linestyle='--', linewidth=3, label='r$^{30}$P Decay')
+plt.axhline(y=0.006672004, color='red', linestyle='--', linewidth=2, label='$^{30}$P$(\\beta^+)^{30}$Si')
+ax.legend(loc='lower right', fontsize=60)
 plt.savefig('Fig_DSL2_Reaction_Rate.png')
 
 

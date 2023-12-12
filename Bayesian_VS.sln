@@ -9,8 +9,6 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bayesian_Fit_Exp", "Bayesia
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SimpleTest", "Test\SimpleTest.pyproj", "{573F5596-7169-4FD4-BD47-4E8EA04D89F9}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Resonance_Strength", "Resonance_Strength\Resonance_Strength.pyproj", "{A902FA77-EF76-422E-A382-73D6C03A0309}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,8 +21,6 @@ Global
 		{44E584F9-F54B-43CD-A722-FFF0ED425392}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573F5596-7169-4FD4-BD47-4E8EA04D89F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{573F5596-7169-4FD4-BD47-4E8EA04D89F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A902FA77-EF76-422E-A382-73D6C03A0309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A902FA77-EF76-422E-A382-73D6C03A0309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
