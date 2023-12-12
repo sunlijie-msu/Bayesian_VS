@@ -28,7 +28,7 @@ Bp_positive_sigma = 0.4e-4
 Bp_negative_sigma = 0.3e-4
 
 print("[Step 1: Read Tau sample file.]")
-Tau = np.loadtxt(r'D:\X\out\Bayesian_VS\Bayesian_DSL\DSL_31S4156_5fs\31S4156_samples_160k.dat')
+Tau = np.loadtxt(r'D:\X\out\Bayesian_VS\Bayesian_DSL\png_3fs_scaled_1k\31S4156_3fs_samples.dat')
 
 print("Tau0: ", Tau[0], "fs")
 
@@ -74,7 +74,7 @@ plt.figure(figsize=(36, 12))
 plt.subplots_adjust(left=0.10, bottom=0.20, right=0.97, top=0.95)
 # plt.hist(OmegaGamma, bins=500, range=(0, 100), color='blue', alpha=0.5)
 # Increase the number of bins for the histogram
-bins = np.linspace(0, 70, 280)
+bins = np.linspace(0, 200, 400)
 # Plot histogram with transparency and thicker frame line
 sns.histplot(OmegaGamma, bins=bins, color='blue', stat='density', alpha=0.3, linewidth=0)
 
@@ -85,7 +85,7 @@ plt.axvline(x=percentiles_OmegaGamma[2], color='#55cc55', linestyle='--', linewi
 
 plt.xlabel('$\omega\gamma$ ($\mathrm{\mu}$eV)', labelpad=25)
 plt.ylabel('Probability density', labelpad=35)
-plt.xlim(0, 70)
+plt.xlim(0, 200)
 # Set ticks to be visible and outside the axes
 plt.tick_params(axis='both', which='major', direction='out', length=9, width=2)
 
@@ -98,12 +98,12 @@ print("[Step 3: Plot the 2D joint plot of Tau and OmegaGamma.]")
 df = pd.DataFrame({'Tau': Tau, 'OmegaGamma': OmegaGamma})
 print(df.head())
 
-df_filtered = df[(df['OmegaGamma'] <= 70) & (df['Tau'] <= 20)]
+df_filtered = df[(df['OmegaGamma'] <= 200) & (df['Tau'] <= 12)]
 
 g = sns.jointplot(
     data=df_filtered, x='Tau', y='OmegaGamma', kind='kde',
     fill=True, color='blue', alpha=0.8,
-    xlim=(0, 20), ylim=(0, 70),
+    xlim=(0, 12), ylim=(0, 200),
     marginal_kws=dict(fill=True, color='blue'),
     joint_kws=dict(fill=True, levels=40, color='blue'),
     height=24, space=0
@@ -111,19 +111,19 @@ g = sns.jointplot(
 
 # Plot lines at 16th and 84th percentiles
 plt.axvline(x=percentiles_Tau[0], color='#55cc55', linestyle='--', linewidth=2, label='16%')
-plt.axvline(x=percentiles_Tau[1], color='red', linestyle='--', linewidth=2, label='50%')
+plt.axvline(x=percentiles_Tau[1], color='red', linestyle='--', linewidth=3, label='50%')
 plt.axvline(x=percentiles_Tau[2], color='#55cc55', linestyle='--', linewidth=2, label='84%')
 plt.axhline(y=percentiles_OmegaGamma[0], color='#55cc55', linestyle='--', linewidth=2, label='16%')
-plt.axhline(y=percentiles_OmegaGamma[1], color='red', linestyle='--', linewidth=2, label='50%')
+plt.axhline(y=percentiles_OmegaGamma[1], color='red', linestyle='--', linewidth=3, label='50%')
 plt.axhline(y=percentiles_OmegaGamma[2], color='#55cc55', linestyle='--', linewidth=2, label='84%')
 
-g.set_axis_labels(xlabel='$\\tau$ (fs)', ylabel='$\omega\gamma$ ($\mathrm{\mu}$eV)', fontsize=80, labelpad=45)
+g.set_axis_labels(xlabel='$\\tau$ (fs)', ylabel='$\omega\gamma$ ($\mathrm{\mu}$eV)', fontsize=80, labelpad=40)
 # Set tick labels font size
 tick_fontsize = 70
 g.ax_joint.set_xticks(g.ax_joint.get_xticks())
 g.ax_joint.set_yticks(g.ax_joint.get_yticks())
 g.ax_joint.tick_params(axis='both', which='major', length=9, width=2, labelsize=tick_fontsize)
-g.fig.subplots_adjust(top=0.96, bottom=0.14, left=0.14, right=0.96)
+g.fig.subplots_adjust(top=0.96, bottom=0.15, left=0.15, right=0.96)
 
 plt.savefig('Fig_DSL2_Tau_Strength_JointPlot.png')
 
@@ -146,27 +146,26 @@ mu = Ap * AT / (Ap + AT)
 
 
 # T9 = np.random.uniform(low=0.1, high=0.4, size=num_samples)
-T9_100 = np.linspace(0.1, 0.4, 4)
-T9 = np.repeat(T9_100, num_samples // 4)
-
+T9_values = np.linspace(0.1, 0.4, 50)
 
 Er = np.random.normal(loc=Er_mean, scale=Er_sigma, size=num_samples)
 Er = np.array(Er)
 print("Er0: ", Er[0], "MeV")
 
-ReactionRate = 1.5394e11 * (mu * T9) ** (-3 / 2) * OmegaGamma * 1e-9 * np.exp(-11.605 * Er / T9)
+# Initialize lists to store percentile values for each T9
+# percentiles_2 = []
+# percentiles_16 = []
+# percentiles_50 = []
+# percentiles_84 = []
+# percentiles_98 = []
 
-# Print some random sample values of T9 and ReactionRate
-sample_indices = np.random.choice(len(ReactionRate), 5, replace=False)  # Get 5 random indices
-print("Random samples of T9 and ReactionRate:")
-for index in sample_indices:
-    print(f"T9: {T9[index]}, ReactionRate: {ReactionRate[index]}")
-
-t9_range = [0.1, 0.4000000001]
-reaction_rate_range = [1e-7, 1.1e2]
-
-# Create a 2D histogram of T9 and ReactionRate with the specified ranges
-heatmap, xedges, yedges = np.histogram2d(T9, ReactionRate, bins=[4, 100], range=[t9_range, reaction_rate_range])
+# for T9 in T9_values:
+#     ReactionRate = 1.5394e11 * (mu * T9) ** (-3 / 2) * OmegaGamma * 1e-9 * np.exp(-11.605 * Er / T9)
+#     percentiles_2.append(np.percentile(ReactionRate, 2.3))
+#     percentiles_16.append(np.percentile(ReactionRate, 16))
+#     percentiles_50.append(np.percentile(ReactionRate, 50))
+#     percentiles_84.append(np.percentile(ReactionRate, 84))
+#     percentiles_98.append(np.percentile(ReactionRate, 97.7))
 
 
 # df = pd.DataFrame({'T9': T9, 'ReactionRate': ReactionRate})
@@ -175,37 +174,58 @@ heatmap, xedges, yedges = np.histogram2d(T9, ReactionRate, bins=[4, 100], range=
 # df_filtered = df[(df['ReactionRate'] >= 1e-9)]
 
 
-# sns.set_style("white", {'axes.linewidth': 3.0})
-fig = plt.figure(figsize=(26, 24))
-fig.subplots_adjust(top=0.96, bottom=0.14, left=0.18, right=0.95)
-
-# Plot the heatmap using contourf
-plt.contourf(xedges[:-1], yedges[:-1], heatmap.T, cmap='hot', levels=50)
-
 # sns.kdeplot(data=df_filtered, x='T9', y='ReactionRate', fill=True, color='blue', alpha=0.8, levels=40, bw_adjust=0.2, thresh=0.05)
 
 # sns.scatterplot(data=df_filtered, x='T9', y='ReactionRate', color='blue', alpha=0.3, s=3, linewidth=0, edgecolor='none')
 
+# Initialize a dictionary to store percentile values for each T9
+percentile_ranges = {}
+
+# Calculate percentiles from 2% to 99%, every 2%
+for i in range(2, 99, 2):
+    percentile_ranges[i] = []
+
+# Calculate ReactionRate percentiles for each T9 value
+for T9 in T9_values:
+    ReactionRate = 1.5394e11 * (mu * T9) ** (-3 / 2) * OmegaGamma * 1e-9 * np.exp(-11.605 * Er / T9)
+    for i in range(2, 99, 2):
+        percentile_ranges[i].append(np.percentile(ReactionRate, i))
+
+
+fig, ax = plt.subplots(figsize=(26, 24))
+fig.subplots_adjust(top=0.96, bottom=0.14, left=0.18, right=0.95)
+
+# Define the color gradient and alpha levels
+num_bands = 49  # From 2 to 98 with steps of 2 gives us 49 bands
+colors = sns.color_palette("Blues", num_bands)  # Get a list of blues shades
+
+# Create the filled bands between each set of percentiles
+for i in range(1, num_bands + 1):
+    low_percentile = 2 * i
+    high_percentile = 100 - low_percentile
+    if high_percentile > low_percentile:
+        plt.fill_between(
+            T9_values,
+            percentile_ranges[low_percentile],
+            percentile_ranges[high_percentile],
+            color=colors[i-1],
+            alpha=1.0  # You can adjust the alpha for overall transparency if you like
+        )
+
+# Assuming percentile_ranges contains all the percentiles from 2 to 98
+plt.plot(T9_values, percentile_ranges[50], label='50th Percentile', color='blue', linewidth=1)
+
+
 plt.xlim(0.1, 0.4)  # Set x-axis limits
-plt.ylim(1e-9, 1.1e2)  # Set y-axis limits
+plt.ylim(1e-9, 1e3)  # Set y-axis limits
 plt.xticks(fontsize=70, fontfamily="Times New Roman")
 plt.yticks(fontsize=70, fontfamily="Times New Roman")
 plt.tick_params(axis='both', which='major', direction='out', length=16, width=2)
 plt.xlabel("Temperature (GK)", fontsize=80, labelpad=45, fontfamily="Times New Roman")
 plt.ylabel("Reaction Rate (cm$^3$ s$^{-1}$ mol$^{-1}$)", fontsize=80, labelpad=40, fontfamily="Times New Roman")
 plt.yscale('log')
-
 plt.axhline(y=0.006672004, color='#55cc55', linestyle='--', linewidth=3, label='r$^{30}$P Decay')
 plt.savefig('Fig_DSL2_Reaction_Rate.png')
 
-
-# g = sns.jointplot(
-#     data=df_filtered, x='Tau', y='OmegaGamma', kind='kde',
-#     fill=True, color='blue', alpha=0.8,
-#     xlim=(0, 20), ylim=(0, 70),
-#     marginal_kws=dict(fill=True, color='blue'),
-#     joint_kws=dict(fill=True, levels=40, color='blue'),
-#     height=24, space=0
-# )
 
 print("[The End]")
