@@ -259,16 +259,16 @@ variance = 1
 sigma = np.sqrt(variance)
 x = np.linspace(mu - 3*sigma, mu + 3*sigma, 100)
 fig, axs_emu3 = plt.subplots(1, 3, figsize=(36, 12))
-fig.subplots_adjust(left=0.07, bottom=0.13, right=0.97, top=0.89)
+fig.subplots_adjust(left=0.07, bottom=0.13, right=0.97, top=0.88)
 axs_emu3[0].hist((pred_m - model_y_values_peakrange_test.T).flatten(), bins=100)
-axs_emu3[0].set_title(r'$\hat{\mu}_{test} - \mu_{test}$')
+axs_emu3[0].set_title(r'$\hat{\mu}_{test} - \mu_{test}$', pad=20)
 axs_emu3[0].set_xlim([-2.5, 2.5])
 axs_emu3[1].hist(std_err_f_test, density=True, bins=80)  # standardized error
 axs_emu3[1].plot(x, sps.norm.pdf(x, mu, sigma), color='red')
-axs_emu3[1].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\hat{\sigma}_{test}}$')
+axs_emu3[1].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\hat{\sigma}_{test}}$', pad=20)
 axs_emu3[1].set_xlim([-4, 4])
 axs_emu3[2].hist(((pred_m - model_y_values_peakrange_test.T)/model_y_values_peakrange_test.T).flatten(), bins=100)  # relative error
-axs_emu3[2].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\mu_{test}}$')
+axs_emu3[2].set_title(r'${(\hat{\mu}_{test} - \mu_{test})}/{\mu_{test}}$', pad=20)
 l = np.arange(-2, 3, 1)/10
 axs_emu3[2].set(xticks=l, xticklabels=l)
 axs_emu3[2].axvline(x=0, ls='--', color='red')
@@ -335,7 +335,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 20000
+total_mcmc_samples = 200000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -490,7 +490,7 @@ def plot_theta(calib, whichtheta):
     
     samples = cal_theta[:, whichtheta]
     sorted_samples = np.sort(samples)
-    percentiles = [16, 50, 84, 90]
+    percentiles = [16, 50, 84, 95]
     
     # Open a file in write mode for samples
     with open(peak + fakeTau + '_samples.dat', 'w') as samples_file:
