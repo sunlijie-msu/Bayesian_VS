@@ -1,0 +1,7 @@
+16th percentile: 2.314
+50th percentile: 3.728
+84th percentile: 5.618
+95th percentile: 7.212
+
+3.728-2.314=1.414
+5.618-3.728=1.89

@@ -24,10 +24,10 @@ project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
 peak = '31S4156'
-fakeTau = '_0fs' # '_0fs' or '_5fs' or '_10fs'
+fakeTau = '_3fs' # '_0fs' or '_3fs' or '_5fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
+data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
 bin_start = 130
 bin_stop = 244
 data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
@@ -42,9 +42,12 @@ data_y_values_peakrange = data_peakrange[:, 1]
 data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
-model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
-model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
+model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+
 model_y_values_peakrange = model_y_values_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
+model_y_var_peakrange = model_y_var_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 
 
 print("Path: ", dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv')
@@ -122,15 +125,18 @@ if peak == '31S3076':
     number_of_fullmodel_runs = 2106
 if peak == '31S4156':
     number_of_fullmodel_runs = 297
-rndsample = list(range(0, number_of_fullmodel_runs, 1))
+rndsample = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
 print('Select training runs: ', rndsample)
 model_y_values_peakrange_train = model_y_values_peakrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
 model_y_values_fullrange_train = model_y_values_fullrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
+model_y_var_peakrange_train = model_y_var_peakrange[rndsample, :]
+model_y_var_fullrange_train = model_y_var_fullrange[rndsample, :]
 model_parameter_values_train = model_parameter_values[rndsample, :]
 rndsample = list(range(1, number_of_fullmodel_runs, 2))
 # rndsample = [250]  # only select run 251 for test
 print('Select test runs: ', rndsample)
 model_y_values_peakrange_test = model_y_values_peakrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
+model_y_var_peakrange_test = model_y_var_peakrange[rndsample, :]
 model_parameter_values_test = model_parameter_values[rndsample, :]
 
 # plots a list of profiles in the same figure. Each profile corresponds to a simulation replica for the given instance.
@@ -184,21 +190,37 @@ emulator_1 = emulator(x=data_x_values_peakrange,
                       method='PCGP',
                       args={'epsilon': 0.0000000001})
 
+# prior_min = [0, 4154, 0.4, 0.4]
+# prior_max = [30, 4158, 2.0, 2.0]
+# prior_dict = {'min': prior_min, 'max': prior_max}
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCGPR',
+#                       args={'epsilon': 0.00000001, 'prior': prior_dict})
 
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
 #                       method='indGP')
 
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCSK',
+#                       # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+#                       args={'numpcs': 114, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
 # 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting Gaussian Process model to each Princial Component separately.
-# 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed.
-# 3) PCGPR.py uses scikit-learn GPs instead of custom implementation.
-# 4) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed in our case, I suppose.
-# 5) PCSK.py: Principal Components Stochastic Kriging emulator accounts for simulation noise, estimates noise-adjusted PCs, models simulation noise in GP fitting, avoids overfitting to noise. This leads to better dimension reduction, surrogate fitting, and prediction accuracy when the simulator outputs are noisy.
+# 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed. With exploding computational cost associated with the large covariance matrix.
+# 3) PCGPR.py: Principal Component Gaussian Process Regression.
+# 4) PCGPRG: Principal Component Gaussian Process with Grouping.
+# 5) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed in our case, I suppose.
+# 6) PCSK.py: Principal Component Stochastic Kriging emulator uses both simulated mean and variance for the emulator training. This leads to improved emulator accuracy when compared with other emulation methods, especially for simulations that produce stochastic output.
 
 print("[Step 4: Diagnostics plots.]")
 pred_emu = emulator_1.predict(data_x_values_peakrange, model_parameter_values_test)  # predict at some parameter values and x values
@@ -335,7 +357,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 200000
+total_mcmc_samples = 4000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -385,13 +407,15 @@ if peak == '31S4156':
                                            args={'theta0': np.array([[0.0, 4155.84, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
                                                      'sampler': 'metropolis_hastings',
                                                      # 'sampler': 'LMC',
+                                                     # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'
                                                      # 'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
                                                      'burnSamples': 1000,
+                                                     'nburnin': 1000,
                                                      'verbose': True
-                                                     # 'stepParam': np.array([1, 0.01, 0.01, 0.01])
+                                                     # 'stepParam': np.array([0.0, 0.0, 0.0, 0.0]) # ['Tau', 'Eg', 'Bkg', 'SP'] somehow stepParams don't work well
                                                      }
                                             )
     # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\utilitiesmethods\metropolis_hastings.py
@@ -447,7 +471,7 @@ def plot_pred_interval(calib):
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=2)
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.07  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
     linear_y_values_lower = linear_y_values_middle * 0.93  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
