@@ -27,7 +27,7 @@ peak = '31S4156'
 fakeTau = '_3fs' # '_0fs' or '_3fs' or '_5fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
+data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
 bin_start = 130
 bin_stop = 244
 data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
@@ -42,9 +42,9 @@ data_y_values_peakrange = data_peakrange[:, 1]
 data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
-model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
-model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
+model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
 model_y_values_peakrange = model_y_values_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 model_y_var_peakrange = model_y_var_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
@@ -357,7 +357,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 4000
+total_mcmc_samples = 100000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -464,15 +464,15 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.1  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.9  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.92  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=2)
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
     linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.93  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.92  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=2)
@@ -514,7 +514,7 @@ def plot_theta(calib, whichtheta):
     
     samples = cal_theta[:, whichtheta]
     sorted_samples = np.sort(samples)
-    percentiles = [16, 50, 84, 95]
+    percentiles = [16, 50, 84, 90]
     
     # Open a file in write mode for samples
     with open(peak + fakeTau + '_samples.dat', 'w') as samples_file:

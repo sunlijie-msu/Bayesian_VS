@@ -1,0 +1,7 @@
+16th percentile: 1.965
+50th percentile: 3.765
+84th percentile: 5.943
+95th percentile: 7.775
+
+3.765-1.965=1.8
+5.943-3.765=2.178
