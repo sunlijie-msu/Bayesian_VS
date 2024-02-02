@@ -32,7 +32,7 @@ print("[Step 1: Read Tau sample file.]")
 
 fakeTau = '_3fs' # modify
 
-file_path = f'D:\\X\\out\\Bayesian_VS\\Bayesian_DSL\\png{fakeTau}_scaled_1k\\31S4156{fakeTau}_samples.dat'
+file_path = f'D:\\X\\out\\Bayesian_VS\\Bayesian_DSL\\png{fakeTau}_scaled_0.5k\\31S4156{fakeTau}_samples.dat'
 
 print("Load MCMC samples from file:", file_path)
 
@@ -70,7 +70,7 @@ OmegaGamma = (2 * Jr + 1) / (2 * Jp + 1) / (2 * JT + 1) * Bp * (1 - Bp) * hbar /
 # OmegaGamma2 = (2 * Jr + 1) / (2 * Jp + 1) / (2 * JT + 1) * Bp * (1 - Bp) * hbar / Tau2 *1e6 # Central value: 21.935 ueV if Tau = 5 fs; 21.675 ueV if Tau = 5.06 fs
 
 # Define the path where you want to save the file
-output_file_path = f'D:\\X\\out\\Bayesian_VS\\Bayesian_DSL\\png{fakeTau}_scaled_1k\\31S4156{fakeTau}_OmegaGamma.txt'
+output_file_path = f'D:\\X\\out\\Bayesian_VS\\Bayesian_DSL\\png{fakeTau}_scaled_0.5k\\31S4156{fakeTau}_OmegaGamma.txt'
 
 # Use numpy.savetxt to write the OmegaGamma array to a text file
 np.savetxt(output_file_path, OmegaGamma, fmt='%f')  # '%f' specifies the format as floating point
@@ -146,7 +146,7 @@ plt.xlim(minOmegaGamma, maxOmegaGamma)
 # Set ticks to be visible and outside the axes
 plt.tick_params(axis='both', which='major', direction='out', length=9, width=2)
 
-plt.savefig(f'Fig_DSL2_Resonance_Strength_Lifetime{fakeTau}.png')
+plt.savefig(f'Fig_DSL2_Resonance_Strength_Lifetime{fakeTau}_0.5k.png')
 
 
 
@@ -229,7 +229,7 @@ if fakeTau == '_0fs':
     plt.axvline(x=percentiles_Tau[3], color='red', linestyle='--', linewidth=3, label='90%')
     plt.axhline(y=percentiles_OmegaGamma[3], color='red', linestyle='--', linewidth=3, label='90%')
 
-plt.savefig(f'Fig_DSL2_Strength_JointPlot_Lifetime{fakeTau}.png')
+plt.savefig(f'Fig_DSL2_Strength_JointPlot_Lifetime{fakeTau}_0.5k.png')
 
 
 print("[Step 4: Plot Reaction Rate as a function of T9.]")
@@ -363,7 +363,7 @@ plt.yscale('log')
 plt.axhline(y=0.006672004, color='red', linestyle='--', linewidth=3, label='$^{30}$P$(\\beta^+)^{30}$Si')
 
 ax.legend(loc='lower right', fontsize=70)
-plt.savefig(f'Fig_DSL2_Reaction_Rate_Lifetime{fakeTau}.png')
+plt.savefig(f'Fig_DSL2_Reaction_Rate_Lifetime{fakeTau}_0.5k.png')
 
 
 print("[The End]")
