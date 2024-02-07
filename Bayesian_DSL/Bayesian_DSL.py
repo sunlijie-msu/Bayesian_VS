@@ -164,11 +164,11 @@ smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=1.5)
 # Plot shaded region between min and max
 p2 = ax_prior.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
                      color='red', alpha=0.3, linewidth=0, zorder=1)
+ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
+# ax.tick_params(direction='in')
 ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
 ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
 ax_prior.legend(['Prior', 'Data'], fontsize=60, loc='upper left')
-ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
-# ax.tick_params(direction='in')
 xmin = min(data_x_values_fullrange) + 70
 xmax = max(data_x_values_fullrange) - 89.5
 ax_prior.set_xlim(xmin, xmax)
@@ -424,7 +424,7 @@ if peak == '31S4156':
             #     print("At sample {}, acceptance rate is {}.".format(i, n_acc/i))
 
 
-print("[Step 7-1: Plot predictions with calibrated parameters.]")
+print("[Step 7-1: Plot transparent uncertainty band predictions with calibrated parameters.]")
 
 def plot_pred_interval(calib):
     pred = calib.predict(data_x_values_peakrange)
@@ -448,12 +448,12 @@ def plot_pred_interval(calib):
     p4 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
     p3 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=2)
     ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
+    # ax_post_predict.tick_params(direction='out')
     ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
     ax_post_predict.legend(['95% Credible Interval', 'Prediction Median', 'Data'], fontsize=60, loc='upper left')
     xmin = min(data_x_values_fullrange) + 70
     xmax = max(data_x_values_fullrange) - 89.5
-    # ax_post_predict.tick_params(direction='out')
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
     ax_post_predict.set_xlim(xmin, xmax)
     ax_post_predict.set_ylim(0, ymax)
