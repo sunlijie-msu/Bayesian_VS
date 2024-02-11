@@ -11,9 +11,11 @@ import scipy.stats as sps
 print("[Step 1: Read data from CSV input files and plot data.]")
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt('F:/e21010/pxct/sum_0000_0191_msd_e_5469_5489.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
-bin_start = 2040 # bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540.s ns
-bin_stop = 2920 # bin 2920 is the 2921st = 1420.5 ns (not included), so the last included bin is 1420.5 ns - 1 ns = 1419.5 ns
+data_fullrange = np.loadtxt('F:/e21010/pxct/timing_msdtotal_e_5361_5481_msd26_t_bin1ns.csv', delimiter=',')  # Read full range data # csv derived from histogram
+bin_start = 1500 + 160 # don't change the 1500, which is an offset
+# bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540 ns
+bin_stop = 1500 + 1420 # don't change the 1500, which is an offset
+# bin 2920 is the 2921st = 1420.5 ns (not included), so the last included bin is 1420.5 - 1 = 1419.5 ns
 data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
 data_x_values_peakrange = data_peakrange[:, 0]
 data_y_values_peakrange = data_peakrange[:, 1]
@@ -77,7 +79,7 @@ def log_likelihood(parameters, x_values, y_values, x_errors, y_errors):
 print("[Step 4: Define the log-prior function (Prior).]")
 def log_prior(parameters):
     total_decays, half_life, background = parameters
-    if 200000 < total_decays < 1400000 and 57.0 < half_life < 80.0 and 0.0 < background < 4.0:
+    if 6e6 < total_decays < 9e6 and 57.0 < half_life < 80.0 and 2.0 < background < 16.0:
         return 0.0
     return -np.inf
 
@@ -99,30 +101,31 @@ sampler = emcee.EnsembleSampler(num_walkers, num_dimensions, log_posterior, args
 
 print("[Step 7: Initialize the MCMC walkers.]")
 initial_positions = np.zeros((num_walkers, num_dimensions))
-initial_positions[:, 0] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 495406    # initial slope between 1 and 10
-initial_positions[:, 1] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 72.0  # initial intercept between -150 and 200
-initial_positions[:, 2] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 0.92  # initial intercept between -150 and 200
+initial_positions[:, 0] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 7e6    # initial slope between 1 and 10
+initial_positions[:, 1] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 68.0  # initial intercept between -150 and 200
+initial_positions[:, 2] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 9  # initial intercept between -150 and 200
 # these ranges are just for the initial positions of the walkers in the MCMC sampler. The walkers are free to explore beyond these ranges during the sampling process, constrained only by the prior distribution defined in the log_prior function.
 #  np.random.rand(num_walkers) generates an array of num_walkers random numbers uniformly distributed in the half-open interval [0.0, 1.0).
 
 
 print("[Step 8: Run MCMC sampling.]")
-num_steps = 10000
+num_steps = 10200
 sampler.run_mcmc(initial_positions, num_steps, progress=True)
 
 print("\n[Step 9: Get the chain and discard burn-in.]")
 chain = sampler.get_chain(discard=200, flat=True) # combining the chains from all walkers into a single chain.
 
 print("[Step 10: Plot 2D posterior distributions of parameters.]")
-labels = ["Total Decays", "Half-life", "Background"]
+# labels = ["Total Decays", "Half-life", "Background"]
+labels = ["N", "T", "B"]
 fig, axes = plt.subplots(len(labels), len(labels), figsize=(30, 30))
 fig = corner.corner(chain, labels=labels, fig=fig, 
                     quantiles=[0.16, 0.5, 0.84], 
-                    color='mediumblue', 
+                    color='dodgerblue', 
                     use_math_text=True,
                     hist_bin_factor=2,
                     show_titles=True, 
-                    title_fmt=".3f", 
+                    title_fmt=".2f", 
                     title_kwargs={"fontsize": 60}, 
                     label_kwargs={"fontsize": 60},
                     hist_kwargs={"linewidth": 4},
@@ -154,7 +157,7 @@ posterior_y_median = np.percentile(y_values_for_each_params, 50, axis=0)
 
 # Plot the median, upper and lower percentiles with band
 p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='deepskyblue', alpha=0.4, linewidth=0, zorder=2)
-p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='deepskyblue', alpha=1.0, linewidth=5, zorder=2)
+p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='dodgerblue', alpha=1.0, linewidth=3, zorder=2)
 ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
 ax_post_predict.set_xlabel("Time difference LEGe - MSD26 (ns)", fontsize=60, labelpad=20)
@@ -165,6 +168,8 @@ xmax = max(data_x_values_peakrange) + 0.5
 ax_post_predict.set_xlim(xmin, xmax)
 ymax = max(data_y_values_peakrange) + max(data_y_varhigh_peakrange) * 1.3
 ax_post_predict.set_ylim(0, ymax)
+ax_post_predict.set_ylim(2, ymax*1.5)
+ax_post_predict.set_yscale('log')
 
 # Adjust the width of the frame
 for spine in ax_prior.spines.values():
