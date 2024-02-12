@@ -9,13 +9,41 @@ import scipy.stats as sps
 
 
 print("[Step 1: Read data from CSV input files and plot data.]")
+Which_Dataset = 'timing_msdtotal_e' # Modify
+# Which_Dataset = 'timing_msd26_e'
 
-# Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt('F:/e21010/pxct/timing_msdtotal_e_5361_5481_msd26_t_bin1ns.csv', delimiter=',')  # Read full range data # csv derived from histogram
-bin_start = 1500 + 160 # don't change the 1500, which is an offset
-# bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540 ns
+if Which_Dataset == 'timing_msdtotal_e':
+    Which_MSD = 12 # Modify: 12 for MSD12; 26 for MSD26
+    Ea_central = 5421 # 5421 for MSDtotal, based on LISE++ calculation
+    
+    if Which_MSD == 12:
+        bin_start = 1500 + 240 # don't change the 1500, which is an offset
+    
+    if Which_MSD == 26:
+        bin_start = 1500 + 160 # don't change the 1500, which is an offset
+        # bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540 ns
+    
+    Ea_gate = 60 # 3; 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
+
+
+
+if Which_Dataset == 'timing_msd26_e':
+    Which_MSD = 26 # 26 for MSD26
+    Ea_central = 5479 # 5479 for MSD26; based on LISE++ calculation
+    Ea_gate = 20 # 3; 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
+    
+
 bin_stop = 1500 + 1420 # don't change the 1500, which is an offset
 # bin 2920 is the 2921st = 1420.5 ns (not included), so the last included bin is 1420.5 - 1 = 1419.5 ns
+
+msd_e_cut_low = Ea_central - Ea_gate
+msd_e_cut_high = Ea_central + Ea_gate
+
+# Load data fullrange csv files and model fullrange csv files and model parameter values csv files
+print('F:/e21010/pxct/' + Which_Dataset + '_' + str(msd_e_cut_low) + '_' + str(msd_e_cut_high) + '_msd' + str(Which_MSD) + '_t_bin1ns.csv')
+data_fullrange = np.loadtxt('F:/e21010/pxct/' + Which_Dataset + '_' + str(msd_e_cut_low) + '_' + str(msd_e_cut_high) + '_msd' + str(Which_MSD) + '_t_bin1ns.csv', delimiter=',')  # Read full range data # csv derived from histogram
+
+
 data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
 data_x_values_peakrange = data_peakrange[:, 0]
 data_y_values_peakrange = data_peakrange[:, 1]
@@ -39,13 +67,13 @@ plt.rcParams['mathtext.fontset'] = 'custom'
 plt.rcParams['mathtext.rm'] = 'Times New Roman'
 plt.rcParams['mathtext.it'] = 'Times New Roman:italic'
 
-fig, ax_prior = plt.subplots(figsize=(36, 12))
+fig, ax_prior = plt.subplots(figsize=(24, 12))
 fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
 
 ax_prior.errorbar(data_x_values_peakrange, data_y_values_peakrange, yerr=[data_y_varlow_peakrange,data_y_varhigh_peakrange], fmt='s', color='black', linewidth=2, markersize=2, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
-ax_prior.set_xlabel("Time difference LEGe - MSD26 (ns)", fontsize=60, labelpad=20)
+ax_prior.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=20)
 ax_prior.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=11)
 xmin = min(data_x_values_peakrange) - 0.5
 xmax = max(data_x_values_peakrange) + 0.5
@@ -57,7 +85,8 @@ ax_prior.set_ylim(0, ymax)
 # Adjust the width of the frame
 for spine in ax_prior.spines.values():
     spine.set_linewidth(3)  # Set the linewidth to make the frame wider
-plt.savefig('Exp_data.png')
+
+fig.savefig('Exp_data_' + Which_Dataset + '_' + str(Which_MSD) + '_t.png')
 
 
 print("[Step 2: Define the exponential decay function (Model).]")
@@ -109,7 +138,7 @@ initial_positions[:, 2] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 9  # init
 
 
 print("[Step 8: Run MCMC sampling.]")
-num_steps = 10200
+num_steps = 1200
 sampler.run_mcmc(initial_positions, num_steps, progress=True)
 
 print("\n[Step 9: Get the chain and discard burn-in.]")
@@ -121,7 +150,7 @@ labels = ["N", "T", "B"]
 fig, axes = plt.subplots(len(labels), len(labels), figsize=(30, 30))
 fig = corner.corner(chain, labels=labels, fig=fig, 
                     quantiles=[0.16, 0.5, 0.84], 
-                    color='dodgerblue', 
+                    color='mediumblue', 
                     use_math_text=True,
                     hist_bin_factor=2,
                     show_titles=True, 
@@ -138,7 +167,7 @@ fig.subplots_adjust(left=0.12, bottom=0.12, right=0.97, top=0.95)
 for ax in fig.axes:
     ax.tick_params(axis='both', labelsize=50)  # Adjust tick label size as needed
 
-fig.savefig("Exp_corner_plot.png")
+fig.savefig("Fig_PXCT_Lifetime_241Am_LEGe_MSD" + str(Which_MSD) + "_Posterior2D.png")
 
 
 print("[Step 11: Plot transparent uncertainty band predictions with calibrated parameters.]")
@@ -160,7 +189,7 @@ p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, po
 p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='dodgerblue', alpha=1.0, linewidth=3, zorder=2)
 ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
-ax_post_predict.set_xlabel("Time difference LEGe - MSD26 (ns)", fontsize=60, labelpad=20)
+ax_post_predict.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=20)
 ax_post_predict.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=11)
 ax_post_predict.legend(['95% Credible Interval', 'Prediction Median', 'Data'], fontsize=60, loc='upper right')
 xmin = min(data_x_values_peakrange) - 0.5
@@ -175,7 +204,7 @@ ax_post_predict.set_yscale('log')
 for spine in ax_prior.spines.values():
     spine.set_linewidth(3)  # Set the linewidth to make the frame wider
 
-plt.savefig("Exp_fit_prediction.png")
-
+plt.savefig('Fig_PXCT_Lifetime_241Am_LEGe_MSD' + str(Which_MSD) + '_Prediction.png')
 
 print("[The End]")
+
