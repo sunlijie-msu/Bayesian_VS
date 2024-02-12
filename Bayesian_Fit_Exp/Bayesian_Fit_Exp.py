@@ -9,11 +9,11 @@ import scipy.stats as sps
 
 
 print("[Step 1: Read data from CSV input files and plot data.]")
-Which_Dataset = 'timing_msdtotal_e' # Modify
-# Which_Dataset = 'timing_msd26_e'
+Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
+# Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
 
 if Which_Dataset == 'timing_msdtotal_e':
-    Which_MSD = 12 # Modify: 12 for MSD12; 26 for MSD26
+    Which_MSD = 26 # Modify: 12 for MSD12; 26 for MSD26
     Ea_central = 5421 # 5421 for MSDtotal, based on LISE++ calculation
     
     if Which_MSD == 12:
@@ -23,7 +23,7 @@ if Which_Dataset == 'timing_msdtotal_e':
         bin_start = 1500 + 160 # don't change the 1500, which is an offset
         # bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540 ns
     
-    Ea_gate = 60 # 3; 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
+    Ea_gate = 10 # Modify: 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
 
 
 
@@ -33,7 +33,7 @@ if Which_Dataset == 'timing_msd26_e':
     Ea_gate = 20 # 3; 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
     
 
-bin_stop = 1500 + 1420 # don't change the 1500, which is an offset
+bin_stop = 1500 + 1400 # don't change the 1500, which is an offset
 # bin 2920 is the 2921st = 1420.5 ns (not included), so the last included bin is 1420.5 - 1 = 1419.5 ns
 
 msd_e_cut_low = Ea_central - Ea_gate
@@ -50,8 +50,11 @@ data_y_values_peakrange = data_peakrange[:, 1]
 data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
-data_y_errors_peakrange = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
-data_x_errors_peakrange = 0.5
+# Set values where data_y_varlow_peakrange is 0 to 1.841 (for empty bins)
+data_y_varlow_peakrange[data_y_varlow_peakrange == 0] = 1.841
+
+data_y_errors_peakrange = (data_y_varlow_peakrange + data_y_varhigh_peakrange) / 2
+data_x_errors_peakrange = 0.5 # bin size is 1 ns
 
 num_bins_peak = len(data_x_values_peakrange)  # the number of unique values in the first column of data_x_values, which corresponds to the number of different x values in the data
 peakrange_min = data_x_values_peakrange[0]
@@ -67,14 +70,14 @@ plt.rcParams['mathtext.fontset'] = 'custom'
 plt.rcParams['mathtext.rm'] = 'Times New Roman'
 plt.rcParams['mathtext.it'] = 'Times New Roman:italic'
 
-fig, ax_prior = plt.subplots(figsize=(24, 12))
-fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
+fig, ax_prior = plt.subplots(figsize=(24, 15))
+fig.subplots_adjust(left=0.14, bottom=0.16, right=0.96, top=0.96)
 
 ax_prior.errorbar(data_x_values_peakrange, data_y_values_peakrange, yerr=[data_y_varlow_peakrange,data_y_varhigh_peakrange], fmt='s', color='black', linewidth=2, markersize=2, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
-ax_prior.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=20)
-ax_prior.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=11)
+ax_prior.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=27)
+ax_prior.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=15)
 xmin = min(data_x_values_peakrange) - 0.5
 xmax = max(data_x_values_peakrange) + 0.5
 print("xmin: ", xmin,", xmax: ", xmax)
@@ -99,16 +102,30 @@ print("[Step 3: Define the log-likelihood function (Likelihood).]")
 def log_likelihood(parameters, x_values, y_values, x_errors, y_errors):
     total_decays, half_life, background = parameters
     model_values = exponential_model(parameters, x_values)
-    model_values_1 = exponential_model(parameters, x_values + x_errors / 2)
-    model_values_2 = exponential_model(parameters, x_values - x_errors / 2)
-    total_error_squared = y_errors**2 + ((model_values_1 - model_values_2) / 2)**2
-    return -0.5 * np.sum((y_values - model_values)**2 / total_error_squared + np.log(total_error_squared))
+    likelihood = 0
+    # Ensure that model values are positive to avoid log of zero or negative numbers
+    model_values = np.maximum(model_values, 1e-9)
+    
+    for y_data, y_model in zip(y_values, model_values):
+        if y_data > 0:
+            # The Poisson log-likelihood component for observed counts
+            likelihood += y_model - y_data + y_data * np.log(y_data / y_model)
+        else:
+            # If observed count is zero, simplify the Poisson likelihood component
+            likelihood += y_model - y_data
+            
+    return -likelihood  # Return the negative likelihood for minimization
+    
+    # model_values_1 = exponential_model(parameters, x_values + x_errors / 2)
+    # model_values_2 = exponential_model(parameters, x_values - x_errors / 2)
+    # total_error_squared = y_errors**2 + ((model_values_1 - model_values_2) / 2)**2
+    # return -0.5 * np.sum((y_values - model_values)**2 / total_error_squared + np.log(total_error_squared))
 
 
 print("[Step 4: Define the log-prior function (Prior).]")
 def log_prior(parameters):
     total_decays, half_life, background = parameters
-    if 6e6 < total_decays < 9e6 and 57.0 < half_life < 80.0 and 2.0 < background < 16.0:
+    if 1e6 < total_decays < 3e6 and 57.0 < half_life < 80.0 and 0.0 < background < 6.0:
         return 0.0
     return -np.inf
 
@@ -130,15 +147,15 @@ sampler = emcee.EnsembleSampler(num_walkers, num_dimensions, log_posterior, args
 
 print("[Step 7: Initialize the MCMC walkers.]")
 initial_positions = np.zeros((num_walkers, num_dimensions))
-initial_positions[:, 0] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 7e6    # initial slope between 1 and 10
+initial_positions[:, 0] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 2e6    # initial slope between 1 and 10
 initial_positions[:, 1] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 68.0  # initial intercept between -150 and 200
-initial_positions[:, 2] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 9  # initial intercept between -150 and 200
+initial_positions[:, 2] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * 3  # initial intercept between -150 and 200
 # these ranges are just for the initial positions of the walkers in the MCMC sampler. The walkers are free to explore beyond these ranges during the sampling process, constrained only by the prior distribution defined in the log_prior function.
 #  np.random.rand(num_walkers) generates an array of num_walkers random numbers uniformly distributed in the half-open interval [0.0, 1.0).
 
 
 print("[Step 8: Run MCMC sampling.]")
-num_steps = 1200
+num_steps = 10200
 sampler.run_mcmc(initial_positions, num_steps, progress=True)
 
 print("\n[Step 9: Get the chain and discard burn-in.]")
@@ -147,10 +164,10 @@ chain = sampler.get_chain(discard=200, flat=True) # combining the chains from al
 print("[Step 10: Plot 2D posterior distributions of parameters.]")
 # labels = ["Total Decays", "Half-life", "Background"]
 labels = ["N", "T", "B"]
-fig, axes = plt.subplots(len(labels), len(labels), figsize=(30, 30))
+fig, axes = plt.subplots(len(labels), len(labels), figsize=(27, 27))
 fig = corner.corner(chain, labels=labels, fig=fig, 
                     quantiles=[0.16, 0.5, 0.84], 
-                    color='mediumblue', 
+                    color='blue', 
                     use_math_text=True,
                     hist_bin_factor=2,
                     show_titles=True, 
@@ -161,7 +178,7 @@ fig = corner.corner(chain, labels=labels, fig=fig,
                     #smooth=1.4
                     )
 
-fig.subplots_adjust(left=0.12, bottom=0.12, right=0.97, top=0.95)
+fig.subplots_adjust(left=0.12, bottom=0.12, right=0.97, top=0.94)
 
 # Adjusting tick label sizes
 for ax in fig.axes:
@@ -171,8 +188,8 @@ fig.savefig("Fig_PXCT_Lifetime_241Am_LEGe_MSD" + str(Which_MSD) + "_Posterior2D.
 
 
 print("[Step 11: Plot transparent uncertainty band predictions with calibrated parameters.]")
-fig, ax_post_predict = plt.subplots(figsize=(36, 13))
-fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
+fig, ax_post_predict = plt.subplots(figsize=(24, 15))
+fig.subplots_adjust(left=0.11, bottom=0.16, right=0.96, top=0.96)
     
 p1 = ax_post_predict.errorbar(data_x_values_peakrange, data_y_values_peakrange, yerr=[data_y_varlow_peakrange,data_y_varhigh_peakrange], fmt='s', color='black', linewidth=2, markersize=2, label='Data', ecolor='black', zorder=1)  # zorder 2 appears on top of the zorder = 1.
 
@@ -186,24 +203,25 @@ posterior_y_median = np.percentile(y_values_for_each_params, 50, axis=0)
 
 # Plot the median, upper and lower percentiles with band
 p3 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='deepskyblue', alpha=0.4, linewidth=0, zorder=2)
-p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='dodgerblue', alpha=1.0, linewidth=3, zorder=2)
+p2 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='dodgerblue', alpha=1.0, linewidth=4, zorder=2)
 ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
-ax_post_predict.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=20)
-ax_post_predict.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=11)
+ax_post_predict.set_xlabel("Time difference LEGe - MSD" + str(Which_MSD) + " (ns)", fontsize=60, labelpad=27)
+ax_post_predict.set_ylabel("Counts per 1 ns", fontsize=60, labelpad=12)
 ax_post_predict.legend(['95% Credible Interval', 'Prediction Median', 'Data'], fontsize=60, loc='upper right')
 xmin = min(data_x_values_peakrange) - 0.5
 xmax = max(data_x_values_peakrange) + 0.5
 ax_post_predict.set_xlim(xmin, xmax)
 ymax = max(data_y_values_peakrange) + max(data_y_varhigh_peakrange) * 1.3
 ax_post_predict.set_ylim(0, ymax)
-ax_post_predict.set_ylim(2, ymax*1.5)
+ax_post_predict.set_ylim(0.1, ymax*1.5)
 ax_post_predict.set_yscale('log')
 
 # Adjust the width of the frame
 for spine in ax_prior.spines.values():
     spine.set_linewidth(3)  # Set the linewidth to make the frame wider
 
+# plt.show()
 plt.savefig('Fig_PXCT_Lifetime_241Am_LEGe_MSD' + str(Which_MSD) + '_Prediction.png')
 
 print("[The End]")
