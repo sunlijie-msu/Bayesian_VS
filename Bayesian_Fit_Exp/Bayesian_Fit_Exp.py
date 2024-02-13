@@ -8,19 +8,19 @@ import scipy.stats as sps
 import os
 
 print("[Bayesian Fit of Exponential Decay Model to PXCT Lifetime Data]\n")
-print("[Step 0: Set up paths.]")
+print("[Before main(): Set up paths.]\n")
 project_path = os.path.abspath("Bayesian_Fit_Exp.py")
 dir_path = os.path.dirname(project_path)
 parameter_output_txt_name = dir_path + "\Parameters_percentiles.txt"
-offset = 1500
+fitrange_offset = 1500
 Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
 # Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
 Which_MSD = 26 # Modify: 12 for MSD12; 26 for MSD26
 
 # The run_analysis() function now encapsulates the main code logic, taking bin_start and bin_stop as arguments.
-def run_analysis(fit_start, fit_stop, Ea_gate):
+def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter names (fit_start, fit_stop, Ea_gate) in both the function call and the function definition. This would create a naming conflict and likely lead to errors.
     
-    print("[Step 1: Read data from CSV input files and plot data.]")
+    print("[\nStep 1: Read data from CSV input files and plot data.]")
     # Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
     # Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
 
@@ -51,7 +51,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
     Ea_start = Ea_central - Ea_gate
     Ea_stop = Ea_central + Ea_gate
 
-    filename = "\PXCT_237Np_" + Which_Dataset + '_Eastart' + str(Ea_start) + '_Eastop' + str(Ea_stop) + '_MSD' + str(Which_MSD) + '_Fitstart' + str(fit_start - offset) + '_Fitstop' + str(fit_stop - offset) + '_'
+    filename = "\PXCT_237Np_" + Which_Dataset + '_Eastart' + str(Ea_start) + '_Eastop' + str(Ea_stop) + '_MSD' + str(Which_MSD) + '_Fitstart' + str(fit_start - fitrange_offset) + '_Fitstop' + str(fit_stop - fitrange_offset) + '_'
     print(dir_path + filename)
     corner_png_name = dir_path + filename + "Posterior2D.png"
     prediction_png_name = dir_path + filename + "Prediction.png"
@@ -208,10 +208,10 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
     num_steps = 1200
     sampler.run_mcmc(initial_positions, num_steps, progress=True)
 
-    print("\n[Step 9: Get the chain and discard burn-in.]")
+    print("\n\n[Step 9: Get the chain and discard burn-in.]")
     chain = sampler.get_chain(discard=200, flat=True) # combining the chains from all walkers into a single chain.
 
-    print("[Step 10-1: Plot 2D posterior distributions of parameters.]\n")
+    print("[Step 10: Plot 2D posterior distributions of parameters.]\n")
     # labels = ["Total Decays", "Half-life", "Background"]
     labels = ["N", "T", "B"]
     fig, axes = plt.subplots(len(labels), len(labels), figsize=(27, 27))
@@ -237,7 +237,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
     fig.savefig(corner_png_name)
     print(f"Posterior 2D distributions saved to {corner_png_name}\n")
 
-    print("[Step 10-2: Save the parameter quantiles to a text file.]\n")
+    print("[Step 11: Save the parameter quantiles to a text file.]\n")
     # Calculate the quantiles for each parameter
     quantiles = np.percentile(chain, [16, 50, 84], axis=0)
 
@@ -249,13 +249,13 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
             parameters_info += f"{label}\t{quantiles[0][i]:.4f}\t{quantiles[1][i]:.4f}\t{quantiles[2][i]:.4f}\t"
     
         # Write the accumulated parameter details followed by other details in one row
-        file.write(f"{parameters_info}\tPXCT_237Np\t{Which_Dataset}\tEastart\t{Ea_start}\tEastop\t{Ea_stop}\tMSD\t{Which_MSD}\tFitstart\t{(fit_start - offset)}\tFitstop\t{(fit_stop - offset)}\n")
+        file.write(f"{parameters_info}\tPXCT_237Np\t{Which_Dataset}\tEastart\t{Ea_start}\tEastop\t{Ea_stop}\tMSD\t{Which_MSD}\tFitstart\t{(fit_start - fitrange_offset)}\tFitstop\t{(fit_stop - fitrange_offset)}\n")
 
 
     print(f"Quantiles saved to {parameter_output_txt_name}\n")
 
 
-    print("[Step 11: Plot transparent uncertainty band predictions with calibrated parameters.]")
+    print("[Step 12: Plot transparent uncertainty band predictions with calibrated parameters.]")
     fig, ax_post_predict = plt.subplots(figsize=(24, 15))
     fig.subplots_adjust(left=0.11, bottom=0.16, right=0.96, top=0.96)
     
@@ -282,7 +282,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
     ax_post_predict.set_xlim(xmin, xmax)
     ymax = max(data_y_values_peakrange) + max(data_y_varhigh_peakrange) * 1.3
     # ax_post_predict.set_ylim(0, ymax)
-    ax_post_predict.set_ylim(0.1, ymax * 1.5)
+    ax_post_predict.set_ylim(0.5, ymax * 1.5)
     ax_post_predict.set_yscale('log')
 
     # Adjust the width of the frame
@@ -298,15 +298,15 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
 # The main() function handles the loop, iterating through different fit_start and fit_stop values and Ea_gate values and calling run_analysis() for each combination.
 def main():
 
-    fit_start_values = np.array([160, 220, 280, 340, 400]) + offset
-    fit_stop_values = np.array([1100, 1200, 1300, 1400]) + offset
+    fit_start_values = np.array([160, 220, 280, 340, 400]) + fitrange_offset
+    fit_stop_values = np.array([1100, 1200, 1300, 1400]) + fitrange_offset
     Ea_gate_values = np.array([10, 20, 30, 40, 50, 60])
     
     # Iterate through all combinations of parameters using nested loops
-    for fitstart in fit_start_values:
-        for fitstop in fit_stop_values:
-            for Eagate in Ea_gate_values:
-                run_analysis(fitstart, fitstop, Eagate)
+    for Eagate in Ea_gate_values:
+        for fitstart in fit_start_values:
+            for fitstop in fit_stop_values:
+                run_analysis(fitstart, fitstop, Eagate) # cannot use the same parameter names (fit_start, fit_stop, Ea_gate) in both the function call and the function definition. This would create a naming conflict and likely lead to errors.
             
 
 if __name__ == "__main__":
