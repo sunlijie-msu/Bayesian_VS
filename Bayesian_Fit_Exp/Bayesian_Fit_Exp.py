@@ -295,7 +295,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate):
 
 
 
-# The main() function handles the loop, iterating through different bin_start and bin_stop values and calling run_analysis() for each combination.
+# The main() function handles the loop, iterating through different fit_start and fit_stop values and Ea_gate values and calling run_analysis() for each combination.
 def main():
 
     fit_start_values = np.array([160, 220, 280, 340, 400]) + offset
