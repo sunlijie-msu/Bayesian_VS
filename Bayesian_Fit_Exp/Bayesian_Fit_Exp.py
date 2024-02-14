@@ -8,46 +8,29 @@ import scipy.stats as sps
 import os
 
 print("[Bayesian Fit of Exponential Decay Model to PXCT Lifetime Data]\n")
-print("[Before main(): Set up paths.]\n")
+print("[Before main(): Set up paths and select dataset.]\n")
 project_path = os.path.abspath("Bayesian_Fit_Exp.py")
 dir_path = os.path.dirname(project_path)
 parameter_output_txt_name = dir_path + "\Parameters_percentiles.txt"
-fitrange_offset = 1500
-Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
-# Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
+fitrange_offset = 1500 # because the timing spectrum starts from -1500 ns
+
+# Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
+Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
+
 Which_MSD = 26 # Modify: 12 for MSD12; 26 for MSD26
+
+if Which_Dataset == 'timing_msdtotal_e':
+    Ea_central = 5421 # 5421 for MSDtotal, based on LISE++ calculation
+    
+if Which_Dataset == 'timing_msd26_e':
+    Ea_central = 5479 # 5479 for MSD26; based on LISE++ calculation
+
 
 # The run_analysis() function now encapsulates the main code logic, taking bin_start and bin_stop as arguments.
 def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter names (fit_start, fit_stop, Ea_gate) in both the function call and the function definition. This would create a naming conflict and likely lead to errors.
     
-    print("[\nStep 1: Read data from CSV input files and plot data.]")
-    # Which_Dataset = 'timing_msdtotal_e' # Modify run 0079-0091
-    # Which_Dataset = 'timing_msd26_e' # run 0091-0095, 0100-0107
-
-    if Which_Dataset == 'timing_msdtotal_e':
-        # Which_MSD = 26 # Modify: 12 for MSD12; 26 for MSD26
-        Ea_central = 5421 # 5421 for MSDtotal, based on LISE++ calculation
+    print("\n[Step 1: Read data from CSV input files and plot data.]")
     
-        # if Which_MSD == 12:
-            # bin_start = 1500 + 240 # don't change the 1500, which is an offset
-    
-        # if Which_MSD == 26:
-            # bin_start = 1500 + 160 # don't change the 1500, which is an offset
-            # bin 0 is the first; bin 1650 is the 1651st = 150.5 ns;  bin 2040 is the 2041st = 540 ns
-    
-        # Ea_gate = 60 # Modify: 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
-
-
-
-    if Which_Dataset == 'timing_msd26_e':
-        # Which_MSD = 26 # 26 for MSD26
-        Ea_central = 5479 # 5479 for MSD26; based on LISE++ calculation
-        # Ea_gate = 20 # 3; 3 means +/-3 keV = 6 keV; 20 means +/-20 keV = 40 keV
-    
-
-    # bin_stop = 1500 + 1400 # don't change the 1500, which is an offset
-    # bin 2920 is the 2921st = 1420.5 ns (not included), so the last included bin is 1420.5 - 1 = 1419.5 ns
-
     Ea_start = Ea_central - Ea_gate
     Ea_stop = Ea_central + Ea_gate
 
@@ -143,7 +126,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter 
     print("[Step 4: Define the log-prior function (Prior).]")
     def log_prior(parameters):
         total_decays, half_life, background = parameters
-        if 1.5e6 < total_decays < 7.9e6 and 57.0 < half_life < 80.0 and 0.0 < background < 16.0: # Modify the prior ranges based on previous ROOT fit results
+        if 2.0e5 < total_decays < 1.2e6 and 57.0 < half_life < 80.0 and 0.0 < background < 6.0: # Modify the prior ranges based on previous ROOT fit results
             return 0.0
         return -np.inf
 
@@ -164,37 +147,50 @@ def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter 
 
 
     print("[Step 7: Initialize the MCMC walkers.]")
-    if Ea_stop - Ea_start == 20:
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 20:
         N_guess = 2e6
         T_guess = 68.0
         B_guess = 3.0
     
-    if Ea_stop - Ea_start == 40:
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 40:
         N_guess = 4e6
         T_guess = 68.0
         B_guess = 5.0
     
-    if Ea_stop - Ea_start == 60:
-        N_guess = 5e6
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 60:
+        N_guess = 5.5e6
         T_guess = 68.0
         B_guess = 7.0
         
-    if Ea_stop - Ea_start == 80:
-        N_guess = 6e6
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 80:
+        N_guess = 6.4e6
         T_guess = 68.0
         B_guess = 8.0
         
-    if Ea_stop - Ea_start == 100:
-        N_guess = 6.6e6
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 100:
+        N_guess = 6.9e6
         T_guess = 68.0
         B_guess = 9.0
         
-    if Ea_stop - Ea_start == 120:
-        N_guess = 7e6
+    if Which_Dataset == 'timing_msdtotal_e' and Ea_stop - Ea_start == 120:
+        N_guess = 7.4e6
         T_guess = 68.0
         B_guess = 9.4
     
-
+    if Which_Dataset == 'timing_msd26_e' and Ea_stop - Ea_start == 20:
+        N_guess = 6.7e5
+        T_guess = 68.0
+        B_guess = 1.0
+    
+    if Which_Dataset == 'timing_msd26_e' and Ea_stop - Ea_start == 40:
+        N_guess = 8.7e5
+        T_guess = 68.0
+        B_guess = 1.2
+    
+    if Which_Dataset == 'timing_msd26_e' and Ea_stop - Ea_start == 60:
+        N_guess = 9.3e5
+        T_guess = 68.0
+        B_guess = 1.3
 
     initial_positions = np.zeros((num_walkers, num_dimensions))
     initial_positions[:, 0] =  (0.9 + 0.2 * np.random.rand(num_walkers)) * N_guess    # initial slope between 1 and 10 # Modify the initial positions based on previous ROOT fit results
@@ -249,7 +245,7 @@ def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter 
             parameters_info += f"{label}\t{quantiles[0][i]:.4f}\t{quantiles[1][i]:.4f}\t{quantiles[2][i]:.4f}\t"
     
         # Write the accumulated parameter details followed by other details in one row
-        file.write(f"{parameters_info}\tPXCT_237Np\t{Which_Dataset}\tEastart\t{Ea_start}\tEastop\t{Ea_stop}\tMSD\t{Which_MSD}\tFitstart\t{(fit_start - fitrange_offset)}\tFitstop\t{(fit_stop - fitrange_offset)}\n")
+        file.write(f"{parameters_info}PXCT_237Np\t{Which_Dataset}\tEastart\t{Ea_start}\tEastop\t{Ea_stop}\tMSD\t{Which_MSD}\tFitstart\t{(fit_start - fitrange_offset)}\tFitstop\t{(fit_stop - fitrange_offset)}\n")
 
 
     print(f"Quantiles saved to {parameter_output_txt_name}\n")
@@ -298,9 +294,16 @@ def run_analysis(fit_start, fit_stop, Ea_gate): # cannot use the same parameter 
 # The main() function handles the loop, iterating through different fit_start and fit_stop values and Ea_gate values and calling run_analysis() for each combination.
 def main():
 
-    fit_start_values = np.array([160, 220, 280, 340, 400]) + fitrange_offset
+    if Which_MSD == 12:
+        fit_start_values = np.array([240, 300, 360, 420, 480]) + fitrange_offset
+    
+        
+    if Which_MSD == 26:
+        fit_start_values = np.array([160, 220, 280, 340, 400]) + fitrange_offset
+
+    
     fit_stop_values = np.array([1100, 1200, 1300, 1400]) + fitrange_offset
-    Ea_gate_values = np.array([10, 20, 30, 40, 50, 60])
+    Ea_gate_values = np.array([10, 20, 30]) # Modify: 10 means +/-10 keV = 20 keV ; 20 means +/-20 keV = 40 keV
     
     # Iterate through all combinations of parameters using nested loops
     for Eagate in Ea_gate_values:
