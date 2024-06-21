@@ -1,30 +1,47 @@
 import torch
+import torch.nn as nn
+import torch.optim as optim
 
-# Create a neural network
-class Net(torch.nn.Module):
+# Define the neural network model
+class SimpleNet(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
-
-        # Define the layers of the network
-        self.fc1 = torch.nn.Linear(3, 10)
-        self.fc2 = torch.nn.Linear(10, 1)
+        super(SimpleNet, self).__init__()
+        self.fc1 = nn.Linear(1, 10)  # Input layer to hidden layer
+        self.relu = nn.ReLU()        # Activation function
+        self.fc2 = nn.Linear(10, 1)  # Hidden layer to output layer
 
     def forward(self, x):
-        # Pass the input through the layers of the network
         x = self.fc1(x)
+        x = self.relu(x)
         x = self.fc2(x)
-
-        # Return the output of the network
         return x
 
-# Create an instance of the network
-net = Net()
+# Initialize the model
+model = SimpleNet()
 
-# Create some input data
-x = torch.tensor([1, 2, 3])
+# Define loss function and optimizer
+# Stochastic gradient descent (SGD) as its optimization algorithm
+criterion = nn.MSELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01)
 
-# Pass the input data through the network
-y = net(x)
+# Example data: input (features) and output (target)
+features = torch.tensor([[1.0], [2.0], [3.0]])  # Example input features
+targets = torch.tensor([[2.0], [4.0], [6.0]])   # Corresponding targets
 
-# Print the output of the network
-print(y)
+# Training loop
+for epoch in range(1000):
+    optimizer.zero_grad()   # Clear gradients
+    outputs = model(features)  # Forward pass: compute the output
+    loss = criterion(outputs, targets)  # Compute the loss
+    loss.backward()  # Backward pass: compute the gradient
+    optimizer.step()  # Update parameters
+
+    if (epoch+1) % 100 == 0:
+        print(f'Epoch [{epoch+1}/1000], Loss: {loss.item():.4f}')
+
+# Test the model
+with torch.no_grad():
+    test_feature = torch.tensor([[4.0]])
+    predicted = model(test_feature)
+    print(f'Prediction for input 4.0: {predicted.item():.4f}')
+
