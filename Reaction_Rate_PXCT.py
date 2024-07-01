@@ -52,19 +52,9 @@ Ap = 1  # proton number
 AT = 59  # 59Cu mass number
 Reduced_Mass = Ap*AT/(Ap+AT)  # reduced mass
 
-# gaussian random factor with mean 0.3662 and standard deviation 0.8948
-# This is a random factor to account for the uncertainty in the statistical model calculated alpha width
-# np.random.seed(0) # Set seed0 for reproducibility
-# Log_Random = np.random.normal(0.3662, 0.8948, len(Jr))
-# Random = 10**Log_Random # Convert to linear scale
-# print(Random)
-
-# Calculate OmegaGamma element-wise
-OmegaGamma_pa = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] / (Gp[i] + Ga[i] + Gg[i]) for i in range(len(Jr))]
-OmegaGamma_pg = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Gg[i] / (Gp[i] + Ga[i] + Gg[i]) for i in range(len(Jr))]
-# OmegaGamma_pa = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] * Random[i] / (Gp[i] + Ga[i] * Random[i] + Gg[i]) for i in range(len(Jr))]
-
-T9 = np.linspace(0.001, 2.0, 500)  # temperature in GK
+# T9 = np.linspace(0.001, 2.0, 500)  # temperature in GK
+T9 = np.arange(0.01, 2.01, 0.01)  # temperature in GK
+# print(T9)
 
 # Reaction rates calculation function
 def Calculate_Rate(T9, Er, OmegaGamma):
@@ -74,19 +64,83 @@ def Calculate_Rate(T9, Er, OmegaGamma):
             Rate[i, j] = 1.5394E11 * (Reduced_Mass * T9[i]) ** (-1.5) * OmegaGamma[j] * np.exp(-11.605 * Er[j] / T9[i])
     return Rate
 
-Rate_pa = Calculate_Rate(T9, Er, OmegaGamma_pa)
-Rate_pg = Calculate_Rate(T9, Er, OmegaGamma_pg)
+# OmegaGamma_pa = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] / (Gp[i] + Ga[i] + Gg[i]) for i in range(len(Jr))]
+# OmegaGamma_pg = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Gg[i] / (Gp[i] + Ga[i] + Gg[i]) for i in range(len(Jr))]
 
-# Calculate total reaction rate
-epsilon = 1e-80  # Small value to avoid division by zero
-Total_Rate_pa = np.sum(Rate_pa, axis=1) + epsilon
-Total_Rate_pg = np.sum(Rate_pg, axis=1) + epsilon
+# Initialize a dictionary to count occurrences of high contribution resonances
+resonance_count = {energy: 0 for energy in Er}
+high_contribution_resonances = []
+high_contribution_counts = []
 
-# Calculate contribution of each resonance to the total rate
-Contribution_pa = Rate_pa / Total_Rate_pa[:, None]
-Contribution_pg = Rate_pg / Total_Rate_pg[:, None]
+# Loop to run the calculation 10000 times
+for run in range(10000):
+    # Gaussian random factor with mean 0.3662 and standard deviation 0.8948
+    Log_Random = np.random.normal(0.3662, 0.8948, len(Jr))
+    Random = 10 ** Log_Random  # Convert to linear scale
+    print(f"Run {run + 1}: Random = {Random[0]}")
+
+    # Calculate OmegaGamma element-wise
+    OmegaGamma_pa = [
+        (2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] * Random[i] / (Gp[i] + Ga[i] * Random[i] + Gg[i])
+        for i in range(len(Jr))]
+    OmegaGamma_pg = [
+        (2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Gg[i] / (Gp[i] + Ga[i] * Random[i] + Gg[i])
+        for i in range(len(Jr))]
+
+    Rate_pa = Calculate_Rate(T9, Er, OmegaGamma_pa)
+    Rate_pg = Calculate_Rate(T9, Er, OmegaGamma_pg)
+
+    # Calculate total reaction rate
+    epsilon = 1e-80  # Small value to avoid division by zero
+    Total_Rate_pa = np.sum(Rate_pa, axis=1) + epsilon
+    Total_Rate_pg = np.sum(Rate_pg, axis=1) + epsilon
+
+    # Calculate contribution of each resonance to the total rate
+    Contribution_pa = Rate_pa / Total_Rate_pa[:, None]
+    Contribution_pg = Rate_pg / Total_Rate_pg[:, None]
+
+    # Count the number of resonances with contribution > 0.1 for specific temperatures
+    temperatures = [1.0]  # Adjust as needed
+    for temp in temperatures:
+        index = int(temp * 100 - 1)  # Convert temperature to corresponding index
+        high_contributions = [(Er[i], Contribution_pa[index][i]) for i in range(len(Er)) if Contribution_pa[index][i] > 0.1]
+        
+        # Count the high contribution resonances
+        num_high_contributions = len(high_contributions)
+        high_contribution_counts.append((run + 1, temp, num_high_contributions))
+        
+        for energy, contribution in high_contributions:
+            high_contribution_resonances.append((run + 1, temp, energy, contribution * 100))
+            resonance_count[energy] += 1  # Increment the count for this resonance energy
+
+# Save the high contribution resonances to a text file with the specified path
+output_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_resonances.txt"
+with open(output_path, "w") as file:
+    file.write("Run\tTemperature (GK)\tResonance Energy (MeV)\tContribution (%)\n")
+    for resonance in high_contribution_resonances:
+        file.write(f"{resonance[0]}\t{resonance[1]}\t{resonance[2]:.3f}\t{resonance[3]:.2f}\n")
+
+# Save the resonance occurrence counts to another text file
+occurrence_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_resonances_Occurrences.txt"
+with open(occurrence_path, "w") as file:
+    file.write("Resonance Energy (MeV)\tOccurrences\n")
+    for energy, count in resonance_count.items():
+        file.write(f"{energy:.4f}\t{count}\n")
+
+# Save the high contribution counts to another text file
+count_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_counts.txt"
+with open(count_path, "w") as file:
+    file.write("Run\tTemperature (GK)\tHigh Contribution Resonances\n")
+    for count in high_contribution_counts:
+        file.write(f"{count[0]}\t{count[1]}\t{count[2]}\n")
+
+print(f"High contribution resonances have been saved to {output_path}")
+print(f"Resonance occurrence counts have been saved to {occurrence_path}")
+print(f"High contribution counts have been saved to {count_path}")
 
 
+
+'''
 # Plot for (p,a) reaction rate
 # Define specific colors for high contribution resonances
 specific_colors = {
@@ -151,8 +205,7 @@ plt.text(1.9, 95, r'$^{59}$Cu$(p,\alpha)^{56}$Ni', fontsize=38, color='black', h
 fig.subplots_adjust(left=0.16, bottom=0.18, right=0.96, top=0.96)
 # Save figure with the corresponding random number index in D:\X\out
 # plt.show()
-plt.savefig(f'D:\\X\\out\\Fig_PXCT_59Cu_pa_Reaction_Rate_Contribution.eps', dpi=300)
-
+plt.savefig(f'D:\\X\\out\\Fig_PXCT_59Cu_pa_Reaction_Rate_Contribution_{Random[0]}_{Random[1]}.png', dpi=300)
 
 # Plot for (p,g) reaction rate
 # Define specific colors for high contribution resonances
@@ -171,7 +224,7 @@ fig, ax = plt.subplots(figsize=(11, 7))
 for i in range(len(Er)):
     energy = Er[i]
     if energy not in specific_colors:
-        ax.plot(T9, Contribution_pg[:, i]*100, color='black', linewidth=2)
+        ax.plot(T9, Contribution_pg[:, i]*100, color='black', linewidth=1.5)
 
 # Plot colored curves on top
 for i in range(len(Er)):
@@ -212,7 +265,6 @@ plt.text(1.9, 95, r'$^{59}$Cu$(p,\gamma)^{60}$Zn', fontsize=38, color='black', h
 fig.subplots_adjust(left=0.16, bottom=0.18, right=0.96, top=0.96)
 # Save figure with the corresponding random number index in D:\X\out
 # plt.show()
-plt.savefig(f'D:\\X\\out\\Fig_PXCT_59Cu_pg_Reaction_Rate_Contribution.eps', dpi=300)
+plt.savefig(f'D:\\X\\out\\Fig_PXCT_59Cu_pg_Reaction_Rate_Contribution_{Random[0]}_{Random[1]}.png', dpi=300)
     
-
-
+'''
