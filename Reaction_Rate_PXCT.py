@@ -54,14 +54,14 @@ Reduced_Mass = Ap*AT/(Ap+AT)  # reduced mass
 
 # T9 = np.linspace(0.001, 2.0, 500)  # temperature in GK
 T9 = np.arange(0.01, 2.01, 0.01)  # temperature in GK
-# print(T9)
+# print(f"T9 size: {len(T9)}")
 
 # Reaction rates calculation function
 def Calculate_Rate(T9, Er, OmegaGamma):
     Rate = np.zeros((len(T9), len(Er)))
-    for i in range(len(T9)):
-        for j in range(len(Er)):
-            Rate[i, j] = 1.5394E11 * (Reduced_Mass * T9[i]) ** (-1.5) * OmegaGamma[j] * np.exp(-11.605 * Er[j] / T9[i])
+    for j in range(len(T9)):
+        for i in range(len(Er)):
+            Rate[j, i] = 1.5394E11 * (Reduced_Mass * T9[j]) ** (-1.5) * OmegaGamma[i] * np.exp(-11.605 * Er[i] / T9[j])
     return Rate
 
 # OmegaGamma_pa = [(2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] / (Gp[i] + Ga[i] + Gg[i]) for i in range(len(Jr))]
@@ -72,72 +72,124 @@ resonance_count = {energy: 0 for energy in Er}
 high_contribution_resonances = []
 high_contribution_counts = []
 
-# Loop to run the calculation 10000 times
-for run in range(10000):
-    # Gaussian random factor with mean 0.3662 and standard deviation 0.8948
+for run in range(1000):
     Log_Random = np.random.normal(0.3662, 0.8948, len(Jr))
     Random = 10 ** Log_Random  # Convert to linear scale
-    print(f"Run {run + 1}: Random = {Random[0]}")
+    print(f"Run: {run + 1}, Random: {Random[0]:.6f}, {Random[1]:.6f}")
 
-    # Calculate OmegaGamma element-wise
     OmegaGamma_pa = [
         (2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Ga[i] * Random[i] / (Gp[i] + Ga[i] * Random[i] + Gg[i])
-        for i in range(len(Jr))]
+        for i in range(len(Jr))
+    ]
     OmegaGamma_pg = [
         (2 * Jr[i] + 1) / (2 * JT + 1) / (2 * Jp + 1) * Gp[i] * Gg[i] / (Gp[i] + Ga[i] * Random[i] + Gg[i])
-        for i in range(len(Jr))]
+        for i in range(len(Jr))
+    ]
 
     Rate_pa = Calculate_Rate(T9, Er, OmegaGamma_pa)
     Rate_pg = Calculate_Rate(T9, Er, OmegaGamma_pg)
 
-    # Calculate total reaction rate
     epsilon = 1e-80  # Small value to avoid division by zero
     Total_Rate_pa = np.sum(Rate_pa, axis=1) + epsilon
     Total_Rate_pg = np.sum(Rate_pg, axis=1) + epsilon
 
-    # Calculate contribution of each resonance to the total rate
     Contribution_pa = Rate_pa / Total_Rate_pa[:, None]
     Contribution_pg = Rate_pg / Total_Rate_pg[:, None]
 
-    # Count the number of resonances with contribution > 0.1 for specific temperatures
-    temperatures = [1.0]  # Adjust as needed
+    temperatures = [2.0]  # Adjust as needed
     for temp in temperatures:
         index = int(temp * 100 - 1)  # Convert temperature to corresponding index
         high_contributions = [(Er[i], Contribution_pa[index][i]) for i in range(len(Er)) if Contribution_pa[index][i] > 0.1]
-        
-        # Count the high contribution resonances
+
         num_high_contributions = len(high_contributions)
         high_contribution_counts.append((run + 1, temp, num_high_contributions))
-        
+
         for energy, contribution in high_contributions:
             high_contribution_resonances.append((run + 1, temp, energy, contribution * 100))
-            resonance_count[energy] += 1  # Increment the count for this resonance energy
+            resonance_count[energy] += 1
 
-# Save the high contribution resonances to a text file with the specified path
 output_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_resonances.txt"
-with open(output_path, "w") as file:
-    file.write("Run\tTemperature (GK)\tResonance Energy (MeV)\tContribution (%)\n")
-    for resonance in high_contribution_resonances:
-        file.write(f"{resonance[0]}\t{resonance[1]}\t{resonance[2]:.3f}\t{resonance[3]:.2f}\n")
-
-# Save the resonance occurrence counts to another text file
-occurrence_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_resonances_Occurrences.txt"
-with open(occurrence_path, "w") as file:
-    file.write("Resonance Energy (MeV)\tOccurrences\n")
-    for energy, count in resonance_count.items():
-        file.write(f"{energy:.4f}\t{count}\n")
-
-# Save the high contribution counts to another text file
+occurrence_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_resonances_occurrences.txt"
 count_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_counts.txt"
-with open(count_path, "w") as file:
-    file.write("Run\tTemperature (GK)\tHigh Contribution Resonances\n")
-    for count in high_contribution_counts:
-        file.write(f"{count[0]}\t{count[1]}\t{count[2]}\n")
+
+pd.DataFrame(high_contribution_resonances, columns=["Run", "Temperature (GK)", "Resonance Energy (MeV)", "Contribution (%)"]).to_csv(output_path, sep='\t', index=False)
+pd.DataFrame(list(resonance_count.items()), columns=["Resonance Energy (MeV)", "Occurrences"]).to_csv(occurrence_path, sep='\t', index=False)
+pd.DataFrame(high_contribution_counts, columns=["Run", "Temperature (GK)", "High Contribution Resonances"]).to_csv(count_path, sep='\t', index=False)
 
 print(f"High contribution resonances have been saved to {output_path}")
 print(f"Resonance occurrence counts have been saved to {occurrence_path}")
 print(f"High contribution counts have been saved to {count_path}")
 
+
+# Load the data from the output file
+data = pd.read_csv(count_path, delimiter='\t')
+
+# Count the frequency of each number of high contribution resonances
+frequency_counts = data['High Contribution Resonances'].value_counts().sort_index()
+
+# Save the frequency counts to a new text file
+frequency_output_path = "D:\\X\\out\\PXCT_59Cu_pa_Reaction_Rate_high_contribution_counts_frequency.txt"
+with open(frequency_output_path, "w") as file:
+    file.write("High Contribution Resonances\tFrequency\n")
+    for count, frequency in frequency_counts.items():
+        file.write(f"{count}\t{frequency}\n")
+
+print(f"Frequency of high contribution resonances has been saved to {frequency_output_path}")
+
+
+# Plot the occurrence of each resonance energy in the high contribution list
+resonance_energy, occurrences = zip(*resonance_count.items())
+plt.figure(figsize=(13, 7))
+plt.subplots_adjust(left=0.10, bottom=0.18, right=0.96, top=0.96)
+plt.bar(resonance_energy, occurrences, color='red', edgecolor='red', width=0.01)
+plt.xlabel('Resonance Energy (MeV)')
+plt.ylabel('Occurrences in High Contribution List', fontsize=28)
+plt.xlim(0, 2.2)
+# plt.title('Occurrences of Each Resonance Energy in High Contribution List')
+plt.grid(True)
+
+# Sort the resonance energy and occurrences in descending order
+sorted_resonances = sorted(resonance_count.items(), key=lambda x: x[1], reverse=True)
+
+# Select the top 5 resonances
+top_resonances = sorted_resonances[:8]
+
+# Add labels for the top resonances
+for energy, occurrence in top_resonances:
+    plt.text(energy, occurrence, f'{energy:.3f}', ha='center', va='bottom', fontsize=18)
+
+# savefig with temperature
+
+# Add the temperature value to the plot corner
+plt.text(0.95, 0.95, f'T: {temperatures[0]} GK', ha='right', va='top', transform=plt.gca().transAxes, fontsize=26, color='darkred')
+
+# Save the plot with the temperature value in the filename
+output_file = f"D:\\X\\out\\Resonance_Occurrences_Labeled_T{temperatures[0]:.1f}GK.png"
+plt.savefig(output_file)
+# plt.show()
+
+print(f"Plot saved to {output_file}")
+
+
+# Plot the frequency of the number of high contribution resonances
+plt.figure(figsize=(13, 7))
+plt.subplots_adjust(left=0.10, bottom=0.18, right=0.96, top=0.96)
+plt.bar(frequency_counts.index, frequency_counts.values, color='green', edgecolor='green', width=0.5)
+plt.xlabel('Number of High Contribution Resonances')
+plt.ylabel('Frequency')
+
+plt.gca().xaxis.set_major_locator(ticker.MaxNLocator(integer=True))
+# plt.title('Frequency of the Number of High Contribution Resonances')
+# plt.grid(True)
+# Add the temperature value to the plot corner
+plt.text(0.95, 0.95, f'T: {temperatures[0]} GK', ha='right', va='top', transform=plt.gca().transAxes, fontsize=26, color='darkred')
+
+output_file = f"D:\\X\\out\\High_Contribution_Resonances_Frequency_T{temperatures[0]:.1f}GK.png"
+plt.savefig(output_file)
+# plt.show()
+
+print(f"Plot saved to {output_file}")
+# plt.show()
 
 
 '''
