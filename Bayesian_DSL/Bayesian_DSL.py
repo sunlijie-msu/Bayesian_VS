@@ -27,7 +27,7 @@ peak = '31S4156'
 fakeTau = '_3fs' # '_0fs' or '_3fs' or '_5fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
+data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
 bin_start = 130
 bin_stop = 244
 data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
@@ -42,15 +42,15 @@ data_y_values_peakrange = data_peakrange[:, 1]
 data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
-model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
-model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_scaled_0.5k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
+model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
 model_y_values_peakrange = model_y_values_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 model_y_var_peakrange = model_y_var_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 
 
-print("Path: ", dir_path + '\DSL_' + peak + fakeTau + '\DSL_' + peak + '_data.csv')
+print("Path: ", dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv')
 print("Dimensions of data_fullrange:")
 print("Shape:", data_fullrange.shape)
 print("Rows:", len(data_fullrange))
@@ -125,19 +125,26 @@ if peak == '31S3076':
     number_of_fullmodel_runs = 2106
 if peak == '31S4156':
     number_of_fullmodel_runs = 297
-rndsample = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
-print('Select training runs: ', rndsample)
-model_y_values_peakrange_train = model_y_values_peakrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
-model_y_values_fullrange_train = model_y_values_fullrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
-model_y_var_peakrange_train = model_y_var_peakrange[rndsample, :]
-model_y_var_fullrange_train = model_y_var_fullrange[rndsample, :]
-model_parameter_values_train = model_parameter_values[rndsample, :]
-rndsample = list(range(1, number_of_fullmodel_runs, 2))
+
+# we can select 250 runs for training and 47 runs for testing.
+rndsample_train = sample(range(0, number_of_fullmodel_runs), 293)  # randomly selects 250 unique integers from this sequence and assigns them to the variable rndsample_train.
+# rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
+print('Select training runs: ', rndsample_train)
+model_y_values_peakrange_train = model_y_values_peakrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
+model_y_values_fullrange_train = model_y_values_fullrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
+model_y_var_peakrange_train = model_y_var_peakrange[rndsample_train, :]
+model_y_var_fullrange_train = model_y_var_fullrange[rndsample_train, :]
+model_parameter_values_train = model_parameter_values[rndsample_train, :]
+
+# Select the rest 47  model runs as test runs.
+rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
+
+# rndsample = list(range(1, number_of_fullmodel_runs, 2))
 # rndsample = [250]  # only select run 251 for test
-print('Select test runs: ', rndsample)
-model_y_values_peakrange_test = model_y_values_peakrange[rndsample, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
-model_y_var_peakrange_test = model_y_var_peakrange[rndsample, :]
-model_parameter_values_test = model_parameter_values[rndsample, :]
+print('Select test runs: ', rndsample_test)
+model_y_values_peakrange_test = model_y_values_peakrange[rndsample_test, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
+model_y_var_peakrange_test = model_y_var_peakrange[rndsample_test, :]
+model_parameter_values_test = model_parameter_values[rndsample_test, :]
 
 # plots a list of profiles in the same figure. Each profile corresponds to a simulation replica for the given instance.
 plt.rcParams['axes.linewidth'] = 3.0
@@ -263,6 +270,7 @@ if peak == '31S3076':
     bin_count_max = 12
 if peak == '31S4156':
     bin_count_max = 30
+
 axs_emu2[0].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
 axs_emu2[0].set_xlabel('Simulator bin counts (test)')
 axs_emu2[0].set_ylabel('Emulator bin counts (test)')
@@ -357,7 +365,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 6: MCMC sampling.]")
-total_mcmc_samples = 100000
+total_mcmc_samples = 1000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,

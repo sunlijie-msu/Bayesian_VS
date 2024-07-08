@@ -96,10 +96,10 @@ for run in range(1000):
     Contribution_pa = Rate_pa / Total_Rate_pa[:, None]
     Contribution_pg = Rate_pg / Total_Rate_pg[:, None]
 
-    temperatures = [2.0]  # Adjust as needed
+    temperatures = [1.0]  # Adjust as needed
     for temp in temperatures:
         index = int(temp * 100 - 1)  # Convert temperature to corresponding index
-        high_contributions = [(Er[i], Contribution_pa[index][i]) for i in range(len(Er)) if Contribution_pa[index][i] > 0.1]
+        high_contributions = [(Er[i], Contribution_pa[index][i]) for i in range(len(Er)) if Contribution_pa[index][i] > 0.50]
 
         num_high_contributions = len(high_contributions)
         high_contribution_counts.append((run + 1, temp, num_high_contributions))
