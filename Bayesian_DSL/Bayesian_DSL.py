@@ -235,19 +235,19 @@ def plot_explained_variance(singular_values): # singular_values is related to th
 # (No filter) Fit an emulator via 'PCGP'
 print("[Step 4: Model emulation.]")
 
-# emulator_1 = emulator(x=data_x_values_peakrange,
-#                       theta=model_parameter_values_train,
-#                       f=model_y_values_peakrange_train.T,
-#                       method='PCGP_numPCs',
-#                       args={'num_pcs': 2})  # Specify the number of principal components
-# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
-# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.01.
-
 emulator_1 = emulator(x=data_x_values_peakrange,
                       theta=model_parameter_values_train,
                       f=model_y_values_peakrange_train.T,
-                      method='PCGP',
-                      args={'epsilon': 1e-50}) # Typically, we want to keep the principal components that capture the most variance. The epsilon parameter is used to set a threshold for filtering PCs with explained variances > epsilon.
+                      method='PCGP_numPCs',
+                      args={'num_pcs': 99})  # Specify the number of principal components
+# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
+# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.01.
+
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCGP',
+#                       args={'epsilon': 1e-50}) # Typically, we want to keep the principal components that capture the most variance. The epsilon parameter is used to set a threshold for filtering PCs with explained variances > epsilon.
 
 # prior_min = [0, 4154, 0.4, 0.4]
 # prior_max = [30, 4158, 2.0, 2.0]
@@ -282,7 +282,8 @@ emulator_1 = emulator(x=data_x_values_peakrange,
 # 6) PCSK.py: Principal Component Stochastic Kriging emulator uses both simulated mean and variance for the emulator training. This leads to improved emulator accuracy when compared with other emulation methods, especially for simulations that produce stochastic output.
 
 
-# Example usage after fitting the emulator
+# after fitting the emulator
+print("Emulation method: ", emulator_1.method)
 if emulator_1.method == 'PCGP_numPCs':
     singular_values = emulator_1._info['singular_values']
     plot_explained_variance(singular_values)
@@ -419,7 +420,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 7: MCMC sampling.]")
-total_mcmc_samples = 20000
+total_mcmc_samples = 4000
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,

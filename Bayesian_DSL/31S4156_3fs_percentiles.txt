@@ -1,0 +1,4 @@
+16th percentile: 2.344
+50th percentile: 3.492
+84th percentile: 5.623
+90th percentile: 5.923
