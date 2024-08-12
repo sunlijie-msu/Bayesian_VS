@@ -1,0 +1,1659 @@
+Time Stamp,Record Type,Channel,Parameter Code,Parameter Value
+0:00:00:04,1,0,05:+24V Supply,0
+0:00:00:04,1,0,06:+12V Supply,0
+0:00:00:04,1,0,08:-12VSupply,-0.024999999
+0:00:00:04,1,0,07:-24V Supply,-0.049999997
+0:00:00:04,1,0,09:+5V Supply,0.055
+0:00:00:04,1,0,10:-5V Supply,0.355
+0:00:06:29,2,0,05:+24V Supply,22.17
+0:00:06:29,2,0,06:+12V Supply,11.66
+0:00:06:29,2,0,08:-12VSupply,-12.105
+0:00:06:29,2,0,07:-24V Supply,-24.15
+0:00:06:29,2,0,09:+5V Supply,5.0099998
+0:00:06:29,2,0,10:-5V Supply,-5.035
+0:00:06:34,1,1,16:Charge Loop DC Level,-23.939999
+0:00:00:04,1,0,05:+24V Supply,0
+0:00:00:04,1,0,06:+12V Supply,0
+0:00:00:04,1,0,08:-12VSupply,-0.02
+0:00:00:04,1,0,07:-24V Supply,-0.04
+0:00:00:04,1,0,09:+5V Supply,0.04
+0:00:00:04,1,0,10:-5V Supply,0.36499998
+0:00:54:49,2,0,05:+24V Supply,22.17
+0:00:54:49,2,0,06:+12V Supply,11.665
+0:00:54:49,2,0,08:-12VSupply,-12.099999
+0:00:54:49,2,0,07:-24V Supply,-24.14
+0:00:54:49,2,0,09:+5V Supply,5.005
+0:00:54:49,2,0,10:-5V Supply,-5.035
+0:00:54:49,1,1,16:Charge Loop DC Level,-23.939999
+0:00:55:09,2,1,16:Charge Loop DC Level,-1.6399999
+0:00:00:04,1,0,05:+24V Supply,0
+0:00:00:04,1,0,06:+12V Supply,0
+0:00:00:04,1,0,08:-12VSupply,-0.024999999
+0:00:00:04,1,0,07:-24V Supply,-0.04
+0:00:00:04,1,0,09:+5V Supply,0.04
+0:00:00:04,1,0,10:-5V Supply,0.37
+0:01:00:00,3,0,11:PRTD 1,-183.54814
+0:01:00:00,3,0,12:PRTD 2,-190.70923
+0:01:00:00,3,0,13:Ambient Temperature,27.00055
+0:01:00:00,3,0,14:LN2 Level,0
+0:02:00:00,3,0,11:PRTD 1,-183.54814
+0:02:00:00,3,0,12:PRTD 2,-190.70923
+0:02:00:00,3,0,13:Ambient Temperature,26.796448
+0:02:00:00,3,0,14:LN2 Level,0
+0:03:00:00,3,0,11:PRTD 1,-183.55365
+0:03:00:00,3,0,12:PRTD 2,-190.71469
+0:03:00:00,3,0,13:Ambient Temperature,26.796448
+0:03:00:00,3,0,14:LN2 Level,0
+0:04:00:00,3,0,11:PRTD 1,-183.55365
+0:04:00:00,3,0,12:PRTD 2,-190.71469
+0:04:00:00,3,0,13:Ambient Temperature,26.796448
+0:04:00:00,3,0,14:LN2 Level,0
+0:05:00:00,3,0,11:PRTD 1,-183.53714
+0:05:00:00,3,0,12:PRTD 2,-190.70923
+0:05:00:00,3,0,13:Ambient Temperature,26.796448
+0:05:00:00,3,0,14:LN2 Level,0
+0:06:00:00,3,0,11:PRTD 1,-183.54814
+0:06:00:00,3,0,12:PRTD 2,-190.70923
+0:06:00:00,3,0,13:Ambient Temperature,26.796448
+0:06:00:00,3,0,14:LN2 Level,0
+0:07:00:00,3,0,11:PRTD 1,-183.53714
+0:07:00:00,3,0,12:PRTD 2,-190.70377
+0:07:00:00,3,0,13:Ambient Temperature,26.796448
+0:07:00:00,3,0,14:LN2 Level,0
+0:08:00:00,3,0,11:PRTD 1,-183.53163
+0:08:00:00,3,0,12:PRTD 2,-190.70377
+0:08:00:00,3,0,13:Ambient Temperature,26.796448
+0:08:00:00,3,0,14:LN2 Level,0
+0:09:00:00,3,0,11:PRTD 1,-183.53714
+0:09:00:00,3,0,12:PRTD 2,-190.70377
+0:09:00:00,3,0,13:Ambient Temperature,26.796448
+0:09:00:00,3,0,14:LN2 Level,0
+0:10:00:00,3,0,11:PRTD 1,-183.54263
+0:10:00:00,3,0,12:PRTD 2,-190.70377
+0:10:00:00,3,0,13:Ambient Temperature,26.796448
+0:10:00:00,3,0,14:LN2 Level,0
+0:11:00:00,3,0,11:PRTD 1,-183.52612
+0:11:00:00,3,0,12:PRTD 2,-190.70377
+0:11:00:00,3,0,13:Ambient Temperature,26.796448
+0:11:00:00,3,0,14:LN2 Level,0
+0:12:00:00,3,0,11:PRTD 1,-183.53714
+0:12:00:00,3,0,12:PRTD 2,-190.70377
+0:12:00:00,3,0,13:Ambient Temperature,26.796448
+0:12:00:00,3,0,14:LN2 Level,0
+0:13:00:00,3,0,11:PRTD 1,-183.53163
+0:13:00:00,3,0,12:PRTD 2,-190.69829
+0:13:00:00,3,0,13:Ambient Temperature,26.796448
+0:13:00:00,3,0,14:LN2 Level,0
+0:14:00:00,3,0,11:PRTD 1,-183.52612
+0:14:00:00,3,0,12:PRTD 2,-190.70923
+0:14:00:00,3,0,13:Ambient Temperature,27.00055
+0:14:00:00,3,0,14:LN2 Level,0
+1:00:00:04,1,1,16:Charge Loop DC Level,-23.939999
+1:00:00:04,1,1,73:DC Detector Leakage Current,-14159.235
+1:00:00:24,2,1,16:Charge Loop DC Level,-1.04
+1:00:00:24,2,1,73:DC Detector Leakage Current,426.75162
+1:00:03:49,1,1,73:DC Detector Leakage Current,2426.7515
+1:00:04:34,2,1,73:DC Detector Leakage Current,898.0892
+1:00:04:49,1,1,73:DC Detector Leakage Current,1700.637
+1:00:05:04,2,1,73:DC Detector Leakage Current,821.65607
+1:01:00:00,3,0,11:PRTD 1,-182.56761
+1:01:00:00,3,0,12:PRTD 2,-190.72563
+1:01:00:00,3,0,13:Ambient Temperature,37.20465
+1:01:00:00,3,0,14:LN2 Level,0
+1:01:00:00,3,1,15:AC Detector Leakage Current,-209
+1:01:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:01:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:02:00:00,3,0,11:PRTD 1,-182.54556
+1:02:00:00,3,0,12:PRTD 2,-190.73111
+1:02:00:00,3,0,13:Ambient Temperature,37.612793
+1:02:00:00,3,0,14:LN2 Level,0
+1:02:00:00,3,1,15:AC Detector Leakage Current,-209
+1:02:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:02:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:03:00:00,3,0,11:PRTD 1,-182.54005
+1:03:00:00,3,0,12:PRTD 2,-190.72563
+1:03:00:00,3,0,13:Ambient Temperature,37.816895
+1:03:00:00,3,0,14:LN2 Level,0
+1:03:00:00,3,1,15:AC Detector Leakage Current,-208
+1:03:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:03:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:04:00:00,3,0,11:PRTD 1,-182.50699
+1:04:00:00,3,0,12:PRTD 2,-190.72563
+1:04:00:00,3,0,13:Ambient Temperature,38.020966
+1:04:00:00,3,0,14:LN2 Level,0
+1:04:00:00,3,1,15:AC Detector Leakage Current,-208
+1:04:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:04:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:05:00:00,3,0,11:PRTD 1,-182.49597
+1:05:00:00,3,0,12:PRTD 2,-190.73111
+1:05:00:00,3,0,13:Ambient Temperature,38.225037
+1:05:00:00,3,0,14:LN2 Level,0
+1:05:00:00,3,1,15:AC Detector Leakage Current,-208
+1:05:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:05:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:06:00:00,3,0,11:PRTD 1,-182.46841
+1:06:00:00,3,0,12:PRTD 2,-190.72563
+1:06:00:00,3,0,13:Ambient Temperature,38.020966
+1:06:00:00,3,0,14:LN2 Level,0
+1:06:00:00,3,1,15:AC Detector Leakage Current,-207
+1:06:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:06:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:07:00:00,3,0,11:PRTD 1,-182.49045
+1:07:00:00,3,0,12:PRTD 2,-190.70923
+1:07:00:00,3,0,13:Ambient Temperature,37.816895
+1:07:00:00,3,0,14:LN2 Level,0
+1:07:00:00,3,1,15:AC Detector Leakage Current,-207
+1:07:00:00,3,1,73:DC Detector Leakage Current,159.23566
+1:07:00:00,3,1,16:Charge Loop DC Level,-1.46
+1:08:00:00,3,0,11:PRTD 1,-182.50148
+1:08:00:00,3,0,12:PRTD 2,-190.71469
+1:08:00:00,3,0,13:Ambient Temperature,37.612793
+1:08:00:00,3,0,14:LN2 Level,0
+1:08:00:00,3,1,15:AC Detector Leakage Current,-208
+1:08:00:00,3,1,73:DC Detector Leakage Current,146.49681
+1:08:00:00,3,1,16:Charge Loop DC Level,-1.48
+1:09:00:00,3,0,11:PRTD 1,-182.46841
+1:09:00:00,3,0,12:PRTD 2,-190.71469
+1:09:00:00,3,0,13:Ambient Temperature,38.020966
+1:09:00:00,3,0,14:LN2 Level,0
+1:09:00:00,3,1,15:AC Detector Leakage Current,-207
+1:09:00:00,3,1,73:DC Detector Leakage Current,273.88538
+1:09:00:00,3,1,16:Charge Loop DC Level,-1.28
+1:10:00:00,3,0,11:PRTD 1,-182.47943
+1:10:00:00,3,0,12:PRTD 2,-190.69829
+1:10:00:00,3,0,13:Ambient Temperature,37.816895
+1:10:00:00,3,0,14:LN2 Level,0
+1:10:00:00,3,1,15:AC Detector Leakage Current,-207
+1:10:00:00,3,1,73:DC Detector Leakage Current,146.49681
+1:10:00:00,3,1,16:Charge Loop DC Level,-1.48
+1:11:00:00,3,0,11:PRTD 1,-182.49045
+1:11:00:00,3,0,12:PRTD 2,-190.70377
+1:11:00:00,3,0,13:Ambient Temperature,37.612793
+1:11:00:00,3,0,14:LN2 Level,0
+1:11:00:00,3,1,15:AC Detector Leakage Current,-208
+1:11:00:00,3,1,73:DC Detector Leakage Current,146.49681
+1:11:00:00,3,1,16:Charge Loop DC Level,-1.48
+1:12:00:00,3,0,11:PRTD 1,-182.5125
+1:12:00:00,3,0,12:PRTD 2,-190.70377
+1:12:00:00,3,0,13:Ambient Temperature,37.408722
+1:12:00:00,3,0,14:LN2 Level,0
+1:12:00:00,3,1,15:AC Detector Leakage Current,-207
+1:12:00:00,3,1,73:DC Detector Leakage Current,146.49681
+1:12:00:00,3,1,16:Charge Loop DC Level,-1.48
+1:13:00:00,3,0,11:PRTD 1,-182.50699
+1:13:00:00,3,0,12:PRTD 2,-190.69283
+1:13:00:00,3,0,13:Ambient Temperature,37.408722
+1:13:00:00,3,0,14:LN2 Level,0
+1:13:00:00,3,1,15:AC Detector Leakage Current,-207
+1:13:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:13:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:14:00:00,3,0,11:PRTD 1,-182.50699
+1:14:00:00,3,0,12:PRTD 2,-190.70377
+1:14:00:00,3,0,13:Ambient Temperature,37.408722
+1:14:00:00,3,0,14:LN2 Level,0
+1:14:00:00,3,1,15:AC Detector Leakage Current,-208
+1:14:00:00,3,1,73:DC Detector Leakage Current,146.49681
+1:14:00:00,3,1,16:Charge Loop DC Level,-1.48
+1:15:00:00,3,0,11:PRTD 1,-182.5125
+1:15:00:00,3,0,12:PRTD 2,-190.71469
+1:15:00:00,3,0,13:Ambient Temperature,37.408722
+1:15:00:00,3,0,14:LN2 Level,0
+1:15:00:00,3,1,15:AC Detector Leakage Current,-208
+1:15:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:15:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:16:00:00,3,0,11:PRTD 1,-182.518
+1:16:00:00,3,0,12:PRTD 2,-190.69283
+1:16:00:00,3,0,13:Ambient Temperature,37.408722
+1:16:00:00,3,0,14:LN2 Level,0
+1:16:00:00,3,1,15:AC Detector Leakage Current,-209
+1:16:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:16:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:17:00:00,3,0,11:PRTD 1,-182.5125
+1:17:00:00,3,0,12:PRTD 2,-190.70377
+1:17:00:00,3,0,13:Ambient Temperature,37.408722
+1:17:00:00,3,0,14:LN2 Level,0
+1:17:00:00,3,1,15:AC Detector Leakage Current,-208
+1:17:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:17:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:18:00:00,3,0,11:PRTD 1,-182.52904
+1:18:00:00,3,0,12:PRTD 2,-190.71469
+1:18:00:00,3,0,13:Ambient Temperature,37.408722
+1:18:00:00,3,0,14:LN2 Level,0
+1:18:00:00,3,1,15:AC Detector Leakage Current,-207
+1:18:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:18:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:19:00:00,3,0,11:PRTD 1,-182.5125
+1:19:00:00,3,0,12:PRTD 2,-190.69829
+1:19:00:00,3,0,13:Ambient Temperature,37.408722
+1:19:00:00,3,0,14:LN2 Level,0
+1:19:00:00,3,1,15:AC Detector Leakage Current,-208
+1:19:00:00,3,1,73:DC Detector Leakage Current,133.75798
+1:19:00:00,3,1,16:Charge Loop DC Level,-1.5
+1:20:00:00,3,0,11:PRTD 1,-182.52904
+1:20:00:00,3,0,12:PRTD 2,-190.70923
+1:20:00:00,3,0,13:Ambient Temperature,37.408722
+1:20:00:00,3,0,14:LN2 Level,0
+1:20:00:00,3,1,15:AC Detector Leakage Current,-208
+1:20:00:00,3,1,73:DC Detector Leakage Current,121.01914
+1:20:00:00,3,1,16:Charge Loop DC Level,-1.52
+1:21:00:00,3,0,11:PRTD 1,-182.52353
+1:21:00:00,3,0,12:PRTD 2,-190.70377
+1:21:00:00,3,0,13:Ambient Temperature,37.408722
+1:21:00:00,3,0,14:LN2 Level,0
+1:21:00:00,3,1,15:AC Detector Leakage Current,-208
+1:21:00:00,3,1,73:DC Detector Leakage Current,121.01914
+1:21:00:00,3,1,16:Charge Loop DC Level,-1.52
+1:22:00:00,3,0,11:PRTD 1,-182.52353
+1:22:00:00,3,0,12:PRTD 2,-190.69829
+1:22:00:00,3,0,13:Ambient Temperature,37.20465
+1:22:00:00,3,0,14:LN2 Level,0
+1:22:00:00,3,1,15:AC Detector Leakage Current,-208
+1:22:00:00,3,1,73:DC Detector Leakage Current,121.01914
+1:22:00:00,3,1,16:Charge Loop DC Level,-1.52
+1:23:00:00,3,0,11:PRTD 1,-182.52353
+1:23:00:00,3,0,12:PRTD 2,-190.69283
+1:23:00:00,3,0,13:Ambient Temperature,37.408722
+1:23:00:00,3,0,14:LN2 Level,0
+1:23:00:00,3,1,15:AC Detector Leakage Current,-207
+1:23:00:00,3,1,73:DC Detector Leakage Current,121.01914
+1:23:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:00:00:00,3,0,11:PRTD 1,-182.52353
+2:00:00:00,3,0,12:PRTD 2,-190.70377
+2:00:00:00,3,0,13:Ambient Temperature,37.20465
+2:00:00:00,3,0,14:LN2 Level,0
+2:00:00:00,3,1,15:AC Detector Leakage Current,-208
+2:00:00:00,3,1,73:DC Detector Leakage Current,133.75798
+2:00:00:00,3,1,16:Charge Loop DC Level,-1.5
+2:01:00:00,3,0,11:PRTD 1,-182.49597
+2:01:00:00,3,0,12:PRTD 2,-190.73111
+2:01:00:00,3,0,13:Ambient Temperature,37.816895
+2:01:00:00,3,0,14:LN2 Level,0
+2:01:00:00,3,1,15:AC Detector Leakage Current,-209
+2:01:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:01:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:02:00:00,3,0,11:PRTD 1,-182.47943
+2:02:00:00,3,0,12:PRTD 2,-190.72017
+2:02:00:00,3,0,13:Ambient Temperature,38.020966
+2:02:00:00,3,0,14:LN2 Level,0
+2:02:00:00,3,1,15:AC Detector Leakage Current,-208
+2:02:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:02:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:03:00:00,3,0,11:PRTD 1,-182.45187
+2:03:00:00,3,0,12:PRTD 2,-190.72563
+2:03:00:00,3,0,13:Ambient Temperature,38.225037
+2:03:00:00,3,0,14:LN2 Level,0
+2:03:00:00,3,1,15:AC Detector Leakage Current,-208
+2:03:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:03:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:04:00:00,3,0,11:PRTD 1,-182.44637
+2:04:00:00,3,0,12:PRTD 2,-190.72563
+2:04:00:00,3,0,13:Ambient Temperature,38.225037
+2:04:00:00,3,0,14:LN2 Level,0
+2:04:00:00,3,1,15:AC Detector Leakage Current,-208
+2:04:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:04:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:05:00:00,3,0,11:PRTD 1,-182.44637
+2:05:00:00,3,0,12:PRTD 2,-190.73111
+2:05:00:00,3,0,13:Ambient Temperature,38.225037
+2:05:00:00,3,0,14:LN2 Level,0
+2:05:00:00,3,1,15:AC Detector Leakage Current,-208
+2:05:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:05:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:06:00:00,3,0,11:PRTD 1,-182.44637
+2:06:00:00,3,0,12:PRTD 2,-190.72017
+2:06:00:00,3,0,13:Ambient Temperature,38.225037
+2:06:00:00,3,0,14:LN2 Level,0
+2:06:00:00,3,1,15:AC Detector Leakage Current,-208
+2:06:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:06:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:07:00:00,3,0,11:PRTD 1,-182.45738
+2:07:00:00,3,0,12:PRTD 2,-190.73111
+2:07:00:00,3,0,13:Ambient Temperature,38.225037
+2:07:00:00,3,0,14:LN2 Level,0
+2:07:00:00,3,1,15:AC Detector Leakage Current,-208
+2:07:00:00,3,1,73:DC Detector Leakage Current,121.01914
+2:07:00:00,3,1,16:Charge Loop DC Level,-1.52
+2:08:00:00,3,0,11:PRTD 1,-182.43533
+2:08:00:00,3,0,12:PRTD 2,-190.73657
+2:08:00:00,3,0,13:Ambient Temperature,38.225037
+2:08:00:00,3,0,14:LN2 Level,0
+2:08:00:00,3,1,15:AC Detector Leakage Current,-208
+2:08:00:00,3,1,73:DC Detector Leakage Current,108.280304
+2:08:00:00,3,1,16:Charge Loop DC Level,-1.54
+2:09:00:00,3,0,11:PRTD 1,-182.43533
+2:09:00:00,3,0,12:PRTD 2,-190.74203
+2:09:00:00,3,0,13:Ambient Temperature,38.42914
+2:09:00:00,3,0,14:LN2 Level,0
+2:09:00:00,3,1,15:AC Detector Leakage Current,-208
+2:09:00:00,3,1,73:DC Detector Leakage Current,-885.3502
+2:09:00:00,3,1,16:Charge Loop DC Level,-3.1
+2:09:00:54,1,1,73:DC Detector Leakage Current,-1025.4777
+2:09:01:14,2,1,73:DC Detector Leakage Current,-999.99994
+2:09:01:29,1,1,73:DC Detector Leakage Current,-1012.73883
+2:10:00:00,3,0,11:PRTD 1,-182.44637
+2:10:00:00,3,0,12:PRTD 2,-190.73111
+2:10:00:00,3,0,13:Ambient Temperature,37.816895
+2:10:00:00,3,0,14:LN2 Level,0
+2:10:00:00,3,1,15:AC Detector Leakage Current,-208
+2:10:00:00,3,1,73:DC Detector Leakage Current,-4401.274
+2:10:00:00,3,1,16:Charge Loop DC Level,-8.62
+2:11:00:00,3,0,11:PRTD 1,-182.46289
+2:11:00:00,3,0,12:PRTD 2,-190.72017
+2:11:00:00,3,0,13:Ambient Temperature,37.20465
+2:11:00:00,3,0,14:LN2 Level,0
+2:11:00:00,3,1,15:AC Detector Leakage Current,-208
+2:11:00:00,3,1,73:DC Detector Leakage Current,-5394.904
+2:11:00:00,3,1,16:Charge Loop DC Level,-10.179999
+2:12:00:00,3,0,11:PRTD 1,-182.46841
+2:12:00:00,3,0,12:PRTD 2,-190.72563
+2:12:00:00,3,0,13:Ambient Temperature,37.00055
+2:12:00:00,3,0,14:LN2 Level,0
+2:12:00:00,3,1,15:AC Detector Leakage Current,-208
+2:12:00:00,3,1,73:DC Detector Leakage Current,-5993.6304
+2:12:00:00,3,1,16:Charge Loop DC Level,-11.12
+2:13:00:00,3,0,11:PRTD 1,-182.47943
+2:13:00:00,3,0,12:PRTD 2,-190.72017
+2:13:00:00,3,0,13:Ambient Temperature,36.79648
+2:13:00:00,3,0,14:LN2 Level,0
+2:13:00:00,3,1,15:AC Detector Leakage Current,-208
+2:13:00:00,3,1,73:DC Detector Leakage Current,-6197.4517
+2:13:00:00,3,1,16:Charge Loop DC Level,-11.44
+2:14:00:00,3,0,11:PRTD 1,-182.47943
+2:14:00:00,3,0,12:PRTD 2,-190.70923
+2:14:00:00,3,0,13:Ambient Temperature,36.79648
+2:14:00:00,3,0,14:LN2 Level,0
+2:14:00:00,3,1,15:AC Detector Leakage Current,-208
+2:14:00:00,3,1,73:DC Detector Leakage Current,-6554.139
+2:14:00:00,3,1,16:Charge Loop DC Level,-11.999999
+2:15:00:00,3,0,11:PRTD 1,-182.48494
+2:15:00:00,3,0,12:PRTD 2,-190.70923
+2:15:00:00,3,0,13:Ambient Temperature,36.79648
+2:15:00:00,3,0,14:LN2 Level,0
+2:15:00:00,3,1,15:AC Detector Leakage Current,-208
+2:15:00:00,3,1,73:DC Detector Leakage Current,-6617.8335
+2:15:00:00,3,1,16:Charge Loop DC Level,-12.099999
+2:16:00:00,3,0,11:PRTD 1,-182.49045
+2:16:00:00,3,0,12:PRTD 2,-190.70923
+2:16:00:00,3,0,13:Ambient Temperature,36.592377
+2:16:00:00,3,0,14:LN2 Level,0
+2:16:00:00,3,1,15:AC Detector Leakage Current,-209
+2:16:00:00,3,1,73:DC Detector Leakage Current,-6719.7446
+2:16:00:00,3,1,16:Charge Loop DC Level,-12.259999
+2:17:00:00,3,0,11:PRTD 1,-182.49045
+2:17:00:00,3,0,12:PRTD 2,-190.71469
+2:17:00:00,3,0,13:Ambient Temperature,36.592377
+2:17:00:00,3,0,14:LN2 Level,0
+2:17:00:00,3,1,15:AC Detector Leakage Current,-209
+2:17:00:00,3,1,73:DC Detector Leakage Current,-6808.9165
+2:17:00:00,3,1,16:Charge Loop DC Level,-12.4
+2:18:00:00,3,0,11:PRTD 1,-182.49045
+2:18:00:00,3,0,12:PRTD 2,-190.70923
+2:18:00:00,3,0,13:Ambient Temperature,36.592377
+2:18:00:00,3,0,14:LN2 Level,0
+2:18:00:00,3,1,15:AC Detector Leakage Current,-208
+2:18:00:00,3,1,73:DC Detector Leakage Current,-6910.8276
+2:18:00:00,3,1,16:Charge Loop DC Level,-12.559999
+2:19:00:00,3,0,11:PRTD 1,-182.50148
+2:19:00:00,3,0,12:PRTD 2,-190.71469
+2:19:00:00,3,0,13:Ambient Temperature,36.592377
+2:19:00:00,3,0,14:LN2 Level,0
+2:19:00:00,3,1,15:AC Detector Leakage Current,-208
+2:19:00:00,3,1,73:DC Detector Leakage Current,-7050.9546
+2:19:00:00,3,1,16:Charge Loop DC Level,-12.78
+2:20:00:00,3,0,11:PRTD 1,-182.50699
+2:20:00:00,3,0,12:PRTD 2,-190.70923
+2:20:00:00,3,0,13:Ambient Temperature,36.592377
+2:20:00:00,3,0,14:LN2 Level,0
+2:20:00:00,3,1,15:AC Detector Leakage Current,-208
+2:20:00:00,3,1,73:DC Detector Leakage Current,-7127.388
+2:20:00:00,3,1,16:Charge Loop DC Level,-12.9
+2:21:00:00,3,0,11:PRTD 1,-182.50699
+2:21:00:00,3,0,12:PRTD 2,-190.70923
+2:21:00:00,3,0,13:Ambient Temperature,36.388306
+2:21:00:00,3,0,14:LN2 Level,0
+2:21:00:00,3,1,15:AC Detector Leakage Current,-208
+2:21:00:00,3,1,73:DC Detector Leakage Current,-7063.6934
+2:21:00:00,3,1,16:Charge Loop DC Level,-12.799999
+2:22:00:00,3,0,11:PRTD 1,-182.50148
+2:22:00:00,3,0,12:PRTD 2,-190.69829
+2:22:00:00,3,0,13:Ambient Temperature,36.592377
+2:22:00:00,3,0,14:LN2 Level,0
+2:22:00:00,3,1,15:AC Detector Leakage Current,-208
+2:22:00:00,3,1,73:DC Detector Leakage Current,-7101.91
+2:22:00:00,3,1,16:Charge Loop DC Level,-12.86
+2:23:00:00,3,0,11:PRTD 1,-182.50148
+2:23:00:00,3,0,12:PRTD 2,-190.72563
+2:23:00:00,3,0,13:Ambient Temperature,36.592377
+2:23:00:00,3,0,14:LN2 Level,0
+2:23:00:00,3,1,15:AC Detector Leakage Current,-209
+2:23:00:00,3,1,73:DC Detector Leakage Current,-7242.037
+2:23:00:00,3,1,16:Charge Loop DC Level,-13.079999
+3:00:00:00,3,0,11:PRTD 1,-182.50148
+3:00:00:00,3,0,12:PRTD 2,-190.71469
+3:00:00:00,3,0,13:Ambient Temperature,36.592377
+3:00:00:00,3,0,14:LN2 Level,0
+3:00:00:00,3,1,15:AC Detector Leakage Current,-209
+3:00:00:00,3,1,73:DC Detector Leakage Current,-7242.037
+3:00:00:00,3,1,16:Charge Loop DC Level,-13.079999
+3:00:52:04,2,1,73:DC Detector Leakage Current,477.70703
+3:00:52:09,1,1,73:DC Detector Leakage Current,10541.401
+3:00:52:49,2,1,73:DC Detector Leakage Current,834.39496
+3:01:00:00,3,0,11:PRTD 1,-182.49045
+3:01:00:00,3,0,12:PRTD 2,-190.73657
+3:01:00:00,3,0,13:Ambient Temperature,37.612793
+3:01:00:00,3,0,14:LN2 Level,0
+3:01:00:00,3,1,15:AC Detector Leakage Current,-209
+3:01:00:00,3,1,73:DC Detector Leakage Current,184.7135
+3:01:00:00,3,1,16:Charge Loop DC Level,-1.4199998
+3:02:00:00,3,0,11:PRTD 1,-182.44084
+3:02:00:00,3,0,12:PRTD 2,-190.74203
+3:02:00:00,3,0,13:Ambient Temperature,38.63321
+3:02:00:00,3,0,14:LN2 Level,0
+3:02:00:00,3,1,15:AC Detector Leakage Current,-208
+3:02:00:00,3,1,73:DC Detector Leakage Current,184.7135
+3:02:00:00,3,1,16:Charge Loop DC Level,-1.4199998
+3:03:00:00,3,0,11:PRTD 1,-182.4188
+3:03:00:00,3,0,12:PRTD 2,-190.75298
+3:03:00:00,3,0,13:Ambient Temperature,38.83728
+3:03:00:00,3,0,14:LN2 Level,0
+3:03:00:00,3,1,15:AC Detector Leakage Current,-209
+3:03:00:00,3,1,73:DC Detector Leakage Current,184.7135
+3:03:00:00,3,1,16:Charge Loop DC Level,-1.4199998
+3:04:00:00,3,0,11:PRTD 1,-182.4188
+3:04:00:00,3,0,12:PRTD 2,-190.76938
+3:04:00:00,3,0,13:Ambient Temperature,39.04138
+3:04:00:00,3,0,14:LN2 Level,0
+3:04:00:00,3,1,15:AC Detector Leakage Current,-208
+3:04:00:00,3,1,73:DC Detector Leakage Current,184.7135
+3:04:00:00,3,1,16:Charge Loop DC Level,-1.4199998
+3:05:00:00,3,0,11:PRTD 1,-182.39124
+3:05:00:00,3,0,12:PRTD 2,-190.76392
+3:05:00:00,3,0,13:Ambient Temperature,39.245453
+3:05:00:00,3,0,14:LN2 Level,0
+3:05:00:00,3,1,15:AC Detector Leakage Current,-209
+3:05:00:00,3,1,73:DC Detector Leakage Current,171.9745
+3:05:00:00,3,1,16:Charge Loop DC Level,-1.44
+3:06:00:00,3,0,11:PRTD 1,-182.3692
+3:06:00:00,3,0,12:PRTD 2,-190.76392
+3:06:00:00,3,0,13:Ambient Temperature,39.245453
+3:06:00:00,3,0,14:LN2 Level,0
+3:06:00:00,3,1,15:AC Detector Leakage Current,-209
+3:06:00:00,3,1,73:DC Detector Leakage Current,171.9745
+3:06:00:00,3,1,16:Charge Loop DC Level,-1.44
+3:07:00:00,3,0,11:PRTD 1,-182.36368
+3:07:00:00,3,0,12:PRTD 2,-190.76392
+3:07:00:00,3,0,13:Ambient Temperature,39.449524
+3:07:00:00,3,0,14:LN2 Level,0
+3:07:00:00,3,1,15:AC Detector Leakage Current,-208
+3:07:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:07:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:08:00:00,3,0,11:PRTD 1,-182.35817
+3:08:00:00,3,0,12:PRTD 2,-190.76938
+3:08:00:00,3,0,13:Ambient Temperature,39.449524
+3:08:00:00,3,0,14:LN2 Level,0
+3:08:00:00,3,1,15:AC Detector Leakage Current,-208
+3:08:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:08:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:09:00:00,3,0,11:PRTD 1,-182.35817
+3:09:00:00,3,0,12:PRTD 2,-190.77486
+3:09:00:00,3,0,13:Ambient Temperature,39.449524
+3:09:00:00,3,0,14:LN2 Level,0
+3:09:00:00,3,1,15:AC Detector Leakage Current,-208
+3:09:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:09:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:10:00:00,3,0,11:PRTD 1,-182.44084
+3:10:00:00,3,0,12:PRTD 2,-190.72017
+3:10:00:00,3,0,13:Ambient Temperature,37.408722
+3:10:00:00,3,0,14:LN2 Level,0
+3:10:00:00,3,1,15:AC Detector Leakage Current,-208
+3:10:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:10:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:11:00:00,3,0,11:PRTD 1,-182.49045
+3:11:00:00,3,0,12:PRTD 2,-190.72563
+3:11:00:00,3,0,13:Ambient Temperature,37.612793
+3:11:00:00,3,0,14:LN2 Level,0
+3:11:00:00,3,1,15:AC Detector Leakage Current,-209
+3:11:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:11:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:12:00:00,3,0,11:PRTD 1,-182.45187
+3:12:00:00,3,0,12:PRTD 2,-190.71469
+3:12:00:00,3,0,13:Ambient Temperature,38.020966
+3:12:00:00,3,0,14:LN2 Level,0
+3:12:00:00,3,1,15:AC Detector Leakage Current,-209
+3:12:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:12:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:13:00:00,3,0,11:PRTD 1,-182.44637
+3:13:00:00,3,0,12:PRTD 2,-190.72563
+3:13:00:00,3,0,13:Ambient Temperature,38.020966
+3:13:00:00,3,0,14:LN2 Level,0
+3:13:00:00,3,1,15:AC Detector Leakage Current,-208
+3:13:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:13:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:14:00:00,3,0,11:PRTD 1,-182.44637
+3:14:00:00,3,0,12:PRTD 2,-190.71469
+3:14:00:00,3,0,13:Ambient Temperature,38.020966
+3:14:00:00,3,0,14:LN2 Level,0
+3:14:00:00,3,1,15:AC Detector Leakage Current,-209
+3:14:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:14:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:15:00:00,3,0,11:PRTD 1,-182.45738
+3:15:00:00,3,0,12:PRTD 2,-190.71469
+3:15:00:00,3,0,13:Ambient Temperature,38.020966
+3:15:00:00,3,0,14:LN2 Level,0
+3:15:00:00,3,1,15:AC Detector Leakage Current,-209
+3:15:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:15:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:16:00:00,3,0,11:PRTD 1,-182.45738
+3:16:00:00,3,0,12:PRTD 2,-190.72563
+3:16:00:00,3,0,13:Ambient Temperature,37.816895
+3:16:00:00,3,0,14:LN2 Level,0
+3:16:00:00,3,1,15:AC Detector Leakage Current,-209
+3:16:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:16:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:17:00:00,3,0,11:PRTD 1,-182.45187
+3:17:00:00,3,0,12:PRTD 2,-190.70923
+3:17:00:00,3,0,13:Ambient Temperature,37.816895
+3:17:00:00,3,0,14:LN2 Level,0
+3:17:00:00,3,1,15:AC Detector Leakage Current,-209
+3:17:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:17:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:18:00:00,3,0,11:PRTD 1,-182.46289
+3:18:00:00,3,0,12:PRTD 2,-190.71469
+3:18:00:00,3,0,13:Ambient Temperature,37.816895
+3:18:00:00,3,0,14:LN2 Level,0
+3:18:00:00,3,1,15:AC Detector Leakage Current,-209
+3:18:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:18:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:19:00:00,3,0,11:PRTD 1,-182.44637
+3:19:00:00,3,0,12:PRTD 2,-190.71469
+3:19:00:00,3,0,13:Ambient Temperature,37.816895
+3:19:00:00,3,0,14:LN2 Level,0
+3:19:00:00,3,1,15:AC Detector Leakage Current,-209
+3:19:00:00,3,1,73:DC Detector Leakage Current,159.23566
+3:19:00:00,3,1,16:Charge Loop DC Level,-1.46
+3:20:00:00,3,0,11:PRTD 1,-182.43533
+3:20:00:00,3,0,12:PRTD 2,-190.71469
+3:20:00:00,3,0,13:Ambient Temperature,37.816895
+3:20:00:00,3,0,14:LN2 Level,0
+3:20:00:00,3,1,15:AC Detector Leakage Current,-209
+3:20:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:20:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:21:00:00,3,0,11:PRTD 1,-182.45187
+3:21:00:00,3,0,12:PRTD 2,-190.70923
+3:21:00:00,3,0,13:Ambient Temperature,37.816895
+3:21:00:00,3,0,14:LN2 Level,0
+3:21:00:00,3,1,15:AC Detector Leakage Current,-209
+3:21:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:21:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:22:00:00,3,0,11:PRTD 1,-182.44637
+3:22:00:00,3,0,12:PRTD 2,-190.70923
+3:22:00:00,3,0,13:Ambient Temperature,37.816895
+3:22:00:00,3,0,14:LN2 Level,0
+3:22:00:00,3,1,15:AC Detector Leakage Current,-209
+3:22:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:22:00:00,3,1,16:Charge Loop DC Level,-1.48
+3:23:00:00,3,0,11:PRTD 1,-182.67783
+3:23:00:00,3,0,12:PRTD 2,-190.72017
+3:23:00:00,3,0,13:Ambient Temperature,38.020966
+3:23:00:00,3,0,14:LN2 Level,0
+3:23:00:00,3,1,15:AC Detector Leakage Current,-209
+3:23:00:00,3,1,73:DC Detector Leakage Current,146.49681
+3:23:00:00,3,1,16:Charge Loop DC Level,-1.48
+4:00:00:00,3,0,11:PRTD 1,-182.73845
+4:00:00:00,3,0,12:PRTD 2,-190.76392
+4:00:00:00,3,0,13:Ambient Temperature,38.63321
+4:00:00:00,3,0,14:LN2 Level,0
+4:00:00:00,3,1,15:AC Detector Leakage Current,-209
+4:00:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:00:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:01:00:00,3,0,11:PRTD 1,-182.70538
+4:01:00:00,3,0,12:PRTD 2,-190.76938
+4:01:00:00,3,0,13:Ambient Temperature,39.245453
+4:01:00:00,3,0,14:LN2 Level,0
+4:01:00:00,3,1,15:AC Detector Leakage Current,-208
+4:01:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:01:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:02:00:00,3,0,11:PRTD 1,-182.68884
+4:02:00:00,3,0,12:PRTD 2,-190.78032
+4:02:00:00,3,0,13:Ambient Temperature,39.04138
+4:02:00:00,3,0,14:LN2 Level,0
+4:02:00:00,3,1,15:AC Detector Leakage Current,-208
+4:02:00:00,3,1,73:DC Detector Leakage Current,133.75798
+4:02:00:00,3,1,16:Charge Loop DC Level,-1.5
+4:03:00:00,3,0,11:PRTD 1,-182.69437
+4:03:00:00,3,0,12:PRTD 2,-190.77486
+4:03:00:00,3,0,13:Ambient Temperature,38.83728
+4:03:00:00,3,0,14:LN2 Level,0
+4:03:00:00,3,1,15:AC Detector Leakage Current,-208
+4:03:00:00,3,1,73:DC Detector Leakage Current,133.75798
+4:03:00:00,3,1,16:Charge Loop DC Level,-1.5
+4:04:00:00,3,0,11:PRTD 1,-182.67783
+4:04:00:00,3,0,12:PRTD 2,-190.7858
+4:04:00:00,3,0,13:Ambient Temperature,39.04138
+4:04:00:00,3,0,14:LN2 Level,0
+4:04:00:00,3,1,15:AC Detector Leakage Current,-209
+4:04:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:04:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:05:00:00,3,0,11:PRTD 1,-182.6613
+4:05:00:00,3,0,12:PRTD 2,-190.78032
+4:05:00:00,3,0,13:Ambient Temperature,39.449524
+4:05:00:00,3,0,14:LN2 Level,0
+4:05:00:00,3,1,15:AC Detector Leakage Current,-209
+4:05:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:05:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:06:00:00,3,0,11:PRTD 1,-182.65027
+4:06:00:00,3,0,12:PRTD 2,-190.7858
+4:06:00:00,3,0,13:Ambient Temperature,39.653625
+4:06:00:00,3,0,14:LN2 Level,0
+4:06:00:00,3,1,15:AC Detector Leakage Current,-209
+4:06:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:06:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:07:00:00,3,0,11:PRTD 1,-182.63925
+4:07:00:00,3,0,12:PRTD 2,-190.79126
+4:07:00:00,3,0,13:Ambient Temperature,39.653625
+4:07:00:00,3,0,14:LN2 Level,0
+4:07:00:00,3,1,15:AC Detector Leakage Current,-209
+4:07:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:07:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:08:00:00,3,0,11:PRTD 1,-182.63374
+4:08:00:00,3,0,12:PRTD 2,-190.7858
+4:08:00:00,3,0,13:Ambient Temperature,39.653625
+4:08:00:00,3,0,14:LN2 Level,0
+4:08:00:00,3,1,15:AC Detector Leakage Current,-208
+4:08:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:08:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:09:00:00,3,0,11:PRTD 1,-182.58966
+4:09:00:00,3,0,12:PRTD 2,-190.77486
+4:09:00:00,3,0,13:Ambient Temperature,39.653625
+4:09:00:00,3,0,14:LN2 Level,0
+4:09:00:00,3,1,15:AC Detector Leakage Current,-208
+4:09:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:09:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:10:00:00,3,0,11:PRTD 1,-182.60068
+4:10:00:00,3,0,12:PRTD 2,-190.77486
+4:10:00:00,3,0,13:Ambient Temperature,39.653625
+4:10:00:00,3,0,14:LN2 Level,0
+4:10:00:00,3,1,15:AC Detector Leakage Current,-208
+4:10:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:10:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:11:00:00,3,0,11:PRTD 1,-182.60068
+4:11:00:00,3,0,12:PRTD 2,-190.75845
+4:11:00:00,3,0,13:Ambient Temperature,39.653625
+4:11:00:00,3,0,14:LN2 Level,0
+4:11:00:00,3,1,15:AC Detector Leakage Current,-209
+4:11:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:11:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:12:00:00,3,0,11:PRTD 1,-182.60068
+4:12:00:00,3,0,12:PRTD 2,-190.76392
+4:12:00:00,3,0,13:Ambient Temperature,39.653625
+4:12:00:00,3,0,14:LN2 Level,0
+4:12:00:00,3,1,15:AC Detector Leakage Current,-209
+4:12:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:12:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:13:00:00,3,0,11:PRTD 1,-182.59517
+4:13:00:00,3,0,12:PRTD 2,-190.76392
+4:13:00:00,3,0,13:Ambient Temperature,39.449524
+4:13:00:00,3,0,14:LN2 Level,0
+4:13:00:00,3,1,15:AC Detector Leakage Current,-208
+4:13:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:13:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:14:00:00,3,0,11:PRTD 1,-182.61722
+4:14:00:00,3,0,12:PRTD 2,-190.77486
+4:14:00:00,3,0,13:Ambient Temperature,39.449524
+4:14:00:00,3,0,14:LN2 Level,0
+4:14:00:00,3,1,15:AC Detector Leakage Current,-209
+4:14:00:00,3,1,73:DC Detector Leakage Current,121.01914
+4:14:00:00,3,1,16:Charge Loop DC Level,-1.52
+4:15:00:00,3,0,11:PRTD 1,-182.61722
+4:15:00:00,3,0,12:PRTD 2,-190.76938
+4:15:00:00,3,0,13:Ambient Temperature,39.449524
+4:15:00:00,3,0,14:LN2 Level,0
+4:15:00:00,3,1,15:AC Detector Leakage Current,-208
+4:15:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:15:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:16:00:00,3,0,11:PRTD 1,-182.61722
+4:16:00:00,3,0,12:PRTD 2,-190.77486
+4:16:00:00,3,0,13:Ambient Temperature,39.449524
+4:16:00:00,3,0,14:LN2 Level,0
+4:16:00:00,3,1,15:AC Detector Leakage Current,-209
+4:16:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:16:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:17:00:00,3,0,11:PRTD 1,-182.62273
+4:17:00:00,3,0,12:PRTD 2,-190.77486
+4:17:00:00,3,0,13:Ambient Temperature,39.449524
+4:17:00:00,3,0,14:LN2 Level,0
+4:17:00:00,3,1,15:AC Detector Leakage Current,-210
+4:17:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:17:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:18:00:00,3,0,11:PRTD 1,-182.61722
+4:18:00:00,3,0,12:PRTD 2,-190.76392
+4:18:00:00,3,0,13:Ambient Temperature,39.449524
+4:18:00:00,3,0,14:LN2 Level,0
+4:18:00:00,3,1,15:AC Detector Leakage Current,-209
+4:18:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:18:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:19:00:00,3,0,11:PRTD 1,-182.61722
+4:19:00:00,3,0,12:PRTD 2,-190.76938
+4:19:00:00,3,0,13:Ambient Temperature,39.449524
+4:19:00:00,3,0,14:LN2 Level,0
+4:19:00:00,3,1,15:AC Detector Leakage Current,-209
+4:19:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:19:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:20:00:00,3,0,11:PRTD 1,-182.62823
+4:20:00:00,3,0,12:PRTD 2,-190.75845
+4:20:00:00,3,0,13:Ambient Temperature,39.449524
+4:20:00:00,3,0,14:LN2 Level,0
+4:20:00:00,3,1,15:AC Detector Leakage Current,-209
+4:20:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:20:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:21:00:00,3,0,11:PRTD 1,-182.62823
+4:21:00:00,3,0,12:PRTD 2,-190.76938
+4:21:00:00,3,0,13:Ambient Temperature,39.449524
+4:21:00:00,3,0,14:LN2 Level,0
+4:21:00:00,3,1,15:AC Detector Leakage Current,-209
+4:21:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:21:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:22:00:00,3,0,11:PRTD 1,-182.62273
+4:22:00:00,3,0,12:PRTD 2,-190.77486
+4:22:00:00,3,0,13:Ambient Temperature,39.449524
+4:22:00:00,3,0,14:LN2 Level,0
+4:22:00:00,3,1,15:AC Detector Leakage Current,-209
+4:22:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:22:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:23:00:00,3,0,11:PRTD 1,-182.61722
+4:23:00:00,3,0,12:PRTD 2,-190.78032
+4:23:00:00,3,0,13:Ambient Temperature,39.449524
+4:23:00:00,3,0,14:LN2 Level,0
+4:23:00:00,3,1,15:AC Detector Leakage Current,-209
+4:23:00:00,3,1,73:DC Detector Leakage Current,108.280304
+4:23:00:00,3,1,16:Charge Loop DC Level,-1.54
+4:23:29:19,1,0,03:USB Input Voltage,0.038000003
+5:00:00:00,3,0,11:PRTD 1,-182.63374
+5:00:00:00,3,0,12:PRTD 2,-190.78032
+5:00:00:00,3,0,13:Ambient Temperature,38.83728
+5:00:00:00,3,0,14:LN2 Level,0
+5:00:00:00,3,1,15:AC Detector Leakage Current,-206
+5:00:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:00:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:01:00:00,3,0,11:PRTD 1,-182.60619
+5:01:00:00,3,0,12:PRTD 2,-190.8022
+5:01:00:00,3,0,13:Ambient Temperature,39.245453
+5:01:00:00,3,0,14:LN2 Level,0
+5:01:00:00,3,1,15:AC Detector Leakage Current,-206
+5:01:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:01:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:02:00:00,3,0,11:PRTD 1,-182.33612
+5:02:00:00,3,0,12:PRTD 2,-190.7858
+5:02:00:00,3,0,13:Ambient Temperature,39.245453
+5:02:00:00,3,0,14:LN2 Level,0
+5:02:00:00,3,1,15:AC Detector Leakage Current,-206
+5:02:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:02:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:03:00:00,3,0,11:PRTD 1,-182.3306
+5:03:00:00,3,0,12:PRTD 2,-190.77486
+5:03:00:00,3,0,13:Ambient Temperature,38.63321
+5:03:00:00,3,0,14:LN2 Level,0
+5:03:00:00,3,1,15:AC Detector Leakage Current,-206
+5:03:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:03:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:04:00:00,3,0,11:PRTD 1,-182.35266
+5:04:00:00,3,0,12:PRTD 2,-190.75845
+5:04:00:00,3,0,13:Ambient Temperature,38.63321
+5:04:00:00,3,0,14:LN2 Level,0
+5:04:00:00,3,1,15:AC Detector Leakage Current,-207
+5:04:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:04:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:05:00:00,3,0,11:PRTD 1,-182.34163
+5:05:00:00,3,0,12:PRTD 2,-190.77486
+5:05:00:00,3,0,13:Ambient Temperature,38.83728
+5:05:00:00,3,0,14:LN2 Level,0
+5:05:00:00,3,1,15:AC Detector Leakage Current,-207
+5:05:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:05:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:05:24:54,2,0,03:USB Input Voltage,4.602
+5:06:00:00,3,0,11:PRTD 1,-182.34714
+5:06:00:00,3,0,12:PRTD 2,-190.75845
+5:06:00:00,3,0,13:Ambient Temperature,39.653625
+5:06:00:00,3,0,14:LN2 Level,0
+5:06:00:00,3,1,15:AC Detector Leakage Current,-212
+5:06:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:06:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:06:14:44,1,0,03:USB Input Voltage,0
+5:07:00:00,3,0,11:PRTD 1,-182.35266
+5:07:00:00,3,0,12:PRTD 2,-190.76392
+5:07:00:00,3,0,13:Ambient Temperature,39.653625
+5:07:00:00,3,0,14:LN2 Level,0
+5:07:00:00,3,1,15:AC Detector Leakage Current,-214
+5:07:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:07:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:08:00:00,3,0,11:PRTD 1,-182.38022
+5:08:00:00,3,0,12:PRTD 2,-190.74203
+5:08:00:00,3,0,13:Ambient Temperature,39.245453
+5:08:00:00,3,0,14:LN2 Level,0
+5:08:00:00,3,1,15:AC Detector Leakage Current,-214
+5:08:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:08:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:09:00:00,3,0,11:PRTD 1,-182.38573
+5:09:00:00,3,0,12:PRTD 2,-190.75298
+5:09:00:00,3,0,13:Ambient Temperature,39.245453
+5:09:00:00,3,0,14:LN2 Level,0
+5:09:00:00,3,1,15:AC Detector Leakage Current,-213
+5:09:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:09:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:10:00:00,3,0,11:PRTD 1,-182.3692
+5:10:00:00,3,0,12:PRTD 2,-190.73657
+5:10:00:00,3,0,13:Ambient Temperature,39.04138
+5:10:00:00,3,0,14:LN2 Level,0
+5:10:00:00,3,1,15:AC Detector Leakage Current,-214
+5:10:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:10:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:11:00:00,3,0,11:PRTD 1,-182.39124
+5:11:00:00,3,0,12:PRTD 2,-190.74203
+5:11:00:00,3,0,13:Ambient Temperature,39.04138
+5:11:00:00,3,0,14:LN2 Level,0
+5:11:00:00,3,1,15:AC Detector Leakage Current,-213
+5:11:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:11:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:11:28:34,2,0,03:USB Input Voltage,5.17
+5:11:46:29,1,0,03:USB Input Voltage,0.010000001
+5:11:48:59,2,0,03:USB Input Voltage,5.1780005
+5:11:49:44,1,0,03:USB Input Voltage,0.016
+5:12:00:00,3,0,11:PRTD 1,-182.39676
+5:12:00:00,3,0,12:PRTD 2,-190.75845
+5:12:00:00,3,0,13:Ambient Temperature,39.245453
+5:12:00:00,3,0,14:LN2 Level,0
+5:12:00:00,3,1,15:AC Detector Leakage Current,-207
+5:12:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:12:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:13:00:00,3,0,11:PRTD 1,-182.39124
+5:13:00:00,3,0,12:PRTD 2,-190.74751
+5:13:00:00,3,0,13:Ambient Temperature,39.04138
+5:13:00:00,3,0,14:LN2 Level,0
+5:13:00:00,3,1,15:AC Detector Leakage Current,-207
+5:13:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:13:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:14:00:00,3,0,11:PRTD 1,-182.40227
+5:14:00:00,3,0,12:PRTD 2,-190.74751
+5:14:00:00,3,0,13:Ambient Temperature,39.245453
+5:14:00:00,3,0,14:LN2 Level,0
+5:14:00:00,3,1,15:AC Detector Leakage Current,-207
+5:14:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:14:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:15:00:00,3,0,11:PRTD 1,-182.41328
+5:15:00:00,3,0,12:PRTD 2,-190.73657
+5:15:00:00,3,0,13:Ambient Temperature,39.04138
+5:15:00:00,3,0,14:LN2 Level,0
+5:15:00:00,3,1,15:AC Detector Leakage Current,-207
+5:15:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:15:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:16:00:00,3,0,11:PRTD 1,-182.4188
+5:16:00:00,3,0,12:PRTD 2,-190.74751
+5:16:00:00,3,0,13:Ambient Temperature,39.04138
+5:16:00:00,3,0,14:LN2 Level,0
+5:16:00:00,3,1,15:AC Detector Leakage Current,-207
+5:16:00:00,3,1,73:DC Detector Leakage Current,108.280304
+5:16:00:00,3,1,16:Charge Loop DC Level,-1.54
+5:17:00:00,3,0,11:PRTD 1,-182.42432
+5:17:00:00,3,0,12:PRTD 2,-190.75298
+5:17:00:00,3,0,13:Ambient Temperature,39.04138
+5:17:00:00,3,0,14:LN2 Level,0
+5:17:00:00,3,1,15:AC Detector Leakage Current,-206
+5:17:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:17:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:18:00:00,3,0,11:PRTD 1,-182.4188
+5:18:00:00,3,0,12:PRTD 2,-190.74203
+5:18:00:00,3,0,13:Ambient Temperature,39.04138
+5:18:00:00,3,0,14:LN2 Level,0
+5:18:00:00,3,1,15:AC Detector Leakage Current,-206
+5:18:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:18:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:19:00:00,3,0,11:PRTD 1,-182.41328
+5:19:00:00,3,0,12:PRTD 2,-190.74751
+5:19:00:00,3,0,13:Ambient Temperature,39.04138
+5:19:00:00,3,0,14:LN2 Level,0
+5:19:00:00,3,1,15:AC Detector Leakage Current,-207
+5:19:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:19:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:20:00:00,3,0,11:PRTD 1,-182.4188
+5:20:00:00,3,0,12:PRTD 2,-190.74751
+5:20:00:00,3,0,13:Ambient Temperature,39.04138
+5:20:00:00,3,0,14:LN2 Level,0
+5:20:00:00,3,1,15:AC Detector Leakage Current,-207
+5:20:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:20:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:21:00:00,3,0,11:PRTD 1,-182.41328
+5:21:00:00,3,0,12:PRTD 2,-190.75298
+5:21:00:00,3,0,13:Ambient Temperature,39.04138
+5:21:00:00,3,0,14:LN2 Level,0
+5:21:00:00,3,1,15:AC Detector Leakage Current,-207
+5:21:00:00,3,1,73:DC Detector Leakage Current,95.541466
+5:21:00:00,3,1,16:Charge Loop DC Level,-1.56
+5:22:00:00,3,0,11:PRTD 1,-182.4188
+5:22:00:00,3,0,12:PRTD 2,-190.73657
+5:22:00:00,3,0,13:Ambient Temperature,39.04138
+5:22:00:00,3,0,14:LN2 Level,0
+5:22:00:00,3,1,15:AC Detector Leakage Current,-207
+5:22:00:00,3,1,73:DC Detector Leakage Current,82.80261
+5:22:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+5:23:00:00,3,0,11:PRTD 1,-182.42432
+5:23:00:00,3,0,12:PRTD 2,-190.73657
+5:23:00:00,3,0,13:Ambient Temperature,38.83728
+5:23:00:00,3,0,14:LN2 Level,0
+5:23:00:00,3,1,15:AC Detector Leakage Current,-206
+5:23:00:00,3,1,73:DC Detector Leakage Current,82.80261
+5:23:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:00:00:00,3,0,11:PRTD 1,-182.42982
+6:00:00:00,3,0,12:PRTD 2,-190.73657
+6:00:00:00,3,0,13:Ambient Temperature,39.04138
+6:00:00:00,3,0,14:LN2 Level,0
+6:00:00:00,3,1,15:AC Detector Leakage Current,-207
+6:00:00:00,3,1,73:DC Detector Leakage Current,95.541466
+6:00:00:00,3,1,16:Charge Loop DC Level,-1.56
+6:01:00:00,3,0,11:PRTD 1,-182.42982
+6:01:00:00,3,0,12:PRTD 2,-190.74203
+6:01:00:00,3,0,13:Ambient Temperature,39.04138
+6:01:00:00,3,0,14:LN2 Level,0
+6:01:00:00,3,1,15:AC Detector Leakage Current,-207
+6:01:00:00,3,1,73:DC Detector Leakage Current,95.541466
+6:01:00:00,3,1,16:Charge Loop DC Level,-1.56
+6:02:00:00,3,0,11:PRTD 1,-182.4188
+6:02:00:00,3,0,12:PRTD 2,-190.75298
+6:02:00:00,3,0,13:Ambient Temperature,39.04138
+6:02:00:00,3,0,14:LN2 Level,0
+6:02:00:00,3,1,15:AC Detector Leakage Current,-206
+6:02:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:02:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:03:00:00,3,0,11:PRTD 1,-182.40778
+6:03:00:00,3,0,12:PRTD 2,-190.74751
+6:03:00:00,3,0,13:Ambient Temperature,39.04138
+6:03:00:00,3,0,14:LN2 Level,0
+6:03:00:00,3,1,15:AC Detector Leakage Current,-206
+6:03:00:00,3,1,73:DC Detector Leakage Current,95.541466
+6:03:00:00,3,1,16:Charge Loop DC Level,-1.56
+6:04:00:00,3,0,11:PRTD 1,-182.40778
+6:04:00:00,3,0,12:PRTD 2,-190.74203
+6:04:00:00,3,0,13:Ambient Temperature,39.04138
+6:04:00:00,3,0,14:LN2 Level,0
+6:04:00:00,3,1,15:AC Detector Leakage Current,-206
+6:04:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:04:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:05:00:00,3,0,11:PRTD 1,-182.41328
+6:05:00:00,3,0,12:PRTD 2,-190.74203
+6:05:00:00,3,0,13:Ambient Temperature,39.04138
+6:05:00:00,3,0,14:LN2 Level,0
+6:05:00:00,3,1,15:AC Detector Leakage Current,-207
+6:05:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:05:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:06:00:00,3,0,11:PRTD 1,-182.39676
+6:06:00:00,3,0,12:PRTD 2,-190.73111
+6:06:00:00,3,0,13:Ambient Temperature,39.245453
+6:06:00:00,3,0,14:LN2 Level,0
+6:06:00:00,3,1,15:AC Detector Leakage Current,-206
+6:06:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:06:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:07:00:00,3,0,11:PRTD 1,-182.39676
+6:07:00:00,3,0,12:PRTD 2,-190.73657
+6:07:00:00,3,0,13:Ambient Temperature,39.04138
+6:07:00:00,3,0,14:LN2 Level,0
+6:07:00:00,3,1,15:AC Detector Leakage Current,-207
+6:07:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:07:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:08:00:00,3,0,11:PRTD 1,-182.39124
+6:08:00:00,3,0,12:PRTD 2,-190.73111
+6:08:00:00,3,0,13:Ambient Temperature,39.04138
+6:08:00:00,3,0,14:LN2 Level,0
+6:08:00:00,3,1,15:AC Detector Leakage Current,-206
+6:08:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:08:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:09:00:00,3,0,11:PRTD 1,-182.40227
+6:09:00:00,3,0,12:PRTD 2,-190.74203
+6:09:00:00,3,0,13:Ambient Temperature,39.04138
+6:09:00:00,3,0,14:LN2 Level,0
+6:09:00:00,3,1,15:AC Detector Leakage Current,-206
+6:09:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:09:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:10:00:00,3,0,11:PRTD 1,-182.40778
+6:10:00:00,3,0,12:PRTD 2,-190.73111
+6:10:00:00,3,0,13:Ambient Temperature,38.83728
+6:10:00:00,3,0,14:LN2 Level,0
+6:10:00:00,3,1,15:AC Detector Leakage Current,-206
+6:10:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:10:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:11:00:00,3,0,11:PRTD 1,-182.4188
+6:11:00:00,3,0,12:PRTD 2,-190.74203
+6:11:00:00,3,0,13:Ambient Temperature,38.83728
+6:11:00:00,3,0,14:LN2 Level,0
+6:11:00:00,3,1,15:AC Detector Leakage Current,-207
+6:11:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:11:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:12:00:00,3,0,11:PRTD 1,-182.40778
+6:12:00:00,3,0,12:PRTD 2,-190.74203
+6:12:00:00,3,0,13:Ambient Temperature,39.04138
+6:12:00:00,3,0,14:LN2 Level,0
+6:12:00:00,3,1,15:AC Detector Leakage Current,-206
+6:12:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:12:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:13:00:00,3,0,11:PRTD 1,-182.41328
+6:13:00:00,3,0,12:PRTD 2,-190.73657
+6:13:00:00,3,0,13:Ambient Temperature,38.83728
+6:13:00:00,3,0,14:LN2 Level,0
+6:13:00:00,3,1,15:AC Detector Leakage Current,-206
+6:13:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:13:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:14:00:00,3,0,11:PRTD 1,-182.4188
+6:14:00:00,3,0,12:PRTD 2,-190.72563
+6:14:00:00,3,0,13:Ambient Temperature,38.83728
+6:14:00:00,3,0,14:LN2 Level,0
+6:14:00:00,3,1,15:AC Detector Leakage Current,-207
+6:14:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:14:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:15:00:00,3,0,11:PRTD 1,-182.43533
+6:15:00:00,3,0,12:PRTD 2,-190.73111
+6:15:00:00,3,0,13:Ambient Temperature,38.63321
+6:15:00:00,3,0,14:LN2 Level,0
+6:15:00:00,3,1,15:AC Detector Leakage Current,-207
+6:15:00:00,3,1,73:DC Detector Leakage Current,95.541466
+6:15:00:00,3,1,16:Charge Loop DC Level,-1.56
+6:16:00:00,3,0,11:PRTD 1,-182.45738
+6:16:00:00,3,0,12:PRTD 2,-190.73657
+6:16:00:00,3,0,13:Ambient Temperature,38.42914
+6:16:00:00,3,0,14:LN2 Level,0
+6:16:00:00,3,1,15:AC Detector Leakage Current,-207
+6:16:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:16:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:17:00:00,3,0,11:PRTD 1,-182.46289
+6:17:00:00,3,0,12:PRTD 2,-190.73657
+6:17:00:00,3,0,13:Ambient Temperature,38.42914
+6:17:00:00,3,0,14:LN2 Level,0
+6:17:00:00,3,1,15:AC Detector Leakage Current,-207
+6:17:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:17:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:18:00:00,3,0,11:PRTD 1,-182.44637
+6:18:00:00,3,0,12:PRTD 2,-190.72017
+6:18:00:00,3,0,13:Ambient Temperature,38.42914
+6:18:00:00,3,0,14:LN2 Level,0
+6:18:00:00,3,1,15:AC Detector Leakage Current,-207
+6:18:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:18:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:19:00:00,3,0,11:PRTD 1,-182.46289
+6:19:00:00,3,0,12:PRTD 2,-190.73111
+6:19:00:00,3,0,13:Ambient Temperature,38.42914
+6:19:00:00,3,0,14:LN2 Level,0
+6:19:00:00,3,1,15:AC Detector Leakage Current,-207
+6:19:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:19:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:20:00:00,3,0,11:PRTD 1,-182.46841
+6:20:00:00,3,0,12:PRTD 2,-190.72017
+6:20:00:00,3,0,13:Ambient Temperature,38.42914
+6:20:00:00,3,0,14:LN2 Level,0
+6:20:00:00,3,1,15:AC Detector Leakage Current,-207
+6:20:00:00,3,1,73:DC Detector Leakage Current,95.541466
+6:20:00:00,3,1,16:Charge Loop DC Level,-1.56
+6:21:00:00,3,0,11:PRTD 1,-182.45738
+6:21:00:00,3,0,12:PRTD 2,-190.72017
+6:21:00:00,3,0,13:Ambient Temperature,38.42914
+6:21:00:00,3,0,14:LN2 Level,0
+6:21:00:00,3,1,15:AC Detector Leakage Current,-206
+6:21:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:21:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:22:00:00,3,0,11:PRTD 1,-182.45738
+6:22:00:00,3,0,12:PRTD 2,-190.72017
+6:22:00:00,3,0,13:Ambient Temperature,38.42914
+6:22:00:00,3,0,14:LN2 Level,0
+6:22:00:00,3,1,15:AC Detector Leakage Current,-206
+6:22:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:22:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+6:23:00:00,3,0,11:PRTD 1,-182.44084
+6:23:00:00,3,0,12:PRTD 2,-190.73657
+6:23:00:00,3,0,13:Ambient Temperature,38.63321
+6:23:00:00,3,0,14:LN2 Level,0
+6:23:00:00,3,1,15:AC Detector Leakage Current,-207
+6:23:00:00,3,1,73:DC Detector Leakage Current,82.80261
+6:23:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:00:00:00,3,0,11:PRTD 1,-182.43533
+7:00:00:00,3,0,12:PRTD 2,-190.73657
+7:00:00:00,3,0,13:Ambient Temperature,38.63321
+7:00:00:00,3,0,14:LN2 Level,0
+7:00:00:00,3,1,15:AC Detector Leakage Current,-207
+7:00:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:00:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:01:00:00,3,0,11:PRTD 1,-182.43533
+7:01:00:00,3,0,12:PRTD 2,-190.73111
+7:01:00:00,3,0,13:Ambient Temperature,38.63321
+7:01:00:00,3,0,14:LN2 Level,0
+7:01:00:00,3,1,15:AC Detector Leakage Current,-207
+7:01:00:00,3,1,73:DC Detector Leakage Current,95.541466
+7:01:00:00,3,1,16:Charge Loop DC Level,-1.56
+7:02:00:00,3,0,11:PRTD 1,-182.42982
+7:02:00:00,3,0,12:PRTD 2,-190.73111
+7:02:00:00,3,0,13:Ambient Temperature,38.83728
+7:02:00:00,3,0,14:LN2 Level,0
+7:02:00:00,3,1,15:AC Detector Leakage Current,-206
+7:02:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:02:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:03:00:00,3,0,11:PRTD 1,-182.41328
+7:03:00:00,3,0,12:PRTD 2,-190.73111
+7:03:00:00,3,0,13:Ambient Temperature,38.83728
+7:03:00:00,3,0,14:LN2 Level,0
+7:03:00:00,3,1,15:AC Detector Leakage Current,-207
+7:03:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:03:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:04:00:00,3,0,11:PRTD 1,-182.40778
+7:04:00:00,3,0,12:PRTD 2,-190.73657
+7:04:00:00,3,0,13:Ambient Temperature,38.83728
+7:04:00:00,3,0,14:LN2 Level,0
+7:04:00:00,3,1,15:AC Detector Leakage Current,-206
+7:04:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:04:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:05:00:00,3,0,11:PRTD 1,-182.41328
+7:05:00:00,3,0,12:PRTD 2,-190.73657
+7:05:00:00,3,0,13:Ambient Temperature,38.83728
+7:05:00:00,3,0,14:LN2 Level,0
+7:05:00:00,3,1,15:AC Detector Leakage Current,-207
+7:05:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:05:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:06:00:00,3,0,11:PRTD 1,-182.40778
+7:06:00:00,3,0,12:PRTD 2,-190.73111
+7:06:00:00,3,0,13:Ambient Temperature,39.04138
+7:06:00:00,3,0,14:LN2 Level,0
+7:06:00:00,3,1,15:AC Detector Leakage Current,-207
+7:06:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:06:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:07:00:00,3,0,11:PRTD 1,-182.40778
+7:07:00:00,3,0,12:PRTD 2,-190.74203
+7:07:00:00,3,0,13:Ambient Temperature,39.04138
+7:07:00:00,3,0,14:LN2 Level,0
+7:07:00:00,3,1,15:AC Detector Leakage Current,-207
+7:07:00:00,3,1,73:DC Detector Leakage Current,95.541466
+7:07:00:00,3,1,16:Charge Loop DC Level,-1.56
+7:08:00:00,3,0,11:PRTD 1,-182.39676
+7:08:00:00,3,0,12:PRTD 2,-190.73657
+7:08:00:00,3,0,13:Ambient Temperature,39.04138
+7:08:00:00,3,0,14:LN2 Level,0
+7:08:00:00,3,1,15:AC Detector Leakage Current,-206
+7:08:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:08:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:09:00:00,3,0,11:PRTD 1,-182.39676
+7:09:00:00,3,0,12:PRTD 2,-190.73657
+7:09:00:00,3,0,13:Ambient Temperature,39.04138
+7:09:00:00,3,0,14:LN2 Level,0
+7:09:00:00,3,1,15:AC Detector Leakage Current,-207
+7:09:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:09:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:10:00:00,3,0,11:PRTD 1,-182.39124
+7:10:00:00,3,0,12:PRTD 2,-190.73657
+7:10:00:00,3,0,13:Ambient Temperature,39.04138
+7:10:00:00,3,0,14:LN2 Level,0
+7:10:00:00,3,1,15:AC Detector Leakage Current,-207
+7:10:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:10:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:11:00:00,3,0,11:PRTD 1,-182.3747
+7:11:00:00,3,0,12:PRTD 2,-190.73657
+7:11:00:00,3,0,13:Ambient Temperature,39.449524
+7:11:00:00,3,0,14:LN2 Level,0
+7:11:00:00,3,1,15:AC Detector Leakage Current,-206
+7:11:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:11:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:12:00:00,3,0,11:PRTD 1,-182.35817
+7:12:00:00,3,0,12:PRTD 2,-190.72563
+7:12:00:00,3,0,13:Ambient Temperature,39.449524
+7:12:00:00,3,0,14:LN2 Level,0
+7:12:00:00,3,1,15:AC Detector Leakage Current,-206
+7:12:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:12:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:13:00:00,3,0,11:PRTD 1,-182.36368
+7:13:00:00,3,0,12:PRTD 2,-190.74203
+7:13:00:00,3,0,13:Ambient Temperature,39.245453
+7:13:00:00,3,0,14:LN2 Level,0
+7:13:00:00,3,1,15:AC Detector Leakage Current,-206
+7:13:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:13:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:14:00:00,3,0,11:PRTD 1,-182.3692
+7:14:00:00,3,0,12:PRTD 2,-190.74203
+7:14:00:00,3,0,13:Ambient Temperature,39.04138
+7:14:00:00,3,0,14:LN2 Level,0
+7:14:00:00,3,1,15:AC Detector Leakage Current,-206
+7:14:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:14:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:15:00:00,3,0,11:PRTD 1,-182.38022
+7:15:00:00,3,0,12:PRTD 2,-190.72563
+7:15:00:00,3,0,13:Ambient Temperature,38.83728
+7:15:00:00,3,0,14:LN2 Level,0
+7:15:00:00,3,1,15:AC Detector Leakage Current,-206
+7:15:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:15:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:16:00:00,3,0,11:PRTD 1,-182.39676
+7:16:00:00,3,0,12:PRTD 2,-190.73111
+7:16:00:00,3,0,13:Ambient Temperature,38.63321
+7:16:00:00,3,0,14:LN2 Level,0
+7:16:00:00,3,1,15:AC Detector Leakage Current,-206
+7:16:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:16:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:16:54:34,1,1,73:DC Detector Leakage Current,1611.4648
+7:16:54:39,2,1,73:DC Detector Leakage Current,82.80261
+7:17:00:00,3,0,11:PRTD 1,-182.39676
+7:17:00:00,3,0,12:PRTD 2,-190.73111
+7:17:00:00,3,0,13:Ambient Temperature,38.63321
+7:17:00:00,3,0,14:LN2 Level,0
+7:17:00:00,3,1,15:AC Detector Leakage Current,-206
+7:17:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:17:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:18:00:00,3,0,11:PRTD 1,-182.40778
+7:18:00:00,3,0,12:PRTD 2,-190.72563
+7:18:00:00,3,0,13:Ambient Temperature,38.63321
+7:18:00:00,3,0,14:LN2 Level,0
+7:18:00:00,3,1,15:AC Detector Leakage Current,-206
+7:18:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:18:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:19:00:00,3,0,11:PRTD 1,-182.4188
+7:19:00:00,3,0,12:PRTD 2,-190.72017
+7:19:00:00,3,0,13:Ambient Temperature,38.63321
+7:19:00:00,3,0,14:LN2 Level,0
+7:19:00:00,3,1,15:AC Detector Leakage Current,-206
+7:19:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:19:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:20:00:00,3,0,11:PRTD 1,-182.40778
+7:20:00:00,3,0,12:PRTD 2,-190.72017
+7:20:00:00,3,0,13:Ambient Temperature,38.63321
+7:20:00:00,3,0,14:LN2 Level,0
+7:20:00:00,3,1,15:AC Detector Leakage Current,-206
+7:20:00:00,3,1,73:DC Detector Leakage Current,82.80261
+7:20:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+7:21:00:00,3,0,11:PRTD 1,-182.41328
+7:21:00:00,3,0,12:PRTD 2,-190.72017
+7:21:00:00,3,0,13:Ambient Temperature,38.42914
+7:21:00:00,3,0,14:LN2 Level,0
+7:21:00:00,3,1,15:AC Detector Leakage Current,-206
+7:21:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:21:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:22:00:00,3,0,11:PRTD 1,-182.40778
+7:22:00:00,3,0,12:PRTD 2,-190.72017
+7:22:00:00,3,0,13:Ambient Temperature,38.42914
+7:22:00:00,3,0,14:LN2 Level,0
+7:22:00:00,3,1,15:AC Detector Leakage Current,-206
+7:22:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:22:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+7:23:00:00,3,0,11:PRTD 1,-182.4188
+7:23:00:00,3,0,12:PRTD 2,-190.72563
+7:23:00:00,3,0,13:Ambient Temperature,38.42914
+7:23:00:00,3,0,14:LN2 Level,0
+7:23:00:00,3,1,15:AC Detector Leakage Current,-206
+7:23:00:00,3,1,73:DC Detector Leakage Current,70.063774
+7:23:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+8:00:00:00,3,0,11:PRTD 1,-182.40227
+8:00:00:00,3,0,12:PRTD 2,-190.72563
+8:00:00:00,3,0,13:Ambient Temperature,38.63321
+8:00:00:00,3,0,14:LN2 Level,0
+8:00:00:00,3,1,15:AC Detector Leakage Current,-207
+8:00:00:00,3,1,73:DC Detector Leakage Current,82.80261
+8:00:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+8:01:00:00,3,0,11:PRTD 1,-182.40778
+8:01:00:00,3,0,12:PRTD 2,-190.72563
+8:01:00:00,3,0,13:Ambient Temperature,38.83728
+8:01:00:00,3,0,14:LN2 Level,0
+8:01:00:00,3,1,15:AC Detector Leakage Current,-206
+8:01:00:00,3,1,73:DC Detector Leakage Current,70.063774
+8:01:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+8:02:00:00,3,0,11:PRTD 1,-182.39124
+8:02:00:00,3,0,12:PRTD 2,-190.73657
+8:02:00:00,3,0,13:Ambient Temperature,39.04138
+8:02:00:00,3,0,14:LN2 Level,0
+8:02:00:00,3,1,15:AC Detector Leakage Current,-206
+8:02:00:00,3,1,73:DC Detector Leakage Current,70.063774
+8:02:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+8:03:00:00,3,0,11:PRTD 1,-182.38573
+8:03:00:00,3,0,12:PRTD 2,-190.73657
+8:03:00:00,3,0,13:Ambient Temperature,39.04138
+8:03:00:00,3,0,14:LN2 Level,0
+8:03:00:00,3,1,15:AC Detector Leakage Current,-206
+8:03:00:00,3,1,73:DC Detector Leakage Current,82.80261
+8:03:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:00:00:04,1,0,03:USB Input Voltage,0
+9:00:00:04,1,0,03:USB Input Voltage,0
+9:00:00:14,1,1,73:DC Detector Leakage Current,8898.09
+9:00:00:44,2,1,73:DC Detector Leakage Current,974.5223
+9:00:10:09,2,0,03:USB Input Voltage,5.176
+9:00:15:34,1,0,03:USB Input Voltage,0.76400006
+9:00:30:24,2,0,03:USB Input Voltage,5.176
+9:00:32:29,1,0,03:USB Input Voltage,0.008
+9:01:00:00,3,0,11:PRTD 1,-182.38022
+9:01:00:00,3,0,12:PRTD 2,-190.78032
+9:01:00:00,3,0,13:Ambient Temperature,40.0618
+9:01:00:00,3,0,14:LN2 Level,0
+9:01:00:00,3,1,15:AC Detector Leakage Current,-206
+9:01:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:01:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:01:17:49,1,1,73:DC Detector Leakage Current,2197.4521
+9:01:18:29,2,1,73:DC Detector Leakage Current,796.17834
+9:02:00:00,3,0,11:PRTD 1,-182.35266
+9:02:00:00,3,0,12:PRTD 2,-190.77486
+9:02:00:00,3,0,13:Ambient Temperature,39.857697
+9:02:00:00,3,0,14:LN2 Level,0
+9:02:00:00,3,1,15:AC Detector Leakage Current,-207
+9:02:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:02:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:02:24:04,1,1,73:DC Detector Leakage Current,2910.8276
+9:02:24:44,2,1,73:DC Detector Leakage Current,834.39496
+9:03:00:00,3,0,11:PRTD 1,-182.34714
+9:03:00:00,3,0,12:PRTD 2,-190.75845
+9:03:00:00,3,0,13:Ambient Temperature,40.0618
+9:03:00:00,3,0,14:LN2 Level,0
+9:03:00:00,3,1,15:AC Detector Leakage Current,-206
+9:03:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:03:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:04:00:00,3,0,11:PRTD 1,-182.3306
+9:04:00:00,3,0,12:PRTD 2,-190.74203
+9:04:00:00,3,0,13:Ambient Temperature,39.857697
+9:04:00:00,3,0,14:LN2 Level,0
+9:04:00:00,3,1,15:AC Detector Leakage Current,-206
+9:04:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:04:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:05:00:00,3,0,11:PRTD 1,-182.34714
+9:05:00:00,3,0,12:PRTD 2,-190.73657
+9:05:00:00,3,0,13:Ambient Temperature,39.653625
+9:05:00:00,3,0,14:LN2 Level,0
+9:05:00:00,3,1,15:AC Detector Leakage Current,-206
+9:05:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:05:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:06:00:00,3,0,11:PRTD 1,-182.3747
+9:06:00:00,3,0,12:PRTD 2,-190.73657
+9:06:00:00,3,0,13:Ambient Temperature,39.449524
+9:06:00:00,3,0,14:LN2 Level,0
+9:06:00:00,3,1,15:AC Detector Leakage Current,-207
+9:06:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:06:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:07:00:00,3,0,11:PRTD 1,-182.38573
+9:07:00:00,3,0,12:PRTD 2,-190.73111
+9:07:00:00,3,0,13:Ambient Temperature,39.245453
+9:07:00:00,3,0,14:LN2 Level,0
+9:07:00:00,3,1,15:AC Detector Leakage Current,-207
+9:07:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:07:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:08:00:00,3,0,11:PRTD 1,-182.40227
+9:08:00:00,3,0,12:PRTD 2,-190.73111
+9:08:00:00,3,0,13:Ambient Temperature,39.04138
+9:08:00:00,3,0,14:LN2 Level,0
+9:08:00:00,3,1,15:AC Detector Leakage Current,-207
+9:08:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:08:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:09:00:00,3,0,11:PRTD 1,-182.40778
+9:09:00:00,3,0,12:PRTD 2,-190.73657
+9:09:00:00,3,0,13:Ambient Temperature,37.816895
+9:09:00:00,3,0,14:LN2 Level,0
+9:09:00:00,3,1,15:AC Detector Leakage Current,-207
+9:09:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:09:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:10:00:00,3,0,11:PRTD 1,-182.42432
+9:10:00:00,3,0,12:PRTD 2,-190.72563
+9:10:00:00,3,0,13:Ambient Temperature,37.612793
+9:10:00:00,3,0,14:LN2 Level,0
+9:10:00:00,3,1,15:AC Detector Leakage Current,-207
+9:10:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:10:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:11:00:00,3,0,11:PRTD 1,-182.42982
+9:11:00:00,3,0,12:PRTD 2,-190.72017
+9:11:00:00,3,0,13:Ambient Temperature,37.612793
+9:11:00:00,3,0,14:LN2 Level,0
+9:11:00:00,3,1,15:AC Detector Leakage Current,-207
+9:11:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:11:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:12:00:00,3,0,11:PRTD 1,-182.43533
+9:12:00:00,3,0,12:PRTD 2,-190.72017
+9:12:00:00,3,0,13:Ambient Temperature,37.408722
+9:12:00:00,3,0,14:LN2 Level,0
+9:12:00:00,3,1,15:AC Detector Leakage Current,-207
+9:12:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:12:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:13:00:00,3,0,11:PRTD 1,-182.44637
+9:13:00:00,3,0,12:PRTD 2,-190.70923
+9:13:00:00,3,0,13:Ambient Temperature,37.408722
+9:13:00:00,3,0,14:LN2 Level,0
+9:13:00:00,3,1,15:AC Detector Leakage Current,-207
+9:13:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:13:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:14:00:00,3,0,11:PRTD 1,-182.45738
+9:14:00:00,3,0,12:PRTD 2,-190.72017
+9:14:00:00,3,0,13:Ambient Temperature,37.408722
+9:14:00:00,3,0,14:LN2 Level,0
+9:14:00:00,3,1,15:AC Detector Leakage Current,-207
+9:14:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:14:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:15:00:00,3,0,11:PRTD 1,-182.43533
+9:15:00:00,3,0,12:PRTD 2,-190.71469
+9:15:00:00,3,0,13:Ambient Temperature,37.20465
+9:15:00:00,3,0,14:LN2 Level,0
+9:15:00:00,3,1,15:AC Detector Leakage Current,-207
+9:15:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:15:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:16:00:00,3,0,11:PRTD 1,-182.45187
+9:16:00:00,3,0,12:PRTD 2,-190.72017
+9:16:00:00,3,0,13:Ambient Temperature,37.20465
+9:16:00:00,3,0,14:LN2 Level,0
+9:16:00:00,3,1,15:AC Detector Leakage Current,-207
+9:16:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:16:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:17:00:00,3,0,11:PRTD 1,-182.45738
+9:17:00:00,3,0,12:PRTD 2,-190.71469
+9:17:00:00,3,0,13:Ambient Temperature,37.20465
+9:17:00:00,3,0,14:LN2 Level,0
+9:17:00:00,3,1,15:AC Detector Leakage Current,-207
+9:17:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:17:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:18:00:00,3,0,11:PRTD 1,-182.44637
+9:18:00:00,3,0,12:PRTD 2,-190.70923
+9:18:00:00,3,0,13:Ambient Temperature,37.20465
+9:18:00:00,3,0,14:LN2 Level,0
+9:18:00:00,3,1,15:AC Detector Leakage Current,-207
+9:18:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:18:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:19:00:00,3,0,11:PRTD 1,-182.45187
+9:19:00:00,3,0,12:PRTD 2,-190.71469
+9:19:00:00,3,0,13:Ambient Temperature,37.20465
+9:19:00:00,3,0,14:LN2 Level,0
+9:19:00:00,3,1,15:AC Detector Leakage Current,-207
+9:19:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:19:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:20:00:00,3,0,11:PRTD 1,-182.46289
+9:20:00:00,3,0,12:PRTD 2,-190.72017
+9:20:00:00,3,0,13:Ambient Temperature,37.20465
+9:20:00:00,3,0,14:LN2 Level,0
+9:20:00:00,3,1,15:AC Detector Leakage Current,-207
+9:20:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:20:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+9:21:00:00,3,0,11:PRTD 1,-182.44084
+9:21:00:00,3,0,12:PRTD 2,-190.72017
+9:21:00:00,3,0,13:Ambient Temperature,37.408722
+9:21:00:00,3,0,14:LN2 Level,0
+9:21:00:00,3,1,15:AC Detector Leakage Current,-207
+9:21:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:21:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:22:00:00,3,0,11:PRTD 1,-182.44084
+9:22:00:00,3,0,12:PRTD 2,-190.72017
+9:22:00:00,3,0,13:Ambient Temperature,37.816895
+9:22:00:00,3,0,14:LN2 Level,0
+9:22:00:00,3,1,15:AC Detector Leakage Current,-207
+9:22:00:00,3,1,73:DC Detector Leakage Current,82.80261
+9:22:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+9:23:00:00,3,0,11:PRTD 1,-182.42432
+9:23:00:00,3,0,12:PRTD 2,-190.73111
+9:23:00:00,3,0,13:Ambient Temperature,38.020966
+9:23:00:00,3,0,14:LN2 Level,0
+9:23:00:00,3,1,15:AC Detector Leakage Current,-207
+9:23:00:00,3,1,73:DC Detector Leakage Current,70.063774
+9:23:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:00:00:00,3,0,11:PRTD 1,-182.4188
+10:00:00:00,3,0,12:PRTD 2,-190.74751
+10:00:00:00,3,0,13:Ambient Temperature,37.816895
+10:00:00:00,3,0,14:LN2 Level,0
+10:00:00:00,3,1,15:AC Detector Leakage Current,-207
+10:00:00:00,3,1,73:DC Detector Leakage Current,82.80261
+10:00:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+10:01:00:00,3,0,11:PRTD 1,-182.43533
+10:01:00:00,3,0,12:PRTD 2,-190.73111
+10:01:00:00,3,0,13:Ambient Temperature,37.612793
+10:01:00:00,3,0,14:LN2 Level,0
+10:01:00:00,3,1,15:AC Detector Leakage Current,-207
+10:01:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:01:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:02:00:00,3,0,11:PRTD 1,-182.45187
+10:02:00:00,3,0,12:PRTD 2,-190.74751
+10:02:00:00,3,0,13:Ambient Temperature,37.612793
+10:02:00:00,3,0,14:LN2 Level,0
+10:02:00:00,3,1,15:AC Detector Leakage Current,-207
+10:02:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:02:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:03:00:00,3,0,11:PRTD 1,-182.44084
+10:03:00:00,3,0,12:PRTD 2,-190.73111
+10:03:00:00,3,0,13:Ambient Temperature,37.816895
+10:03:00:00,3,0,14:LN2 Level,0
+10:03:00:00,3,1,15:AC Detector Leakage Current,-207
+10:03:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:03:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:04:00:00,3,0,11:PRTD 1,-182.42982
+10:04:00:00,3,0,12:PRTD 2,-190.73657
+10:04:00:00,3,0,13:Ambient Temperature,37.816895
+10:04:00:00,3,0,14:LN2 Level,0
+10:04:00:00,3,1,15:AC Detector Leakage Current,-207
+10:04:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:04:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:05:00:00,3,0,11:PRTD 1,-182.44084
+10:05:00:00,3,0,12:PRTD 2,-190.74203
+10:05:00:00,3,0,13:Ambient Temperature,37.612793
+10:05:00:00,3,0,14:LN2 Level,0
+10:05:00:00,3,1,15:AC Detector Leakage Current,-207
+10:05:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:05:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:06:00:00,3,0,11:PRTD 1,-182.44084
+10:06:00:00,3,0,12:PRTD 2,-190.73111
+10:06:00:00,3,0,13:Ambient Temperature,37.612793
+10:06:00:00,3,0,14:LN2 Level,0
+10:06:00:00,3,1,15:AC Detector Leakage Current,-207
+10:06:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:06:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:07:00:00,3,0,11:PRTD 1,-182.44637
+10:07:00:00,3,0,12:PRTD 2,-190.72563
+10:07:00:00,3,0,13:Ambient Temperature,37.408722
+10:07:00:00,3,0,14:LN2 Level,0
+10:07:00:00,3,1,15:AC Detector Leakage Current,-207
+10:07:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:07:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:08:00:00,3,0,11:PRTD 1,-182.45187
+10:08:00:00,3,0,12:PRTD 2,-190.72563
+10:08:00:00,3,0,13:Ambient Temperature,37.408722
+10:08:00:00,3,0,14:LN2 Level,0
+10:08:00:00,3,1,15:AC Detector Leakage Current,-207
+10:08:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:08:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:09:00:00,3,0,11:PRTD 1,-182.45187
+10:09:00:00,3,0,12:PRTD 2,-190.73111
+10:09:00:00,3,0,13:Ambient Temperature,38.225037
+10:09:00:00,3,0,14:LN2 Level,0
+10:09:00:00,3,1,15:AC Detector Leakage Current,-207
+10:09:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:09:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:10:00:00,3,0,11:PRTD 1,-182.45187
+10:10:00:00,3,0,12:PRTD 2,-190.73657
+10:10:00:00,3,0,13:Ambient Temperature,38.63321
+10:10:00:00,3,0,14:LN2 Level,0
+10:10:00:00,3,1,15:AC Detector Leakage Current,-206
+10:10:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:10:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:11:00:00,3,0,11:PRTD 1,-182.44637
+10:11:00:00,3,0,12:PRTD 2,-190.73111
+10:11:00:00,3,0,13:Ambient Temperature,38.63321
+10:11:00:00,3,0,14:LN2 Level,0
+10:11:00:00,3,1,15:AC Detector Leakage Current,-207
+10:11:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:11:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:12:00:00,3,0,11:PRTD 1,-182.45187
+10:12:00:00,3,0,12:PRTD 2,-190.73111
+10:12:00:00,3,0,13:Ambient Temperature,38.63321
+10:12:00:00,3,0,14:LN2 Level,0
+10:12:00:00,3,1,15:AC Detector Leakage Current,-206
+10:12:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:12:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:13:00:00,3,0,11:PRTD 1,-182.45187
+10:13:00:00,3,0,12:PRTD 2,-190.72563
+10:13:00:00,3,0,13:Ambient Temperature,38.63321
+10:13:00:00,3,0,14:LN2 Level,0
+10:13:00:00,3,1,15:AC Detector Leakage Current,-207
+10:13:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:13:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:14:00:00,3,0,11:PRTD 1,-182.44637
+10:14:00:00,3,0,12:PRTD 2,-190.72563
+10:14:00:00,3,0,13:Ambient Temperature,38.63321
+10:14:00:00,3,0,14:LN2 Level,0
+10:14:00:00,3,1,15:AC Detector Leakage Current,-206
+10:14:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:14:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:15:00:00,3,0,11:PRTD 1,-182.45187
+10:15:00:00,3,0,12:PRTD 2,-190.73111
+10:15:00:00,3,0,13:Ambient Temperature,38.63321
+10:15:00:00,3,0,14:LN2 Level,0
+10:15:00:00,3,1,15:AC Detector Leakage Current,-207
+10:15:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:15:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:16:00:00,3,0,11:PRTD 1,-182.45738
+10:16:00:00,3,0,12:PRTD 2,-190.72563
+10:16:00:00,3,0,13:Ambient Temperature,38.63321
+10:16:00:00,3,0,14:LN2 Level,0
+10:16:00:00,3,1,15:AC Detector Leakage Current,-207
+10:16:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:16:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:17:00:00,3,0,11:PRTD 1,-182.46841
+10:17:00:00,3,0,12:PRTD 2,-190.72563
+10:17:00:00,3,0,13:Ambient Temperature,38.63321
+10:17:00:00,3,0,14:LN2 Level,0
+10:17:00:00,3,1,15:AC Detector Leakage Current,-207
+10:17:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:17:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:18:00:00,3,0,11:PRTD 1,-182.44637
+10:18:00:00,3,0,12:PRTD 2,-190.72017
+10:18:00:00,3,0,13:Ambient Temperature,38.63321
+10:18:00:00,3,0,14:LN2 Level,0
+10:18:00:00,3,1,15:AC Detector Leakage Current,-207
+10:18:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:18:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:19:00:00,3,0,11:PRTD 1,-182.45738
+10:19:00:00,3,0,12:PRTD 2,-190.72563
+10:19:00:00,3,0,13:Ambient Temperature,38.63321
+10:19:00:00,3,0,14:LN2 Level,0
+10:19:00:00,3,1,15:AC Detector Leakage Current,-207
+10:19:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:19:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:20:00:00,3,0,11:PRTD 1,-182.45738
+10:20:00:00,3,0,12:PRTD 2,-190.73111
+10:20:00:00,3,0,13:Ambient Temperature,38.63321
+10:20:00:00,3,0,14:LN2 Level,0
+10:20:00:00,3,1,15:AC Detector Leakage Current,-207
+10:20:00:00,3,1,73:DC Detector Leakage Current,82.80261
+10:20:00:00,3,1,16:Charge Loop DC Level,-1.5799999
+10:21:00:00,3,0,11:PRTD 1,-182.43533
+10:21:00:00,3,0,12:PRTD 2,-190.75298
+10:21:00:00,3,0,13:Ambient Temperature,38.83728
+10:21:00:00,3,0,14:LN2 Level,0
+10:21:00:00,3,1,15:AC Detector Leakage Current,-207
+10:21:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:21:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:22:00:00,3,0,11:PRTD 1,-182.42982
+10:22:00:00,3,0,12:PRTD 2,-190.74751
+10:22:00:00,3,0,13:Ambient Temperature,39.245453
+10:22:00:00,3,0,14:LN2 Level,0
+10:22:00:00,3,1,15:AC Detector Leakage Current,-207
+10:22:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:22:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+10:23:00:00,3,0,11:PRTD 1,-182.39676
+10:23:00:00,3,0,12:PRTD 2,-190.76938
+10:23:00:00,3,0,13:Ambient Temperature,39.653625
+10:23:00:00,3,0,14:LN2 Level,0
+10:23:00:00,3,1,15:AC Detector Leakage Current,-206
+10:23:00:00,3,1,73:DC Detector Leakage Current,70.063774
+10:23:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+11:00:00:00,3,0,11:PRTD 1,-182.36368
+11:00:00:00,3,0,12:PRTD 2,-190.75845
+11:00:00:00,3,0,13:Ambient Temperature,39.653625
+11:00:00:00,3,0,14:LN2 Level,0
+11:00:00:00,3,1,15:AC Detector Leakage Current,-206
+11:00:00:00,3,1,73:DC Detector Leakage Current,70.063774
+11:00:00:00,3,1,16:Charge Loop DC Level,-1.5999999
+11:00:44:39,2,0,03:USB Input Voltage,5.0940003
