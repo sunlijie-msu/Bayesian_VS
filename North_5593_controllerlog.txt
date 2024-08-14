@@ -1,4 +1,4 @@
-Date	Time	Cooler power (W)	Coldtip T (°C)	Coldtip preset T (°C)	Coldhead T (°C)	Compressor T (°C)	Controller T (°C)	Fault status	5593(N)
+Date	Time	Cooler power (W)	Coldtip T (°C)	Coldtip preset T (°C)	Coldhead warm end T (°C)	Compressor T (°C)	Controller T (°C)	Fault status	5593(N)
 6/25/2023	19:30:00	135.92	-185	-185	43.2	47	37	No	errors
 6/25/2023	19:40:00	135.73	-185	-185	43.2	47	36.9	No	errors
 6/25/2023	19:50:00	135.77	-185.01	-185	43.2	46.9	36.9	No	errors
