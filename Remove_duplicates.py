@@ -1,23 +1,43 @@
 import pandas as pd
 import os
 
-# Define the input file path
-# input_file_path = r'C:\Users\sun\Downloads\North5593_Log_021.csv'
-input_file_path = r'C:\Users\sun\Downloads\South5596_Log_022.csv'
+# Define the directory containing the CSV files
+directory_path = r'F:\e21010\iPA_Log'  # Update this path as necessary
 
-# Load the CSV file into a DataFrame
-df = pd.read_csv(input_file_path)
+# Initialize an empty list to store each cleaned DataFrame
+cleaned_dataframes = []
 
-# Remove duplicates based on all columns
-df_cleaned = df.drop_duplicates()
+# Iterate over all files in the directory
+for filename in os.listdir(directory_path):
+    # Process only the relevant original CSV files
+    if filename.endswith(".csv") and filename.startswith("South5596_Log_") and "_Cleaned" not in filename:
+        input_file_path = os.path.join(directory_path, filename)
+        
+        # Load the CSV file into a DataFrame
+        df = pd.read_csv(input_file_path)
 
-# Create the output file name by adding "_cleaned" before the file extension
-base_name, ext = os.path.splitext(input_file_path)
-output_file_path = f"{base_name}_cleaned{ext}"
+        # Remove duplicates based on all columns
+        df_cleaned = df.drop_duplicates()
 
-# Save the cleaned DataFrame back to a new CSV file
-df_cleaned.to_csv(output_file_path, index=False)
+        # Create the output file name by adding "Cleaned" before the file extension
+        base_name, ext = os.path.splitext(input_file_path)
+        output_file_path = f"{base_name}_Cleaned{ext}"
 
-print(f"Original data had {len(df)} rows.")
-print(f"Data after removing duplicates has {len(df_cleaned)} rows.")
-print(f"Cleaned data saved to: {output_file_path}")
+        # Ensure we don't re-clean an already cleaned file
+        if not os.path.exists(output_file_path):
+            df_cleaned.to_csv(output_file_path, index=False)
+            cleaned_dataframes.append(df_cleaned)
+
+        print(f"Processed {filename}: Original data had {len(df)} rows, cleaned data has {len(df_cleaned)} rows.")
+
+# Combine all cleaned DataFrames into one DataFrame
+if cleaned_dataframes:
+    combined_df = pd.concat(cleaned_dataframes, ignore_index=True)
+    
+    # Save the combined DataFrame to a new CSV file
+    combined_output_path = os.path.join(directory_path, "South5596_Log_Combined_Cleaned.csv")
+    combined_df.to_csv(combined_output_path, index=False)
+    
+    print(f"Combined cleaned data saved to: {combined_output_path}")
+else:
+    print("No relevant files found or processed.")
