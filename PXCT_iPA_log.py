@@ -21,30 +21,24 @@ def parse_time(time_string):
 
 
 # Function to adjust timestamps for resets
-def adjust_timestamps(df):
-    adjusted_times = []
-    cumulative_days = 0
+# def adjust_timestamps(df):
+#     adjusted_times = []
+#     cumulative_days = 0
     
-    for i in range(len(df)):
-        if i > 0 and df.iloc[i]["Time Stamp"] < df.iloc[i - 1]["Time Stamp"]:
-            cumulative_days += 1
-        adjusted_time = df.iloc[i]["Time Stamp"] + timedelta(days=cumulative_days * df.iloc[i]["Time Stamp"].days)
-        adjusted_times.append(adjusted_time)
+#     for i in range(len(df)):
+#         if i > 0 and df.iloc[i]["Time Stamp"] < df.iloc[i - 1]["Time Stamp"]:
+#             cumulative_days += 1
+#         adjusted_time = df.iloc[i]["Time Stamp"] + timedelta(days=cumulative_days * df.iloc[i]["Time Stamp"].days)
+#         adjusted_times.append(adjusted_time)
 
-    df["Time Stamp"] = adjusted_times
-    return df
+#     df["Time Stamp"] = adjusted_times
+#     return df
 
 
 # Read the CSV files
-df_north = pd.read_csv(r'D:\X\out\Bayesian_VS\North5593_Log_Combined_Cleaned.csv', converters={'Time Stamp': parse_time})
-df_south = pd.read_csv(r'D:\X\out\Bayesian_VS\South5596_Log_Combined_Cleaned.csv', converters={'Time Stamp': parse_time})
-df_lege = pd.read_csv(r'D:\X\out\Bayesian_VS\LEGe_13725_iPAlog.csv', converters={'Time Stamp': parse_time})
-
-# Adjust timestamps for each dataset
-df_north = adjust_timestamps(df_north)
-df_south = adjust_timestamps(df_south)
-df_lege = adjust_timestamps(df_lege)
-
+df_north = pd.read_csv(r'F:\e21010\iPA_Log\North5593_iPA_Log_All.csv', converters={'Time Stamp': parse_time})
+df_south = pd.read_csv(r'F:\e21010\iPA_Log\South5596_iPA_Log_All.csv', converters={'Time Stamp': parse_time})
+df_lege = pd.read_csv(r'F:\e21010\iPA_Log\LEGe_13725_iPAlog.csv', converters={'Time Stamp': parse_time})
 
 # Parameters to filter
 parameters = ["11:PRTD 1", "12:PRTD 2", "13:Ambient Temperature", "73:DC Detector Leakage Current", "16:Charge Loop DC Level"]
@@ -64,7 +58,7 @@ df_south_filtered = [df_south[df_south["Parameter Code"] == param] for param in 
 df_lege_filtered = [df_lege[df_lege["Parameter Code"] == param] for param in parameters]
 
 # Set global x-axis min and max
-xmin, xmax = 0, 300
+xmin, xmax = 0, 200
 
 # Create a 5x1 grid of plots
 fig, axs = plt.subplots(5, 1, figsize=(32, 25), sharex=True)
@@ -98,9 +92,9 @@ for i, param in enumerate(parameters):
     elif param == "12:PRTD 2":
         axs[i].set_ylim([-220, 40])
     elif param == "13:Ambient Temperature":
-        axs[i].set_ylim([15, 50])
+        axs[i].set_ylim([19, 48])
     elif param == "73:DC Detector Leakage Current":
-        axs[i].set_ylim([-70, 400])
+        axs[i].set_ylim([-200, 1100])
     elif param == "16:Charge Loop DC Level":
         axs[i].set_ylim([-2, 0.1])
 
