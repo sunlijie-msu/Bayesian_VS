@@ -73,4 +73,4 @@ def plot_data(title, ylabel, data_field, file_name):
 # plot_data function takes 4 arguments: title, y-axis label, data field, file name
 plot_data('Cooler Power Over Time', 'Cooler power (W)', 'Cooler power (W)', 'Fig_PXCT_Cooler_Power.png')
 plot_data('Coldtip Temperature Over Time', 'Coldtip T (°C)', 'Coldtip T (°C)', 'Fig_PXCT_Coldtip_Temp.png')
-plot_data('Coldhead Temperature Over Time', 'Coldhead warm end T (°C)', 'Coldhead T (°C)', 'Fig_PXCT_Coldhead_Temp.png')
+plot_data('Coldhead Temperature Over Time', 'Coldhead warm end T (°C)', 'Coldhead warm end T (°C)', 'Fig_PXCT_Coldhead_Temp.png')

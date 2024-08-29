@@ -36,8 +36,8 @@ def parse_time(time_string):
 
 
 # Read the CSV files
-df_north = pd.read_csv(r'F:\e21010\iPA_Log\North5593_iPA_Log_All.csv', converters={'Time Stamp': parse_time})
-df_south = pd.read_csv(r'F:\e21010\iPA_Log\South5596_iPA_Log_All.csv', converters={'Time Stamp': parse_time})
+df_north = pd.read_csv(r'D:\X\out\Bayesian_VS\North5593_iPA_Log_For_Plot.csv', converters={'Time Stamp': parse_time})
+df_south = pd.read_csv(r'D:\X\out\Bayesian_VS\South5596_iPA_Log_For_Plot.csv', converters={'Time Stamp': parse_time})
 df_lege = pd.read_csv(r'F:\e21010\iPA_Log\LEGe_13725_iPAlog.csv', converters={'Time Stamp': parse_time})
 
 # Parameters to filter
@@ -57,9 +57,6 @@ df_north_filtered = [df_north[df_north["Parameter Code"] == param] for param in 
 df_south_filtered = [df_south[df_south["Parameter Code"] == param] for param in parameters]
 df_lege_filtered = [df_lege[df_lege["Parameter Code"] == param] for param in parameters]
 
-# Set global x-axis min and max
-xmin, xmax = 0, 200
-
 # Create a 5x1 grid of plots
 fig, axs = plt.subplots(5, 1, figsize=(32, 25), sharex=True)
 plt.tight_layout()
@@ -74,7 +71,7 @@ for i, param in enumerate(parameters):
     # Set the custom y-label instead of the dataset label
     axs[i].set_ylabel(custom_y_labels[i], fontsize=60, labelpad=30)
     axs[i].tick_params(axis='x', labelsize=60, length=9, width=3)
-    axs[i].tick_params(axis='y', labelsize=64, length=9, width=3)
+    axs[i].tick_params(axis='y', labelsize=60, length=9, width=3)
     
     # Adjust legend position to avoid blocking data
     if i == 1:
@@ -84,7 +81,7 @@ for i, param in enumerate(parameters):
     
     
     # Set consistent x-axis limits
-    axs[i].set_xlim([xmin, xmax])
+    axs[i].set_xlim([0, 160])
     
     # Set y-axis limits for specific plots if necessary
     if param == "11:PRTD 1":

@@ -10,7 +10,7 @@ cleaned_dataframes = []
 # Iterate over all files in the directory
 for filename in os.listdir(directory_path):
     # Process only the relevant original CSV files
-    if filename.endswith(".csv") and filename.startswith("South5596_Log_") and "_Cleaned" not in filename:
+    if filename.endswith(".csv") and filename.startswith("North5593_Log_") and "_Cleaned" not in filename:
         input_file_path = os.path.join(directory_path, filename)
         
         # Load the CSV file into a DataFrame
@@ -35,7 +35,7 @@ if cleaned_dataframes:
     combined_df = pd.concat(cleaned_dataframes, ignore_index=True)
     
     # Save the combined DataFrame to a new CSV file
-    combined_output_path = os.path.join(directory_path, "South5596_Log_Combined_Cleaned.csv")
+    combined_output_path = os.path.join(directory_path, "North5593_Log_Combined_Cleaned.csv")
     combined_df.to_csv(combined_output_path, index=False)
     
     print(f"Combined cleaned data saved to: {combined_output_path}")
