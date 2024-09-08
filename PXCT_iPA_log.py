@@ -81,7 +81,7 @@ for i, param in enumerate(parameters):
     
     
     # Set consistent x-axis limits
-    axs[i].set_xlim([0, 210])
+    axs[i].set_xlim([0, 220])
     
     # Set y-axis limits for specific plots if necessary
     if param == "11:PRTD 1":
@@ -98,6 +98,6 @@ for i, param in enumerate(parameters):
 # Only add the x-axis label to the bottom plot
 axs[-1].set_xlabel("Time (days)", fontsize=60, labelpad=20)
 
-
+# plt.show()
 # Save the figure
 plt.savefig(r'D:\X\out\Bayesian_VS\Fig_PXCT_iPA_log.png')
