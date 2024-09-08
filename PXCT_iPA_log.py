@@ -38,7 +38,7 @@ def parse_time(time_string):
 # Read the CSV files
 df_north = pd.read_csv(r'D:\X\out\Bayesian_VS\North5593_iPA_Log_For_Plot.csv', converters={'Time Stamp': parse_time})
 df_south = pd.read_csv(r'D:\X\out\Bayesian_VS\South5596_iPA_Log_For_Plot.csv', converters={'Time Stamp': parse_time})
-df_lege = pd.read_csv(r'F:\e21010\iPA_Log\LEGe_13725_iPAlog.csv', converters={'Time Stamp': parse_time})
+df_lege = pd.read_csv(r'D:\X\out\Bayesian_VS\LEGe13725_iPA_Log_For_Plot.csv', converters={'Time Stamp': parse_time})
 
 # Parameters to filter
 parameters = ["11:PRTD 1", "12:PRTD 2", "13:Ambient Temperature", "73:DC Detector Leakage Current", "16:Charge Loop DC Level"]
@@ -81,7 +81,7 @@ for i, param in enumerate(parameters):
     
     
     # Set consistent x-axis limits
-    axs[i].set_xlim([0, 160])
+    axs[i].set_xlim([0, 210])
     
     # Set y-axis limits for specific plots if necessary
     if param == "11:PRTD 1":
