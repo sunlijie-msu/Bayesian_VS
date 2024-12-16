@@ -438,7 +438,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 7: MCMC sampling.]")
-total_mcmc_samples = 100000
+total_mcmc_samples = 150000
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -570,16 +570,16 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.07  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.93  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.09  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.91  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Left', color='blue', linewidth=2, zorder=2)
 
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.15  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.86  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.13  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.87  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Right', color='blue', linewidth=2, zorder=2)
