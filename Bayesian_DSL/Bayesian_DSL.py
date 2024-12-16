@@ -23,14 +23,14 @@ print("[Step 1: Read and check input files.]")
 project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
-peak = '31S4156'
-fakeTau = '_3fs' # '_0fs' or '_3fs' or '_5fs'
+peak = '23Mg7333'
+dataset_Tau = '_S2193' # '_0fs' or '_3fs' or '_5fs'
 
 # Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
-bin_start = 130
-bin_stop = 244
-data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows
+data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
+bin_start = 12 # row 12 is 7732.5
+bin_stop = 36 # row 35 is 7847.5
+data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows. bin_start is included and bin_stop is excluded, therefore, +1.
 
 data_x_values_fullrange = data_fullrange[:, 0]
 data_y_values_fullrange = data_fullrange[:, 1]
@@ -42,15 +42,15 @@ data_y_values_peakrange = data_peakrange[:, 1]
 data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
-model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
-model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
+model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
 model_y_values_peakrange = model_y_values_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 model_y_var_peakrange = model_y_var_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 
 
-print("Path: ", dir_path + '\DSL_' + peak + fakeTau + '_manipulated_1k\DSL_' + peak + '_data.csv')
+print("Path: ", dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_data.csv')
 print("Dimensions of data_fullrange:")
 print("Shape:", data_fullrange.shape)
 print("Rows:", len(data_fullrange))
@@ -100,7 +100,7 @@ print("Shape:", model_y_values_peakrange.shape)
 print("Rows:", len(model_y_values_peakrange))
 print("Columns:", len(model_y_values_peakrange[0]))
 
-bin_size = 1
+bin_size = 2.5
 num_bins_peak = len(data_x_values_peakrange)  # the number of unique values in the first column of data_x_values, which corresponds to the number of different x values in the data = 59
 num_bins_fullrange = len(data_x_values_fullrange)
 peakrange_min = data_x_values_peakrange[0]
@@ -119,6 +119,8 @@ print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fullrange: ", num_bins
 
 # Select some model runs as training runs. You may select all the runs.
 # rndsample = sample(range(0, 324), 324)  # generates a list of 324 random numbers from the range 0 to 324 and assigns it to the variable rndsample.
+if peak== '23Mg7333':
+    number_of_fullmodel_runs = 135
 if peak == '31S1248':
     number_of_fullmodel_runs = 324
 if peak == '31S3076':
@@ -159,32 +161,31 @@ print("[Step 2: Plot model training runs (prior) vs data.]")
 fig, ax_prior = plt.subplots(figsize=(36, 12))
 fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
 
-p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
-
+p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 # Get min and max model counts in each bin
 model_lowcount = model_y_values_fullrange_train.min(axis=0)
 model_highcount = model_y_values_fullrange_train.max(axis=0)
 # Smooth boundaries of the filled area
-smoothed_model_lowcount = gaussian_filter1d(model_lowcount, sigma=1.5)
-smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=1.5)
+smoothed_model_lowcount = gaussian_filter1d(model_lowcount, sigma=0.7)
+smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=0.7)
 # Plot shaded region between min and max
 p2 = ax_prior.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
-                     color='red', alpha=0.3, linewidth=0, zorder=1)
+                     color='red', alpha=0.3, linewidth=0, label='Prior', zorder=1)
 ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
 ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
 ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
-ax_prior.legend(['Prior', 'Data'], fontsize=60, loc='upper left')
-xmin = min(data_x_values_fullrange) + 70
-xmax = max(data_x_values_fullrange) - 89.5
+ax_prior.legend([p1, p2], ['Data', 'Prior'], fontsize=60, loc='upper right')
+xmin = min(data_x_values_fullrange) - bin_size * 0.3
+xmax = max(data_x_values_fullrange) + bin_size * 0.3
 ax_prior.set_xlim(xmin, xmax)
-ymax = max(data_y_values_fullrange) + max(data_y_varhigh_fullrange) * 1.5
+ymax = max(data_y_values_fullrange) + max(data_y_varhigh_fullrange) * 2.6
 ax_prior.set_ylim(0, ymax)
 
 # Adjust the width of the frame
 for spine in ax_prior.spines.values():
     spine.set_linewidth(2)  # Set the linewidth to make the frame wider
-plt.savefig(peak + fakeTau + '_prior.png')
+plt.savefig(peak + dataset_Tau + '_prior.png')
 # plt.show()
 
 
@@ -229,7 +230,7 @@ def plot_explained_variance(singular_values): # singular_values is related to th
     ax_variance.set_yscale('log')
     ax_variance.grid(True)
     # plt.show()
-    plt.savefig(peak + fakeTau + '_explained_variance.png')
+    plt.savefig(peak + dataset_Tau + '_explained_variance.png')
     
 
 # (No filter) Fit an emulator via 'PCGP'
@@ -239,7 +240,7 @@ emulator_1 = emulator(x=data_x_values_peakrange,
                       theta=model_parameter_values_train,
                       f=model_y_values_peakrange_train.T,
                       method='PCGP_numPCs',
-                      args={'num_pcs': 99})  # Specify the number of principal components
+                      args={'num_pcs': 24})  # Specify the number of principal components
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
 # PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.01.
 
@@ -312,7 +313,7 @@ axs_emu1[1].scatter(np.arange(0, n), std_err_nf_test, s=200)
 axs_emu1[1].plot(np.arange(0, n), np.repeat(0, n), color='red')
 axs_emu1[1].set_xlabel(r'Test run')
 axs_emu1[1].set_ylim(-0.3, 0.3)
-plt.savefig(peak + fakeTau + '_residual.png')
+plt.savefig(peak + dataset_Tau + '_residual.png')
 #  plt.show()
 
 # Calculate R^2 for test set
@@ -333,6 +334,8 @@ rsq_train_rounded = np.round(rsq_train, 3)
 
 print(f"Rsq (train) = {rsq_train_rounded}")
 
+if peak == '23Mg7333':
+    bin_count_max = 20
 if peak == '31S1248':
     bin_count_max = 90
 if peak == '31S3076':
@@ -358,7 +361,7 @@ axs_emu2[1].set_xlabel('Simulator bin counts (training)')
 axs_emu2[1].set_ylabel('Emulator bin counts (training)')
 axs_emu2[1].set_title(r'$R^2=$' + str(rsq_train_rounded))
 
-plt.savefig(peak + fakeTau + '_R2.png')
+plt.savefig(peak + dataset_Tau + '_R2.png')
 # plt.show()
 
 
@@ -368,6 +371,21 @@ print('SSE = ', np.round(np.sum((pred_m - model_y_values_peakrange_test.T)**2), 
 
 # Define a class for prior of 4 parameters
 print("[Step 6: Prior class specification.]")
+class Prior_DSL23Mg_7333:
+    """ This defines the class instance of priors provided to the method. """
+    def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
+        return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
+                sps.norm.logpdf(theta[:, 1], 7333.2, 1.1) +
+                sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
+                sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
+    
+    def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
+        return np.vstack((sps.uniform.rvs(0, 30, size=n),
+                          sps.norm.rvs(7333.2, 1.1, size=n),
+                          sps.norm.rvs(1.0, 0.1, size=n),
+                          sps.norm.rvs(1.0, 0.1, size=n))).T
+
+
 class Prior_DSL31S_1248:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta
@@ -402,13 +420,13 @@ class Prior_DSL31S_3076:
 class Prior_DSL31S_4156:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
-        return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
+        return (sps.uniform.logpdf(theta[:, 0], 0, 25) +
                 sps.norm.logpdf(theta[:, 1], 4155.84, 0.31) +
                 sps.norm.logpdf(theta[:, 2], 1.0, 0.2) +
                 sps.norm.logpdf(theta[:, 3], 1.0, 0.2)).reshape((len(theta), 1))
     
     def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
-        return np.vstack((sps.uniform.rvs(0, 30, size=n),
+        return np.vstack((sps.uniform.rvs(0, 25, size=n),
                           sps.norm.rvs(4155.84, 0.31, size=n),
                           sps.norm.rvs(1.0, 0.2, size=n),
                           sps.norm.rvs(1.0, 0.2, size=n))).T
@@ -420,7 +438,31 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 7: MCMC sampling.]")
-total_mcmc_samples = 4000
+total_mcmc_samples = 100000
+if peak == '23Mg7333':
+    calibrator_1 = calibrator(emu=emulator_1,
+                                           y=data_y_values_peakrange,
+                                           x=data_x_values_peakrange,
+                                           thetaprior=Prior_DSL23Mg_7333,
+                                           # method='directbayes',
+                                           method='directbayeswoodbury',
+                                           # method='mlbayeswoodbury',
+                                           yvar=obsvar,
+                                           args={'theta0': np.array([[0.0, 7333.20, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                                     'sampler': 'metropolis_hastings',
+                                                     # 'sampler': 'LMC',
+                                                     # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'
+                                                     # 'sampler': 'PTLMC',
+                                                     'numsamp': total_mcmc_samples,
+                                                     'numchain': 10,
+                                                     'stepType': 'normal',
+                                                     'burnSamples': 1000,
+                                                     'nburnin': 1000,
+                                                     'verbose': True
+                                                     # 'stepParam': np.array([0.0, 0.0, 0.0, 0.0]) # ['Tau', 'Eg', 'Bkg', 'SP'] somehow stepParams don't work well
+                                                     }
+                                            )
+
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -495,7 +537,7 @@ def plot_pred_interval(calib):
     fig, ax_post_predict = plt.subplots(figsize=(36, 12))
     fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
     
-    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=5, label='Data', ecolor='black', zorder=3)  # zorder 2 appears on top of the zorder = 1.
+    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=3)  # zorder 2 appears on top of the zorder = 1.
 
     posterior_y_upper = np.percentile(rndm_m[:, 0: num_bins_peak], 97.7, axis=0)
     posterior_y_lower = np.percentile(rndm_m[:, 0: num_bins_peak], 2.3, axis=0)
@@ -508,43 +550,45 @@ def plot_pred_interval(calib):
     slope_value = (posterior_y_median[ num_bins_peak - 1]-posterior_y_median[0])/(peakrange_max-peakrange_min)
     intercept_value = posterior_y_median[0] - slope_value * peakrange_min
     
-    p4 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
-    p3 = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', alpha=1.0, linewidth=2, zorder=2)
+    p4 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', label='95% Credible Interval', alpha=0.3, linewidth=0, zorder=1)
+    p3_line, = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', label='Prediction Median', alpha=1.0, linewidth=2, zorder=2)
     ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
     # ax_post_predict.tick_params(direction='out')
     ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
-    ax_post_predict.legend(['95% Credible Interval', 'Prediction Median', 'Data'], fontsize=60, loc='upper left')
-    xmin = min(data_x_values_fullrange) + 70
-    xmax = max(data_x_values_fullrange) - 89.5
+    ax_post_predict.legend([p1, p3_line, p4], ['Data', 'Prediction Median', '95% Credible Interval'], fontsize=60, loc='upper right')
+    xmin = min(data_x_values_fullrange) - bin_size * 0.3
+    xmax = max(data_x_values_fullrange) + bin_size * 0.3
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
     ax_post_predict.set_xlim(xmin, xmax)
+    ymax = max(data_y_values_fullrange) + max(data_y_varhigh_fullrange) * 2.5
     ax_post_predict.set_ylim(0, ymax)
-    
 
+    
     # Add a linear background out of peak range for visualization only
 
 
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.92  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.07  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.93  # Adjust this value as needed
 
-    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
-    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function1', color='blue', linewidth=2, zorder=2)
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Left', color='blue', linewidth=2, zorder=2)
+
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.92  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.15  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.86  # Adjust this value as needed
 
-    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=2)
-    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function2', color='blue', linewidth=2, zorder=2)
+    ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
+    ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Right', color='blue', linewidth=2, zorder=2)
         
     # Adjust the width of the frame
     for spine in ax_post_predict.spines.values():
         spine.set_linewidth(2)  # Set the linewidth to make the frame wider
 
-    plt.savefig(peak + fakeTau + '_prediction.png')
+    plt.savefig(peak + dataset_Tau + '_prediction.png')
     # plt.show()
 
 plot_pred_interval(calibrator_1)
@@ -558,18 +602,18 @@ def plot_theta(calib, whichtheta):
     axs_trace[0].set_xlabel("Iteration", fontsize=60)
     axs_trace[0].set_ylabel(r"$\tau$ (fs)", fontsize=60)
     axs_trace[0].set_xlim([0, total_mcmc_samples/100])
-    axs_trace[0].set_ylim([0, 20])
+    axs_trace[0].set_ylim([0, 25])
 
-    axs_trace[1].boxplot(cal_theta[:, whichtheta], vert=False)
+    axs_trace[1].boxplot(cal_theta[:, whichtheta], orientation='horizontal')
     axs_trace[1].set_xlabel(r"$\tau$ (fs)", fontsize=60)  
     axs_trace[1].set_ylabel(r"$\tau$", fontsize=60)
     axs_trace[1].set_yticklabels([])
-    axs_trace[1].set_xlim([0, 20])
+    axs_trace[1].set_xlim([0, 25])
 
-    axs_trace[2].hist(cal_theta[:, whichtheta], bins=200, range=[0, 20])
+    axs_trace[2].hist(cal_theta[:, whichtheta], bins=250, range=[0, 25])
     axs_trace[2].set_xlabel(r"$\tau$ (fs)", fontsize=60)
     axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=60, labelpad=20)
-    axs_trace[2].set_xlim([0, 20])
+    axs_trace[2].set_xlim([0, 25])
     
     axs_trace[0].tick_params(axis='both', which='major', labelsize=60)
     axs_trace[1].tick_params(axis='both', which='major', labelsize=60)
@@ -577,15 +621,15 @@ def plot_theta(calib, whichtheta):
     
     samples = cal_theta[:, whichtheta]
     sorted_samples = np.sort(samples)
-    percentiles = [16, 50, 84, 90]
+    percentiles = [16, 50, 84, 90, 95]
     
     # Open a file in write mode for samples
-    with open(peak + fakeTau + '_samples.dat', 'w') as samples_file:
+    with open(peak + dataset_Tau + '_samples.dat', 'w') as samples_file:
         # Write the samples to the file
         np.savetxt(samples_file, samples, delimiter='\t')
 
     # Open a file in write mode for percentiles
-    with open(peak + fakeTau + '_percentiles.txt', 'w') as file:
+    with open(peak + dataset_Tau + '_percentiles.txt', 'w') as file:
         for percentile in percentiles:
             index = int(np.round(len(sorted_samples) * (percentile / 100.0)) - 1)
             value = sorted_samples[index]
@@ -594,7 +638,7 @@ def plot_theta(calib, whichtheta):
             file.write(f"{percentile}th percentile: {value:.3f}\n")
 
     # Save the plot
-    plt.savefig(peak + fakeTau + '_trace.png')
+    plt.savefig(peak + dataset_Tau + '_trace.png')
 
     # plt.show()
 
@@ -602,6 +646,12 @@ plot_theta(calibrator_1, 0)
 
 
 print("[Step 8-3: Plot 2D posterior distributions of parameters.]")
+if peak == '23Mg7333':
+    theta_prior = Prior_DSL23Mg_7333.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
+    dfpost = pd.DataFrame(theta_post, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
+    dfprior = pd.DataFrame(theta_prior, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
+
 if peak == '31S1248':
     theta_prior = Prior_DSL31S_1248.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
     theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
@@ -675,14 +725,14 @@ for ax in g.axes[3,:]:
     ax.set_xlabel(ax.get_xlabel(), fontsize=50, fontname='Times New Roman', labelpad=25)
 
 
-g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-g.axes[1, 1].set(xlim=(4154.7, 4157), xticks=np.arange(4155, 4158, 1.0))
-g.axes[2, 2].set(xlim=(0.3, 1.8), xticks=np.arange(0.4, 1.7, 0.4))
-g.axes[3, 3].set(xlim=(0.3, 1.8), xticks=np.arange(0.4, 1.7, 0.4))
+g.axes[0, 0].set(xlim=(0, 25), xticks=np.arange(0, 26, 5))
+g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
+g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
+g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-g.axes[1, 0].set(ylim=(4154.7, 4157), yticks=np.arange(4155, 4158, 1.0))
-g.axes[2, 0].set(ylim=(0.3, 1.8), yticks=np.arange(0.4, 1.7, 0.4))
-g.axes[3, 0].set(ylim=(0.3, 1.8), yticks=np.arange(0.4, 1.7, 0.4))
+g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
+g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
+g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 
 
 # Map the diagonal with kernel density plots. Rather than using discrete bins, a Kernel density estimation (KDE) plot smooths the observations with a Gaussian kernel, producing a continuous density estimate:
@@ -708,7 +758,7 @@ g.fig.add_artist(legend)
 # g.add_legend(fontsize=100, loc='upper right', title='Distributions', title_fontsize=100)
 
 # Save the figure
-plt.savefig(peak + fakeTau + '_posterior.png')
+plt.savefig(peak + dataset_Tau + '_posterior.png')
 
 # Show the plot (uncomment if you want to display the plot)
 # plt.show()
