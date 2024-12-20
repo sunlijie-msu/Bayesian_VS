@@ -120,7 +120,7 @@ print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fullrange: ", num_bins
 # Select some model runs as training runs. You may select all the runs.
 # rndsample = sample(range(0, 324), 324)  # generates a list of 324 random numbers from the range 0 to 324 and assigns it to the variable rndsample.
 if peak== '23Mg7333':
-    number_of_fullmodel_runs = 135
+    number_of_fullmodel_runs = 190
 if peak == '31S1248':
     number_of_fullmodel_runs = 324
 if peak == '31S3076':
@@ -175,7 +175,7 @@ ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2
 # ax.tick_params(direction='in')
 ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
 ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
-ax_prior.legend([p1, p2], ['Data', 'Prior'], fontsize=60, loc='upper right')
+ax_prior.legend([p1, p2], ['Data', 'Prior'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
 xmin = min(data_x_values_fullrange) - bin_size * 0.3
 xmax = max(data_x_values_fullrange) + bin_size * 0.3
 ax_prior.set_xlim(xmin, xmax)
@@ -236,19 +236,19 @@ def plot_explained_variance(singular_values): # singular_values is related to th
 # (No filter) Fit an emulator via 'PCGP'
 print("[Step 4: Model emulation.]")
 
-emulator_1 = emulator(x=data_x_values_peakrange,
-                      theta=model_parameter_values_train,
-                      f=model_y_values_peakrange_train.T,
-                      method='PCGP_numPCs',
-                      args={'num_pcs': 24})  # Specify the number of principal components
-# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
-# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.01.
-
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
-#                       method='PCGP',
-#                       args={'epsilon': 1e-50}) # Typically, we want to keep the principal components that capture the most variance. The epsilon parameter is used to set a threshold for filtering PCs with explained variances > epsilon.
+#                       method='PCGP_numPCs',
+#                       args={'num_pcs': 24})  # Specify the number of principal components
+# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
+# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.01.
+
+emulator_1 = emulator(x=data_x_values_peakrange,
+                      theta=model_parameter_values_train,
+                      f=model_y_values_peakrange_train.T,
+                      method='PCGP',
+                      args={'epsilon': 1e-50}) # Typically, we want to keep the principal components that capture the most variance. The epsilon parameter is used to set a threshold for filtering PCs with explained variances > epsilon.
 
 # prior_min = [0, 4154, 0.4, 0.4]
 # prior_max = [30, 4158, 2.0, 2.0]
@@ -420,13 +420,13 @@ class Prior_DSL31S_3076:
 class Prior_DSL31S_4156:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
-        return (sps.uniform.logpdf(theta[:, 0], 0, 25) +
+        return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
                 sps.norm.logpdf(theta[:, 1], 4155.84, 0.31) +
                 sps.norm.logpdf(theta[:, 2], 1.0, 0.2) +
                 sps.norm.logpdf(theta[:, 3], 1.0, 0.2)).reshape((len(theta), 1))
     
     def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
-        return np.vstack((sps.uniform.rvs(0, 25, size=n),
+        return np.vstack((sps.uniform.rvs(0, 30, size=n),
                           sps.norm.rvs(4155.84, 0.31, size=n),
                           sps.norm.rvs(1.0, 0.2, size=n),
                           sps.norm.rvs(1.0, 0.2, size=n))).T
@@ -438,7 +438,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 7: MCMC sampling.]")
-total_mcmc_samples = 150000
+total_mcmc_samples = 30000
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -448,7 +448,7 @@ if peak == '23Mg7333':
                                            method='directbayeswoodbury',
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
-                                           args={'theta0': np.array([[0.0, 7333.20, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                           args={'theta0': np.array([[7.0, 7333.10, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
                                                      'sampler': 'metropolis_hastings',
                                                      # 'sampler': 'LMC',
                                                      # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'
@@ -556,7 +556,7 @@ def plot_pred_interval(calib):
     # ax_post_predict.tick_params(direction='out')
     ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
-    ax_post_predict.legend([p1, p3_line, p4], ['Data', 'Prediction Median', '95% Credible Interval'], fontsize=60, loc='upper right')
+    ax_post_predict.legend([p1, p3_line, p4], ['Data', 'Prediction Median', '95% Credible Interval'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
     xmin = min(data_x_values_fullrange) - bin_size * 0.3
     xmax = max(data_x_values_fullrange) + bin_size * 0.3
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
@@ -570,7 +570,7 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.09  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
     linear_y_values_lower = linear_y_values_middle * 0.91  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
@@ -578,8 +578,8 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.13  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.87  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.10  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.90  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Right', color='blue', linewidth=2, zorder=2)
@@ -602,18 +602,18 @@ def plot_theta(calib, whichtheta):
     axs_trace[0].set_xlabel("Iteration", fontsize=60)
     axs_trace[0].set_ylabel(r"$\tau$ (fs)", fontsize=60)
     axs_trace[0].set_xlim([0, total_mcmc_samples/100])
-    axs_trace[0].set_ylim([0, 25])
+    axs_trace[0].set_ylim([0, 30])
 
     axs_trace[1].boxplot(cal_theta[:, whichtheta], orientation='horizontal')
     axs_trace[1].set_xlabel(r"$\tau$ (fs)", fontsize=60)  
     axs_trace[1].set_ylabel(r"$\tau$", fontsize=60)
     axs_trace[1].set_yticklabels([])
-    axs_trace[1].set_xlim([0, 25])
+    axs_trace[1].set_xlim([0, 30])
 
-    axs_trace[2].hist(cal_theta[:, whichtheta], bins=250, range=[0, 25])
+    axs_trace[2].hist(cal_theta[:, whichtheta], bins=300, range=[0, 30])
     axs_trace[2].set_xlabel(r"$\tau$ (fs)", fontsize=60)
     axs_trace[2].set_ylabel("Counts per 0.1 fs", fontsize=60, labelpad=20)
-    axs_trace[2].set_xlim([0, 25])
+    axs_trace[2].set_xlim([0, 30])
     
     axs_trace[0].tick_params(axis='both', which='major', labelsize=60)
     axs_trace[1].tick_params(axis='both', which='major', labelsize=60)
@@ -725,12 +725,14 @@ for ax in g.axes[3,:]:
     ax.set_xlabel(ax.get_xlabel(), fontsize=50, fontname='Times New Roman', labelpad=25)
 
 
-g.axes[0, 0].set(xlim=(0, 25), xticks=np.arange(0, 26, 5))
+g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
 g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
+#g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
 g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
+#g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 

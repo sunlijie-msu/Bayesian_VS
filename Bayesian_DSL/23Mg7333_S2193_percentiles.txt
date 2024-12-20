@@ -1,5 +1,5 @@
-16th percentile: 2.991
-50th percentile: 6.605
-84th percentile: 12.460
-90th percentile: 15.583
-95th percentile: 24.235
+16th percentile: 3.632
+50th percentile: 6.778
+84th percentile: 10.335
+90th percentile: 11.502
+95th percentile: 13.223
