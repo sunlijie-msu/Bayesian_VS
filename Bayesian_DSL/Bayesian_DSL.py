@@ -23,19 +23,19 @@ print("[Step 1: Read and check input files.]")
 project_path = os.path.abspath("Bayesian_DSL.py")
 dir_path = os.path.dirname(project_path)
 
-peak = '23Mg7333'
+peak = '23Mg7333' # modify
 dataset_Tau = '_S2193' # '_0fs' or '_3fs' or '_5fs'
 
-# Load data fullrange csv files and model fullrange csv files and model parameter values csv files
-data_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
-bin_start = 12 # row 12 is 7732.5
-bin_stop = 36 # row 35 is 7847.5
-data_peakrange = data_fullrange[bin_start:bin_stop, :] # Select data in the peak range by rows. bin_start is included and bin_stop is excluded, therefore, +1.
+# Load data fitrange csv files and model fitrange csv files and model parameter values csv files
+data_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_data.csv', delimiter=',')  # Read full range data # csv derived from histogram_get_bin_content_error.C
+bin_start = 12 # row 12 is 7732.5 # modify
+bin_stop = 36 # row 35 is 7847.5 # modify
+data_peakrange = data_fitrange[bin_start:bin_stop, :] # Select data in the peak range by rows. bin_start is included and bin_stop is excluded, therefore, +1.
 
-data_x_values_fullrange = data_fullrange[:, 0]
-data_y_values_fullrange = data_fullrange[:, 1]
-data_y_varlow_fullrange = data_fullrange[:, 2]
-data_y_varhigh_fullrange = data_fullrange[:, 3]
+data_x_values_fitrange = data_fitrange[:, 0]
+data_y_values_fitrange = data_fitrange[:, 1]
+data_y_varlow_fitrange = data_fitrange[:, 2]
+data_y_varhigh_fitrange = data_fitrange[:, 3]
 
 data_x_values_peakrange = data_peakrange[:, 0]
 data_y_values_peakrange = data_peakrange[:, 1]
@@ -43,35 +43,35 @@ data_y_varlow_peakrange = data_peakrange[:, 2]
 data_y_varhigh_peakrange = data_peakrange[:, 3]
 
 model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
-model_y_values_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fullrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_values_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
-model_y_values_peakrange = model_y_values_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
-model_y_var_peakrange = model_y_var_fullrange[:,bin_start:bin_stop] # Select model in the peak range by columns
+model_y_values_peakrange = model_y_values_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
+model_y_var_peakrange = model_y_var_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 
 
 print("Path: ", dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_data.csv')
-print("Dimensions of data_fullrange:")
-print("Shape:", data_fullrange.shape)
-print("Rows:", len(data_fullrange))
-print("Columns:", len(data_fullrange[0]))
+print("Dimensions of data_fitrange:")
+print("Shape:", data_fitrange.shape)
+print("Rows:", len(data_fitrange))
+print("Columns:", len(data_fitrange[0]))
 
 print("\nDimensions of data_peakrange:")
 print("Shape:", data_peakrange.shape)
 print("Rows:", len(data_peakrange))
 print("Columns:", len(data_peakrange[0]))
 
-print("\nDimensions of data_x_values_fullrange:")
-print("Shape:", data_x_values_fullrange.shape)
+print("\nDimensions of data_x_values_fitrange:")
+print("Shape:", data_x_values_fitrange.shape)
 
-print("\nDimensions of data_y_values_fullrange:")
-print("Shape:", data_y_values_fullrange.shape)
+print("\nDimensions of data_y_values_fitrange:")
+print("Shape:", data_y_values_fitrange.shape)
 
-print("\nDimensions of data_y_values_var_low_fullrange:")
-print("Shape:", data_y_varlow_fullrange.shape)
+print("\nDimensions of data_y_values_var_low_fitrange:")
+print("Shape:", data_y_varlow_fitrange.shape)
 
-print("\nDimensions of data_y_values_var_high_fullrange:")
-print("Shape:", data_y_varhigh_fullrange.shape)
+print("\nDimensions of data_y_values_var_high_fitrange:")
+print("Shape:", data_y_varhigh_fitrange.shape)
 
 print("\nDimensions of data_x_values_peakrange:")
 print("Shape:", data_x_values_peakrange.shape)
@@ -90,52 +90,57 @@ print("Shape:", model_parameter_values.shape)
 print("Rows:", len(model_parameter_values))
 print("Columns:", len(model_parameter_values[0]))
 
-print("\nDimensions of model_y_values_fullrange:")
-print("Shape:", model_y_values_fullrange.shape)
-print("Rows:", len(model_y_values_fullrange))
-print("Columns:", len(model_y_values_fullrange[0]))
+print("\nDimensions of model_y_values_fitrange:")
+print("Shape:", model_y_values_fitrange.shape)
+print("Rows:", len(model_y_values_fitrange))
+print("Columns:", len(model_y_values_fitrange[0]))
 
 print("\nDimensions of model_y_values_peakrange:")
 print("Shape:", model_y_values_peakrange.shape)
 print("Rows:", len(model_y_values_peakrange))
 print("Columns:", len(model_y_values_peakrange[0]))
 
-bin_size = 2.5
+bin_size = data_x_values_fitrange[1] - data_x_values_fitrange[0]  # bin_size = 5 keV
 num_bins_peak = len(data_x_values_peakrange)  # the number of unique values in the first column of data_x_values, which corresponds to the number of different x values in the data = 59
-num_bins_fullrange = len(data_x_values_fullrange)
+num_bins_fitrange = len(data_x_values_fitrange)
 peakrange_min = data_x_values_peakrange[0]
 peakrange_max = data_x_values_peakrange[num_bins_peak-1]
-fitrange_min = data_x_values_fullrange[0]
-fitrange_max = data_x_values_fullrange[num_bins_fullrange-1]
+fitrange_min = data_x_values_fitrange[0]
+fitrange_max = data_x_values_fitrange[num_bins_fitrange-1]
 num_model_runs = len(model_parameter_values)  # len(2Darray) will give you the number of rows in the 2D array.
 
 print("peakrange_min: ", peakrange_min,", peakrange_max: ", peakrange_max)
 print("fitrange_min: ", fitrange_min, ", fitrange_max: ", fitrange_max)
-print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fullrange: ", num_bins_fullrange)
+print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fitrange: ", num_bins_fitrange)
 
 num_bins_peak = len(model_y_values_peakrange[0])  # len(2Darray[0]) will give you the number of elements in the first row of the 2D array, i.e., the number of columns in the 2D array.
-num_bins_fullrange = len(model_y_values_fullrange[0])
-print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fullrange: ", num_bins_fullrange)
+num_bins_fitrange = len(model_y_values_fitrange[0])
+print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fitrange: ", num_bins_fitrange)
 
 # Select some model runs as training runs. You may select all the runs.
 # rndsample = sample(range(0, 324), 324)  # generates a list of 324 random numbers from the range 0 to 324 and assigns it to the variable rndsample.
 if peak== '23Mg7333':
     number_of_fullmodel_runs = 190
+    ymax = round(max(data_y_values_fitrange) + max(data_y_varhigh_fitrange) * 2.5)
 if peak == '31S1248':
     number_of_fullmodel_runs = 324
+    ymax = 90
 if peak == '31S3076':
     number_of_fullmodel_runs = 2106
+    ymax = 12
 if peak == '31S4156':
     number_of_fullmodel_runs = 297
+    ymax = 30
+
 
 # randomly selects 250 unique integers from this sequence and assigns them to the variable rndsample_train.
 # rndsample_train = sample(range(0, number_of_fullmodel_runs), 149) # range(0,n) means the sequence of random numbers from 0 to n-1. # modify 
 rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
 print('Select training runs: ', rndsample_train)
 model_y_values_peakrange_train = model_y_values_peakrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
-model_y_values_fullrange_train = model_y_values_fullrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
+model_y_values_fitrange_train = model_y_values_fitrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
 model_y_var_peakrange_train = model_y_var_peakrange[rndsample_train, :]
-model_y_var_fullrange_train = model_y_var_fullrange[rndsample_train, :]
+model_y_var_fitrange_train = model_y_var_fitrange[rndsample_train, :]
 model_parameter_values_train = model_parameter_values[rndsample_train, :]
 
 # Select the rest  model runs as test runs. # modify
@@ -161,25 +166,24 @@ print("[Step 2: Plot model training runs (prior) vs data.]")
 fig, ax_prior = plt.subplots(figsize=(36, 12))
 fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
 
-p1 = ax_prior.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
+p1 = ax_prior.errorbar(data_x_values_fitrange, data_y_values_fitrange, yerr=[data_y_varlow_fitrange,data_y_varhigh_fitrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=2)  # zorder 2 appears on top of the zorder = 1.
 # Get min and max model counts in each bin
-model_lowcount = model_y_values_fullrange_train.min(axis=0)
-model_highcount = model_y_values_fullrange_train.max(axis=0)
+model_lowcount = model_y_values_fitrange_train.min(axis=0)
+model_highcount = model_y_values_fitrange_train.max(axis=0)
 # Smooth boundaries of the filled area
 smoothed_model_lowcount = gaussian_filter1d(model_lowcount, sigma=0.7)
 smoothed_model_highcount = gaussian_filter1d(model_highcount, sigma=0.7)
 # Plot shaded region between min and max
-p2 = ax_prior.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
+p2 = ax_prior.fill_between(data_x_values_fitrange, smoothed_model_lowcount, smoothed_model_highcount,
                      color='red', alpha=0.3, linewidth=0, label='Prior', zorder=1)
 ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
 ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
 ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
 ax_prior.legend([p1, p2], ['Data', 'Prior'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
-xmin = min(data_x_values_fullrange) - bin_size * 0.3
-xmax = max(data_x_values_fullrange) + bin_size * 0.3
+xmin = min(data_x_values_fitrange) - bin_size * 0.2
+xmax = max(data_x_values_fitrange) + bin_size * 0.2
 ax_prior.set_xlim(xmin, xmax)
-ymax = max(data_y_values_fullrange) + max(data_y_varhigh_fullrange) * 2.6
 ax_prior.set_ylim(0, ymax)
 
 # Adjust the width of the frame
@@ -334,14 +338,6 @@ rsq_train_rounded = np.round(rsq_train, 3)
 
 print(f"Rsq (train) = {rsq_train_rounded}")
 
-if peak == '23Mg7333':
-    bin_count_max = 20
-if peak == '31S1248':
-    bin_count_max = 90
-if peak == '31S3076':
-    bin_count_max = 12
-if peak == '31S4156':
-    bin_count_max = 30
 
 # Visualization with the correct R^2
 fig, axs_emu2 = plt.subplots(1, 2, figsize=(36, 12))
@@ -349,14 +345,14 @@ fig.subplots_adjust(left=0.07, bottom=0.15, right=0.97, top=0.89)
 
 # Scatter plot for test set
 axs_emu2[0].scatter(model_y_values_peakrange_test.T, pred_m, alpha=0.3)
-axs_emu2[0].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
+axs_emu2[0].plot(range(2, ymax-15), range(2, ymax-15), color='red')
 axs_emu2[0].set_xlabel('Simulator bin counts (test)')
 axs_emu2[0].set_ylabel('Emulator bin counts (test)')
 axs_emu2[0].set_title(r'$R^2=$' + str(rsq_test_rounded))
 
 # Scatter plot for training set
 axs_emu2[1].scatter(model_y_values_peakrange_train.T, pred_m_tr, alpha=0.3)
-axs_emu2[1].plot(range(2, bin_count_max), range(2, bin_count_max), color='red')
+axs_emu2[1].plot(range(2, ymax-15), range(2, ymax-15), color='red')
 axs_emu2[1].set_xlabel('Simulator bin counts (training)')
 axs_emu2[1].set_ylabel('Emulator bin counts (training)')
 axs_emu2[1].set_title(r'$R^2=$' + str(rsq_train_rounded))
@@ -438,7 +434,7 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("[Step 7: MCMC sampling.]")
-total_mcmc_samples = 30000
+total_mcmc_samples = 1000
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -537,14 +533,14 @@ def plot_pred_interval(calib):
     fig, ax_post_predict = plt.subplots(figsize=(36, 12))
     fig.subplots_adjust(left=0.08, bottom=0.18, right=0.98, top=0.96)
     
-    p1 = ax_post_predict.errorbar(data_x_values_fullrange, data_y_values_fullrange, yerr=[data_y_varlow_fullrange,data_y_varhigh_fullrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=3)  # zorder 2 appears on top of the zorder = 1.
+    p1 = ax_post_predict.errorbar(data_x_values_fitrange, data_y_values_fitrange, yerr=[data_y_varlow_fitrange,data_y_varhigh_fitrange], fmt='s', color='black', linewidth=3, markersize=7, label='Data', ecolor='black', zorder=3)  # zorder 2 appears on top of the zorder = 1.
 
     posterior_y_upper = np.percentile(rndm_m[:, 0: num_bins_peak], 97.7, axis=0)
     posterior_y_lower = np.percentile(rndm_m[:, 0: num_bins_peak], 2.3, axis=0)
     posterior_y_median = np.percentile(rndm_m[:, 0: num_bins_peak], 50, axis=0)
     print("posterior_prediction_y_median: ", posterior_y_median)
     
-    # p2 = ax_post_predict.fill_between(data_x_values_fullrange, smoothed_model_lowcount, smoothed_model_highcount,
+    # p2 = ax_post_predict.fill_between(data_x_values_fitrange, smoothed_model_lowcount, smoothed_model_highcount,
     #                  color='red', alpha=0.3, linewidth=0, zorder=1)
     
     slope_value = (posterior_y_median[ num_bins_peak - 1]-posterior_y_median[0])/(peakrange_max-peakrange_min)
@@ -557,11 +553,8 @@ def plot_pred_interval(calib):
     ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
     ax_post_predict.legend([p1, p3_line, p4], ['Data', 'Prediction Median', '95% Credible Interval'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
-    xmin = min(data_x_values_fullrange) - bin_size * 0.3
-    xmax = max(data_x_values_fullrange) + bin_size * 0.3
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
     ax_post_predict.set_xlim(xmin, xmax)
-    ymax = max(data_y_values_fullrange) + max(data_y_varhigh_fullrange) * 2.5
     ax_post_predict.set_ylim(0, ymax)
 
     
