@@ -134,10 +134,10 @@ if peak == '31S4156':
 
 
 # randomly selects unique integers from this sequence and assigns them to the variable rndsample_train.
-training_size = int(0.75 * number_of_fullmodel_runs) # Calculate the number of training samples (80% of the total)
-rndsample_train = sample(range(number_of_fullmodel_runs), training_size) # Randomly select indices for the training set
+# training_size = int(0.75 * number_of_fullmodel_runs) # Calculate the number of training samples (80% of the total)
+# rndsample_train = sample(range(number_of_fullmodel_runs), training_size) # Randomly select indices for the training set
 # rndsample_train = sample(range(0, number_of_fullmodel_runs), 201) # range(0,n) means the sequence of random numbers from 0 to n-1.
-# rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
+rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
 print('\nSelect training runs: ', rndsample_train)
 model_y_values_peakrange_train = model_y_values_peakrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
 model_y_values_fitrange_train = model_y_values_fitrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
@@ -146,8 +146,8 @@ model_y_var_fitrange_train = model_y_var_fitrange[rndsample_train, :]
 model_parameter_values_train = model_parameter_values[rndsample_train, :]
 
 # Select the rest model runs as test runs.
-rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
-# rndsample_test = list(range(1, number_of_fullmodel_runs, 3)) # 1 means select all runs; 2 means select every other run, 1, 3, 5, 7, 9, etc.
+# rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
+rndsample_test = list(range(1, number_of_fullmodel_runs, 3)) # 1 means select all runs; 2 means select every other run, 1, 3, 5, 7, 9, etc.
 
 print('\nSelect test runs: ', rndsample_test)
 model_y_values_peakrange_test = model_y_values_peakrange[rndsample_test, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
@@ -290,7 +290,7 @@ emulator_1 = emulator(x=data_x_values_peakrange,
 
 
 # after fitting the emulator
-print(emulator_1._info['param_desc'])
+# print(emulator_1._info['param_desc'])
 print("\nEmulation method: ", emulator_1.method)
 print("\nfitinfo keys:", emulator_1._info.keys())
 
@@ -400,13 +400,13 @@ class Prior_DSL23Mg_7333:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
-                sps.norm.logpdf(theta[:, 1], 7333.2, 1.1) +
+                sps.norm.logpdf(theta[:, 1], 7332.7, 1.2) +
                 sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
                 sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
     
     def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
         return np.vstack((sps.uniform.rvs(0, 30, size=n),
-                          sps.norm.rvs(7333.2, 1.1, size=n),
+                          sps.norm.rvs(7332.7, 1.2, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n))).T
 
@@ -473,9 +473,9 @@ if peak == '23Mg7333':
                                            method='directbayeswoodbury',
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
-                                           args={'theta0': np.array([[7.0, 7333.10, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                     'sampler': 'metropolis_hastings',
-                                                     # 'sampler': 'LMC',
+                                           args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                                     # 'sampler': 'metropolis_hastings',
+                                                     'sampler': 'LMC',
                                                      # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'
                                                      # 'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
@@ -623,7 +623,7 @@ def plot_theta(calib, whichtheta):
     axs_trace[0].plot(cal_theta[:, whichtheta])
     axs_trace[0].set_xlabel("Iteration", fontsize=60)
     axs_trace[0].set_ylabel(r"$\tau$ (fs)", fontsize=60)
-    axs_trace[0].set_xlim([0, total_mcmc_samples/100])
+    axs_trace[0].set_xlim([0, total_mcmc_samples/100]) # plots the first 1% samples?
     axs_trace[0].set_ylim([0, 30])
 
     axs_trace[1].boxplot(cal_theta[:, whichtheta], orientation='horizontal')
@@ -642,23 +642,26 @@ def plot_theta(calib, whichtheta):
     axs_trace[2].tick_params(axis='both', which='major', labelsize=60)
     
     samples = cal_theta[:, whichtheta]
-    sorted_samples = np.sort(samples)
     percentiles = [16, 50, 84, 90, 95]
-    
-    # Open a file in write mode for samples
-    with open(peak + dataset_Tau + '_samples.dat', 'w') as samples_file:
-        # Write the samples to the file
+
+    # Calculate percentiles
+    values = np.percentile(samples, percentiles)
+    percentile_values = dict(zip(percentiles, values))
+
+    sigma_minus = percentile_values[50] - percentile_values[16]
+    sigma_plus = percentile_values[84] - percentile_values[50]
+    print(f"\nTau = {percentile_values[50]:.3f} +{sigma_plus:.3f} -{sigma_minus:.3f}")
+
+    # write the samples to a file
+    with open(f"{peak}{dataset_Tau}_samples.dat", 'w') as samples_file:
         np.savetxt(samples_file, samples, delimiter='\t')
 
-    # Open a file in write mode for percentiles
-    with open(peak + dataset_Tau + '_percentiles.txt', 'w') as file:
-        for percentile in percentiles:
-            index = int(np.round(len(sorted_samples) * (percentile / 100.0)) - 1)
-            value = sorted_samples[index]
-        
-            # Write the percentile and value to the file
+    # write the percentiles to a file
+    with open(f"{peak}{dataset_Tau}_percentiles.txt", 'w') as file:
+        for percentile, value in percentile_values.items():
             file.write(f"{percentile}th percentile: {value:.3f}\n")
 
+    
     # Save the plot
     plt.savefig(peak + dataset_Tau + '_trace.png')
 
@@ -750,12 +753,12 @@ for ax in g.axes[3,:]:
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 1].set(xlim=(7329.1, 7336.3), xticks=np.arange(7330, 7337, 2.0))
 #g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 0].set(ylim=(7329.1, 7336.3), yticks=np.arange(7330, 7337, 2.0))
 #g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
