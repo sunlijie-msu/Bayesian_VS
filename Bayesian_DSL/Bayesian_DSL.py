@@ -180,7 +180,7 @@ p2 = ax_prior.fill_between(data_x_values_fitrange, smoothed_model_lowcount, smoo
                      color='red', alpha=0.3, linewidth=0, label='Prior', zorder=1)
 ax_prior.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
 # ax.tick_params(direction='in')
-ax_prior.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
+ax_prior.set_ylabel('Counts per 5 keV', fontsize=60, labelpad=30)
 ax_prior.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
 ax_prior.legend([p1, p2], ['Data', 'Prior'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
 xmin = min(data_x_values_fitrange) - bin_size * 0.2
@@ -281,11 +281,11 @@ emulator_1 = emulator(x=data_x_values_peakrange,
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting Gaussian Process model to each Princial Component separately.
+# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting Gaussian Process model to each Principal Component separately.
 # 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed. With exploding computational cost associated with the large covariance matrix.
 # 3) PCGPR.py: Principal Component Gaussian Process Regression.
 # 4) PCGPRG: Principal Component Gaussian Process with Grouping.
-# 5) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed in our case, I suppose.
+# 5) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed for the DSAM-Geant4 model, I suppose.
 # 6) PCSK.py: Principal Component Stochastic Kriging emulator uses both simulated mean and variance for the emulator training. This leads to improved emulator accuracy when compared with other emulation methods, especially for simulations that produce stochastic output.
 
 
@@ -464,20 +464,21 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 # Calibrator 1
 print("\n[Step 7: MCMC sampling.]")
 total_mcmc_samples = 10000
+plot_mcmc_samples = 1000  # for slow 2D corner plots
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
                                            x=data_x_values_peakrange,
                                            thetaprior=Prior_DSL23Mg_7333,
-                                           # method='directbayes',
-                                           method='directbayeswoodbury',
-                                           # method='mlbayeswoodbury',
+                                           # method='directbayes', # default calibration method.
+                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended.
+                                           # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If you don¡¯t need this ML-based weighting, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                     # 'sampler': 'metropolis_hastings',
-                                                     'sampler': 'LMC',
-                                                     # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'
-                                                     # 'sampler': 'PTLMC',
+                                                      'sampler': 'metropolis_hastings', # default sampler. Recommended.
+                                                    # 'sampler': 'LMC', # LMC uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. You don¡¯t need to set stepParam explicitly: by default, LMC will estimate an initial scale from your starting samples and adapt from there. You don¡¯t need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
+                                                     # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'; PTMC is not supported in the version 0.3.0 of surmise
+                                                     # 'sampler': 'PTLMC', # PTLMC combines Parallel Tempering (running multiple chains at different ¡°temperatures¡±) and Langevin Monte Carlo (using gradient-based proposals). Eg7333, the posterior appears to be more scattered than metropolis_hastings. The acceptance rate is around 0.004, compared with the 0.22 of metropolis_hastings.
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -531,8 +532,8 @@ if peak == '31S4156':
                                            x=data_x_values_peakrange,
                                            thetaprior=Prior_DSL31S_4156,
                                            # method='directbayes',
-                                           method='directbayeswoodbury',
-                                           # method='mlbayeswoodbury',
+                                           # method='directbayeswoodbury',
+                                           method='mlbayeswoodbury',
                                            yvar=obsvar,
                                            args={'theta0': np.array([[0.0, 4155.84, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
                                                      'sampler': 'metropolis_hastings',
@@ -579,7 +580,7 @@ def plot_pred_interval(calib):
     p3_line, = ax_post_predict.plot(data_x_values_peakrange, posterior_y_median, color='blue', label='Prediction Median', alpha=1.0, linewidth=2, zorder=2)
     ax_post_predict.tick_params(axis='both', which='major', labelsize=60, length=9, width=2)
     # ax_post_predict.tick_params(direction='out')
-    ax_post_predict.set_ylabel('Counts per 1 keV', fontsize=60, labelpad=30)
+    ax_post_predict.set_ylabel('Counts per 5 keV', fontsize=60, labelpad=30)
     ax_post_predict.set_xlabel('Energy (keV)', fontsize=60, labelpad=20)
     ax_post_predict.legend([p1, p3_line, p4], ['Data', 'Prediction Median', '95% Credible Interval'], fontsize=60, loc='upper right', bbox_to_anchor=(1.007, 1.025))
     # ax_post_predict.set_xticks(np.arange(xmin-0.5, xmax+1, step=25))
@@ -672,25 +673,25 @@ plot_theta(calibrator_1, 0)
 
 print("\n[Step 8-3: Plot 2D posterior distributions of parameters.]")
 if peak == '23Mg7333':
-    theta_prior = Prior_DSL23Mg_7333.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
-    theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
+    theta_prior = Prior_DSL23Mg_7333.rnd(plot_mcmc_samples)  # draw a number of random parameters from the prior
+    theta_post = calibrator_1.theta.rnd(plot_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
     dfprior = pd.DataFrame(theta_prior, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
 
 if peak == '31S1248':
-    theta_prior = Prior_DSL31S_1248.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_prior = Prior_DSL31S_1248.rnd(total_mcmc_samples)  # draw a number of random parameters from the prior
     theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Tau', 'Eg', 'Bkg', 'SP'])
     dfprior = pd.DataFrame(theta_prior, columns=['Tau', 'Eg', 'Bkg', 'SP'])
 
 if peak == '31S3076':
-    theta_prior = Prior_DSL31S_3076.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_prior = Prior_DSL31S_3076.rnd(total_mcmc_samples)  # draw a number of random parameters from the prior
     theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Tau', 'Eg', 'Bkg', 'SP', 'AC'])
     dfprior = pd.DataFrame(theta_prior, columns=['Tau', 'Eg', 'Bkg', 'SP', 'AC'])
 
 if peak == '31S4156':
-    theta_prior = Prior_DSL31S_4156.rnd(total_mcmc_samples)  # draw 1000 random parameters from the prior
+    theta_prior = Prior_DSL31S_4156.rnd(total_mcmc_samples)  # draw a number of random parameters from the prior
     theta_post = calibrator_1.theta.rnd(total_mcmc_samples)
     dfpost = pd.DataFrame(theta_post, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
     dfprior = pd.DataFrame(theta_prior, columns=['Lifetime', '$\gamma$-ray Energy', 'Background', 'Stopping Power'])
@@ -699,13 +700,13 @@ np.set_printoptions(precision=3, suppress=True) # Set the precision to 3 decimal
 print("One prior sample:", theta_prior[0])
 print("One posterior sample:", theta_post[0])
 
-
+# the code below generates a Seaborn PairGrid with kernel density estimation (KDE) plots for a large dataset, which takes a considerable amount of time!
 #  a function from the Pandas library that is used to create a dataframe object. Dataframe is a two-dimensional, size-mutable, and tabular data structure with columns of potentially different types.
 
 df = pd.concat([dfprior, dfpost])
 #  It is used to combine multiple DataFrames or Series into a single DataFrame or Series. It can combine the dfprior and dfpost DataFrames vertically.
-pr = ['Prior' for i in range(total_mcmc_samples)]
-ps = ['Posterior' for i in range(total_mcmc_samples)]
+pr = ['Prior' for i in range(plot_mcmc_samples)]
+ps = ['Posterior' for i in range(plot_mcmc_samples)]
 pr.extend(ps)
 df['Distributions'] = pr
 #  The pr and ps lists are created to add a new column 'distribution' to the combined DataFrame indicating whether a row belongs to the prior or posterior distribution.
