@@ -242,11 +242,11 @@ def plot_explained_variance(singular_values): # singular_values is related to th
 # (No filter) Fit an emulator via 'PCGP'
 print("\n[Step 4: Model emulation.]")
 
-emulator_1 = emulator(x=data_x_values_peakrange,
-                      theta=model_parameter_values_train,
-                      f=model_y_values_peakrange_train.T,
-                      method='PCGP_numPCs',
-                      args={'num_pcs': 24})  # Specify the number of principal components
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCGP_numPCs',
+#                       args={'num_pcs': 24})  # Specify the number of principal components
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
 # PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.1.
 
@@ -256,37 +256,32 @@ emulator_1 = emulator(x=data_x_values_peakrange,
 #                       method='PCGP',
 #                       args={'epsilon': 1e-50}) # Typically, we want to keep the principal components that capture the most variance. The epsilon parameter is used to set a threshold for filtering PCs with explained variances > epsilon.
 
-# prior_min = [0, 4154, 0.4, 0.4]
-# prior_max = [30, 4158, 2.0, 2.0]
+# prior_min = [0, 7330, 0.4, 0.4]
+# prior_max = [30, 7338, 2.0, 2.0]
 # prior_dict = {'min': prior_min, 'max': prior_max}
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
 #                       method='PCGPR',
-#                       args={'epsilon': 0.00000001, 'prior': prior_dict})
+#                       args={'epsilon': 1e-10, 'prior': prior_dict})
 
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
 #                       method='indGP')
 
-# emulator_1 = emulator(x=data_x_values_peakrange,
-#                       theta=model_parameter_values_train,
-#                       f=model_y_values_peakrange_train.T,
-#                       method='PCSK',
-#                       # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
-#                       args={'numpcs': 114, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+emulator_1 = emulator(x=data_x_values_peakrange,
+                      theta=model_parameter_values_train,
+                      f=model_y_values_peakrange_train.T,
+                      method='PCSK',
+                      # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+                      args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
 
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-# 1) PCGP.py: Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting Gaussian Process model to each Principal Component separately.
-# 2) indGP.py skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed. With exploding computational cost associated with the large covariance matrix.
-# 3) PCGPR.py: Principal Component Gaussian Process Regression.
-# 4) PCGPRG: Principal Component Gaussian Process with Grouping.
-# 5) PCGPwM.py and PCGPwImpute properly handle missing points in the model output, which is not needed for the DSAM-Geant4 model, I suppose.
-# 6) PCSK.py: Principal Component Stochastic Kriging emulator uses both simulated mean and variance for the emulator training. This leads to improved emulator accuracy when compared with other emulation methods, especially for simulations that produce stochastic output.
+
 
 
 # after fitting the emulator
@@ -390,8 +385,8 @@ plt.savefig(peak + dataset_Tau + '_error.png')
 # plt.show()
 
 
-print('\nMSE = ', np.round(np.mean(np.sum(np.square(pred_m - model_y_values_peakrange_test.T), axis=1)), 2))  # calculates the mean squared error (MSE), which is another measure of the accuracy of the emulator.
-print('SSE = ', np.round(np.sum((pred_m - model_y_values_peakrange_test.T)**2), 2))
+print('\nMSE =', np.round(np.mean(np.sum(np.square(pred_m - model_y_values_peakrange_test.T), axis=1)), 2))  # calculates the mean squared error (MSE), which is another measure of the accuracy of the emulator.
+print('SSE =', np.round(np.sum((pred_m - model_y_values_peakrange_test.T)**2), 2))
 
 
 # Define a class for prior of 4 parameters
@@ -463,8 +458,8 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("\n[Step 7: MCMC sampling.]")
-total_mcmc_samples = 10000
-plot_mcmc_samples = 1000  # for slow 2D corner plots
+total_mcmc_samples = 200000
+plot_mcmc_samples = 2000  # for slow 2D corner plots
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -472,13 +467,13 @@ if peak == '23Mg7333':
                                            thetaprior=Prior_DSL23Mg_7333,
                                            # method='directbayes', # default calibration method.
                                            method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended.
-                                           # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If you don¡¯t need this ML-based weighting, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
+                                           # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If this ML-based weighting is not needed, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                      'sampler': 'metropolis_hastings', # default sampler. Recommended.
-                                                    # 'sampler': 'LMC', # LMC uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. You don¡¯t need to set stepParam explicitly: by default, LMC will estimate an initial scale from your starting samples and adapt from there. You don¡¯t need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
+                                                      'sampler': 'metropolis_hastings', # default sampler; recommended.
+                                                    # 'sampler': 'LMC', # Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
                                                      # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'; PTMC is not supported in the version 0.3.0 of surmise
-                                                     # 'sampler': 'PTLMC', # PTLMC combines Parallel Tempering (running multiple chains at different ¡°temperatures¡±) and Langevin Monte Carlo (using gradient-based proposals). Eg7333, the posterior appears to be more scattered than metropolis_hastings. The acceptance rate is around 0.004, compared with the 0.22 of metropolis_hastings.
+                                                     # 'sampler': 'PTLMC', # Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution appears to be more scattered compared to that obtained using the Metropolis-Hastings sampler. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -601,8 +596,8 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.10  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.90  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * 1.12  # Adjust this value as needed
+    linear_y_values_lower = linear_y_values_middle * 0.89  # Adjust this value as needed
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Right', color='blue', linewidth=2, zorder=2)
