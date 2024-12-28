@@ -63,6 +63,7 @@ def fit(fitinfo, x, theta, f, epsilon=0.1, **kwargs):
 
     # create a dictionary to save the emu info for each PC
     emulist = [dict() for x in range(0, numpcs)]
+    # print("fitinfo keys:", fitinfo.keys()) # Added by Lijie Sun
 
     # fit a GP for each PC
     for pcanum in range(0, numpcs):

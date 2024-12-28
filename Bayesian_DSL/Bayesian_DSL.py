@@ -133,10 +133,8 @@ if peak == '31S4156':
     ymax = 30
 
 
-# randomly selects unique integers from this sequence and assigns them to the variable rndsample_train.
 # training_size = int(0.75 * number_of_fullmodel_runs) # Calculate the number of training samples (80% of the total)
 # rndsample_train = sample(range(number_of_fullmodel_runs), training_size) # Randomly select indices for the training set
-# rndsample_train = sample(range(0, number_of_fullmodel_runs), 201) # range(0,n) means the sequence of random numbers from 0 to n-1.
 rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
 print('\nSelect training runs: ', rndsample_train)
 model_y_values_peakrange_train = model_y_values_peakrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
@@ -145,7 +143,6 @@ model_y_var_peakrange_train = model_y_var_peakrange[rndsample_train, :]
 model_y_var_fitrange_train = model_y_var_fitrange[rndsample_train, :]
 model_parameter_values_train = model_parameter_values[rndsample_train, :]
 
-# Select the rest model runs as test runs.
 # rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
 rndsample_test = list(range(1, number_of_fullmodel_runs, 3)) # 1 means select all runs; 2 means select every other run, 1, 3, 5, 7, 9, etc.
 
@@ -241,14 +238,14 @@ def plot_explained_variance(singular_values): # singular_values is related to th
 
 # (No filter) Fit an emulator via 'PCGP'
 print("\n[Step 4: Model emulation.]")
+# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
+# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.1.
 
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
 #                       method='PCGP_numPCs',
 #                       args={'num_pcs': 24})  # Specify the number of principal components
-# C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
-# PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.1.
 
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
@@ -265,23 +262,24 @@ print("\n[Step 4: Model emulation.]")
 #                       method='PCGPR',
 #                       args={'epsilon': 1e-10, 'prior': prior_dict})
 
-# emulator_1 = emulator(x=data_x_values_peakrange,
-#                       theta=model_parameter_values_train,
-#                       f=model_y_values_peakrange_train.T,
-#                       method='indGP')
-
 emulator_1 = emulator(x=data_x_values_peakrange,
                       theta=model_parameter_values_train,
                       f=model_y_values_peakrange_train.T,
-                      method='PCSK',
-                      # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
-                      args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+                      method='indGP')
+
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCSK',
+#                       # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+#                       args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
 
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-
+# PCGP is the default emulation method. It uses principal component analysis (PCA) to reduce the dimensionality of the input space. The number of principal components is determined by the epsilon parameter, which sets a threshold for filtering PCs with explained variances > epsilon. The default value of epsilon is 0.1. Recommended as of 12/27/2024.
+# PCSK is not recommended for DSL analysis due to its unstable training performance as of 12/27/2024.
 
 
 # after fitting the emulator
@@ -458,22 +456,22 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("\n[Step 7: MCMC sampling.]")
-total_mcmc_samples = 200000
-plot_mcmc_samples = 2000  # for slow 2D corner plots
+total_mcmc_samples = 10000
+plot_mcmc_samples = 1000  # for slow 2D corner plots
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
                                            x=data_x_values_peakrange,
                                            thetaprior=Prior_DSL23Mg_7333,
                                            # method='directbayes', # default calibration method.
-                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended.
+                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended as of 12/27/2024.
                                            # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If this ML-based weighting is not needed, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                      'sampler': 'metropolis_hastings', # default sampler; recommended.
+                                                      'sampler': 'metropolis_hastings', # default sampler; recommended as of 12/27/2024.
                                                     # 'sampler': 'LMC', # Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
                                                      # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'; PTMC is not supported in the version 0.3.0 of surmise
-                                                     # 'sampler': 'PTLMC', # Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution appears to be more scattered compared to that obtained using the Metropolis-Hastings sampler. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
+                                                     # 'sampler': 'PTLMC', # Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution appears to be more scattered compared to that obtained using the Metropolis-Hastings sampler. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has a higher acceptance rate of about 0.22.
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -614,7 +612,7 @@ plot_pred_interval(calibrator_1)
 print("\n[Step 8-2: Plot posterior samples.]")
 def plot_theta(calib, whichtheta):
     fig, axs_trace = plt.subplots(3, 1, figsize=(30, 30))
-    fig.subplots_adjust(left=0.10, bottom=0.07, right=0.96, top=0.97, hspace=0.3)
+    fig.subplots_adjust(left=0.11, bottom=0.07, right=0.96, top=0.97, hspace=0.3)
     cal_theta = calib.theta.rnd(total_mcmc_samples)
     axs_trace[0].plot(cal_theta[:, whichtheta])
     axs_trace[0].set_xlabel("Iteration", fontsize=60)
