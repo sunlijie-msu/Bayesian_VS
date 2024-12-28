@@ -278,7 +278,7 @@ emulator_1 = emulator(x=data_x_values_peakrange,
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-# PCGP is the default emulation method. It uses principal component analysis (PCA) to reduce the dimensionality of the input space. The number of principal components is determined by the epsilon parameter, which sets a threshold for filtering PCs with explained variances > epsilon. The default value of epsilon is 0.1. Recommended as of 12/27/2024.
+# PCGP is the default emulation method. It uses principal component analysis (PCA) to reduce the dimensionality of the input space. The number of principal components is determined by the epsilon parameter, which sets a threshold for filtering PCs with explained variances > epsilon. The default value of epsilon is 0.1. Recommended for DSL as of 12/27/2024.
 # PCSK is not recommended for DSL analysis due to its unstable training performance as of 12/27/2024.
 
 
@@ -464,11 +464,11 @@ if peak == '23Mg7333':
                                            x=data_x_values_peakrange,
                                            thetaprior=Prior_DSL23Mg_7333,
                                            # method='directbayes', # default calibration method.
-                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended as of 12/27/2024.
+                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended for DSL as of 12/27/2024.
                                            # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If this ML-based weighting is not needed, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                      'sampler': 'metropolis_hastings', # default sampler; recommended as of 12/27/2024.
+                                                      'sampler': 'metropolis_hastings', # default sampler; recommended for DSL as of 12/27/2024.
                                                     # 'sampler': 'LMC', # Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
                                                      # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'; PTMC is not supported in the version 0.3.0 of surmise
                                                      # 'sampler': 'PTLMC', # Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution appears to be more scattered compared to that obtained using the Metropolis-Hastings sampler. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has a higher acceptance rate of about 0.22.
