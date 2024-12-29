@@ -44,7 +44,8 @@ data_y_varhigh_peakrange = data_peakrange[:, 3]
 
 model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
 model_y_values_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var_All0.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+# model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var_All0.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
 model_y_values_peakrange = model_y_values_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 model_y_var_peakrange = model_y_var_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
@@ -246,11 +247,11 @@ print("\n[Step 4: Model emulation.]")
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods\PCGP_numPCs.py # modify
 # PCGP_numPCs.py is a modified version of PCGP.py that allows the user to specify the number of principal components to be used in the emulator. The number of principal components is specified using the args dictionary with the key 'num_pcs'. If num_pcs is not specified, it falls back to epsilon = 0.1.
 
-# emulator_1 = emulator(x=data_x_values_peakrange,
-#                       theta=model_parameter_values_train,
-#                       f=model_y_values_peakrange_train.T,
-#                       method='PCGP_numPCs',
-#                       args={'num_pcs': 24})  # Specify the number of principal components
+emulator_1 = emulator(x=data_x_values_peakrange,
+                      theta=model_parameter_values_train,
+                      f=model_y_values_peakrange_train.T,
+                      method='PCGP_numPCs',
+                      args={'num_pcs': 24})  # Specify the number of principal components
 
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
@@ -272,12 +273,12 @@ print("\n[Step 4: Model emulation.]")
 #                       f=model_y_values_peakrange_train.T,
 #                       method='indGP')
 
-emulator_1 = emulator(x=data_x_values_peakrange,
-                      theta=model_parameter_values_train,
-                      f=model_y_values_peakrange_train.T,
-                      method='PCSK',
-                      # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
-                      args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+# emulator_1 = emulator(x=data_x_values_peakrange,
+#                       theta=model_parameter_values_train,
+#                       f=model_y_values_peakrange_train.T,
+#                       method='PCSK',
+#                       # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+#                       args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
 
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
