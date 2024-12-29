@@ -527,7 +527,7 @@ if peak == '23Mg7333':
 
 # 3) `PTLMC': Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures and exchanging states periodically) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution exhibits numerous nearby local minima compared to that obtained using the Metropolis-Hastings sampler, indicating it is less suitable for DSL lineshape analysis. The overall credible intervals by integrating the posterior distributions are consistent with those from `metropolis\_hastings' sampling. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
 
-# 4) `PTMC': required positional arguments: `log_likelihood' and `log_prior'. PTMC is not supported in the version 0.3.0 of \textsc{surmise}.
+# 4) `PTMC': required positional arguments: `log\_likelihood' and `log\_prior'. PTMC is not supported in the version 0.3.0 of \textsc{surmise}.
 
 
 if peak == '31S1248':
