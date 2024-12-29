@@ -44,7 +44,7 @@ data_y_varhigh_peakrange = data_peakrange[:, 3]
 
 model_parameter_values = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_parameter_values.csv', delimiter=',')  # csv derived from Comparison_DSL2.C
 model_y_values_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
-model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
+model_y_var_fitrange = np.loadtxt(dir_path + '\DSL_' + peak + dataset_Tau + '\DSL_' + peak + '_model_y_values_var_All0.csv', delimiter=',')   # csv derived from Comparison_DSL2.C
 
 model_y_values_peakrange = model_y_values_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
 model_y_var_peakrange = model_y_var_fitrange[:,bin_start:bin_stop] # Select model in the peak range by columns
@@ -122,6 +122,7 @@ print("num_bins_peakrange: ", num_bins_peak, ",  num_bins_fitrange: ", num_bins_
 if peak== '23Mg7333':
     number_of_fullmodel_runs = 201
     ymax = round(max(data_y_values_fitrange) + max(data_y_varhigh_fitrange) * 2.5)
+    emulator_diagnostics = 'False' # 'True' or 'False'. If 'True', the emulator will be trained on a subset of the full model runs for evaluating emulator performance. If 'False', the emulator will be trained on all the full model runs for MCMC parameter estimation.
 if peak == '31S1248':
     number_of_fullmodel_runs = 324
     ymax = 90
@@ -133,9 +134,15 @@ if peak == '31S4156':
     ymax = 30
 
 
-# training_size = int(0.75 * number_of_fullmodel_runs) # Calculate the number of training samples (80% of the total)
-# rndsample_train = sample(range(number_of_fullmodel_runs), training_size) # Randomly select indices for the training set
-rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
+if emulator_diagnostics == 'True':
+    training_size = int(0.75 * number_of_fullmodel_runs) # Calculate the number of training samples (80% of the total)
+    rndsample_train = sample(range(number_of_fullmodel_runs), training_size) # Randomly select indices for the training set
+    rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
+
+if emulator_diagnostics == 'False':
+    rndsample_train = list(range(0, number_of_fullmodel_runs, 1)) # 1 means select all runs; 2 means select every other run, 0, 2, 4, 6, 8, etc.
+    rndsample_test = list(range(1, number_of_fullmodel_runs, 2)) # 1 means select all runs; 2 means select every other run, 1, 3, 5, 7, 9, etc.
+
 print('\nSelect training runs: ', rndsample_train)
 model_y_values_peakrange_train = model_y_values_peakrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
 model_y_values_fitrange_train = model_y_values_fitrange[rndsample_train, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index. # for visualization purpose only
@@ -143,8 +150,6 @@ model_y_var_peakrange_train = model_y_var_peakrange[rndsample_train, :]
 model_y_var_fitrange_train = model_y_var_fitrange[rndsample_train, :]
 model_parameter_values_train = model_parameter_values[rndsample_train, :]
 
-# rndsample_test = [x for x in range(number_of_fullmodel_runs) if x not in rndsample_train]
-rndsample_test = list(range(1, number_of_fullmodel_runs, 3)) # 1 means select all runs; 2 means select every other run, 1, 3, 5, 7, 9, etc.
 
 print('\nSelect test runs: ', rndsample_test)
 model_y_values_peakrange_test = model_y_values_peakrange[rndsample_test, :]  # model_y_values_train is a subset of model_y_values where the rows are selected using the rndsample list and all columns are included by specifying : for the second index.
@@ -262,24 +267,49 @@ print("\n[Step 4: Model emulation.]")
 #                       method='PCGPR',
 #                       args={'epsilon': 1e-10, 'prior': prior_dict})
 
-emulator_1 = emulator(x=data_x_values_peakrange,
-                      theta=model_parameter_values_train,
-                      f=model_y_values_peakrange_train.T,
-                      method='indGP')
-
 # emulator_1 = emulator(x=data_x_values_peakrange,
 #                       theta=model_parameter_values_train,
 #                       f=model_y_values_peakrange_train.T,
-#                       method='PCSK',
-#                       # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
-#                       args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+#                       method='indGP')
+
+emulator_1 = emulator(x=data_x_values_peakrange,
+                      theta=model_parameter_values_train,
+                      f=model_y_values_peakrange_train.T,
+                      method='PCSK',
+                      # args={'epsilonPC': 0.0000000001, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
+                      args={'warnings': True, 'numpcs': 24, 'simsd': model_y_var_peakrange_train.T, 'verbose': 1})
 
 # f can be from an analytic function too
 # model_y_values, m runs/rows, n bins/columns, need to be transposed in this case cuz each column in f should correspond to a row in x.
 # /usr/local/lib/python3.8/dist-packages/surmise/emulationmethods/PCGP.py
 # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\emulationmethods
-# PCGP is the default emulation method. It uses principal component analysis (PCA) to reduce the dimensionality of the input space. The number of principal components is determined by the epsilon parameter, which sets a threshold for filtering PCs with explained variances > epsilon. The default value of epsilon is 0.1. Recommended for DSL as of 12/27/2024.
-# PCSK is not recommended for DSL analysis due to its unstable training performance as of 12/27/2024.
+
+# {Model emulation methods}
+
+# 1) `indGP': skips the PCA dimensionality reduction step and builds independent emulators directly on the original outputs, hence, no epsilon is needed. However, the subsequent MCMC process incurs significant computational costs (CPU and RAM) associated with large covariance matrices. MCMC results look similar to PCGP.
+
+# 2) `PCGP': Principal Component Gaussian Process emulator uses PCA to reduce the dimensionality of the simulation output before fitting a Gaussian Process model to each Principal Component separately. Default emulation method; recommended for DSL analysis.
+
+# 3) `PCGPR': Principal Component Gaussian Process Regression utilizes scikit-learn's GaussianProcessRegressor for GP modeling.
+
+# 4) `PCGPRG': Principal Component Gaussian Process Regression with Grouped observables. PCGPR emulation are performed for each subgroup separately.
+
+# Ref.~\cite{Liyanage_PRC2023} found that PCSK>PCGPR>PCGPR in terms of $R^2$ scores.
+
+# 5) `PCGPwM': Principal Component Gaussian Process with Missingness properly handle missing points in the simulation output due to simulation failures through imputation and incorporating additional variance estimates at each point requiring imputation, before performing PCA and fitting Gaussian Process models.
+
+# 6) `PCGPwImpute': Principal Component Gaussian Process with Imputation: extends PCGPwM by first externally imputing missing values using iterative imputation techniques (such as K-Nearest Neighbors, Bayesian Ridge Regression, or Random Forest) from scikit-learn, and then applies the PCGPwM method on the completed dataset.
+
+# 7) `PCSK': Principal Component Stochastic Kriging.
+
+# Both PCGP and PCSK are Gaussian Process-based emulators. Both use PCA to reduce high-dimensional outputs into manageable dimensions for modeling. PCGP is developed to handle deterministic simulation models, where the simulator returns the same output every time given the same input parameters. PCGP considers mean but ignores any variance of simulation data. Our \textsc{geant}4 simulation model is stochastic, meaning that for the same input parameters, the simulator can return different outputs when being run multiple times. Instead of only taking into account the mean values of the emulator training data, the PCSK method also considers the standard deviation at the training points (`simsd'). The PCSK emulation incorporates this variation in the accuracy between the resulting data points, known as heteroscedasticity, by using stochastic kriging. 
+
+# PCSK considers mean but ignores variance of simulation data during hyperparameter optimization, but considers variance in posterior predictive distribution.
+
+# PCGP and PCSK with or without the uncertainties of the training data give consistent posterior results and both PCGP and PCSK outperform standard Gaussian Process implementations like Scikit GP in predictive accuracy and uncertainty estimation~\cite{Roch_PRC2024}.
+
+# 8) `LCGP': Latent Component Gaussian Process handles stochastic multivariate outputs with heterogeneous errors~\cite{Chan_Thesis2023}. Unavailable in \textsc{surmise} version 0.3.0.
+
 
 
 # after fitting the emulator
@@ -456,22 +486,22 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("\n[Step 7: MCMC sampling.]")
-total_mcmc_samples = 10000
-plot_mcmc_samples = 1000  # for slow 2D corner plots
+total_mcmc_samples = 1000000
+plot_mcmc_samples = 100000  # for slow 2D corner plots
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
                                            x=data_x_values_peakrange,
                                            thetaprior=Prior_DSL23Mg_7333,
-                                           # method='directbayes', # default calibration method.
-                                           method='directbayeswoodbury', # can be more efficient or numerically stable for large datasets; recommended for DSL as of 12/27/2024.
-                                           # method='mlbayeswoodbury', # clf_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If this ML-based weighting is not needed, either pass clf_method=None or use a different calibration method (directbayes / directbayeswoodbury).
+                                           # method='directbayes',
+                                           method='directbayeswoodbury',
+                                           # method='mlbayeswoodbury',
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                      'sampler': 'metropolis_hastings', # default sampler; recommended for DSL as of 12/27/2024.
-                                                    # 'sampler': 'LMC', # Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropolis_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
-                                                     # 'sampler': 'PTMC', # sampler() missing 2 required positional arguments: 'log_likelihood' and 'log_prior'; PTMC is not supported in the version 0.3.0 of surmise
-                                                     # 'sampler': 'PTLMC', # Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution appears to be more scattered compared to that obtained using the Metropolis-Hastings sampler. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has a higher acceptance rate of about 0.22.
+                                                      'sampler': 'metropolis_hastings',
+                                                    # 'sampler': 'LMC',
+                                                     # 'sampler': 'PTMC',
+                                                     # 'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -481,6 +511,24 @@ if peak == '23Mg7333':
                                                      # 'stepParam': np.array([0.0, 0.0, 0.0, 0.0]) # ['Tau', 'Eg', 'Bkg', 'SP'] somehow stepParams don't work well
                                                      }
                                             )
+
+# {Model calibration methods}
+# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator©\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'],
+
+# 2) `directbayeswoodbury': leverages the Woodbury identity to handle Gaussian covariance manipulations, which can be more efficient or numerically stable for large datasets. The final posterior samples are stored in fitinfo['thetarnd']. `directbayeswoodbury' is recommended for DSL analysis.
+
+# 3) `mlbayeswoodbury': clf\_method must be a trained classifier (e.g., a scikit-learn model) that implements .predict\_proba(...) on each sampled theta to get acceptance probabilities, which it folds into the posterior. If this ML-based weighting is not needed, either pass clf\_method=None or use a different calibration method (directbayes or directbayeswoodbury).
+
+# {Utilities methods (samplers)}
+
+# 1) `metropolis\_hastings': default sampler that draws from a target posterior distribution; recommended for DSL analysis.
+
+# 2) `LMC': Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropoli\_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
+
+# 3) `PTLMC': Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures and exchanging states periodically) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution exhibits numerous nearby local minima compared to that obtained using the Metropolis-Hastings sampler, indicating it is less suitable for DSL lineshape analysis. The overall credible intervals by integrating the posterior distributions are consistent with those from `metropolis\_hastings' sampling. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
+
+# 4) `PTMC': required positional arguments: `log_likelihood' and `log_prior'. PTMC is not supported in the version 0.3.0 of \textsc{surmise}.
+
 
 if peak == '31S1248':
     calibrator_1 = calibrator(emu=emulator_1,
