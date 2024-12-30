@@ -426,17 +426,17 @@ class Prior_DSL23Mg_7333:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
-                sps.uniform.logpdf(theta[:, 1], 7331.5, 7336.0) +
-                sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
-                sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
-                    # sps.norm.logpdf(theta[:, 1], 7335.1, 1.2) +
+                    sps.norm.logpdf(theta[:, 1], 7335.1, 1.2) +
+                    sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
+                    sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
+
 
     def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
         return np.vstack((sps.uniform.rvs(0, 30, size=n),
-                          sps.uniform.rvs(7331.5, 7336.0, size=n),
+                          sps.norm.rvs(7335.1, 1.2, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n))).T
-                              # sps.norm.rvs(7335.1, 1.2, size=n),
+\
 
 class Prior_DSL31S_1248:
     """ This defines the class instance of priors provided to the method. """
@@ -501,7 +501,7 @@ if peak == '23Mg7333':
                                            method='directbayeswoodbury',
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
-                                           args={'theta0': np.array([[7.0, 7334.1, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                           args={'theta0': np.array([[7.0, 7335.1, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
                                                       'sampler': 'metropolis_hastings',
                                                     # 'sampler': 'LMC',
                                                      # 'sampler': 'PTMC',
@@ -595,9 +595,10 @@ if peak == '31S4156':
                                                      }
                                             )
     # C:\Users\sun\AppData\Local\Programs\Python\Python311\Lib\site-packages\surmise\utilitiesmethods\metropolis_hastings.py
-    # if verbose:
-            # if i % 1000 == 0:
-            #     print("At sample {}, acceptance rate is {}.".format(i, n_acc/i))
+    # for i in range(1, burnSamples + numsamp):
+    #     if verbose:
+    #         if i % 5000 == 0: # Changed by Lijie Sun
+    #             print("At sample {}, acceptance rate is {}.".format(i, n_acc/i))
 
 
 print("\n[Step 8-1: Plot transparent uncertainty band predictions with calibrated parameters.]")
@@ -800,14 +801,14 @@ for ax in g.axes[3,:]:
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
 # g.axes[1, 1].set(xlim=(7329.1, 7336.3), xticks=np.arange(7330, 7337, 2.0))
-# g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
-g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
+g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
+# g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
 # g.axes[1, 0].set(ylim=(7329.1, 7336.3), yticks=np.arange(7330, 7337, 2.0))
-# g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
-g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
+g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
+# g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 
