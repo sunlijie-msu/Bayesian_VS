@@ -16,7 +16,9 @@ import matplotlib.patches as mpatches
 from packaging import version
 import seaborn as sns
 import pylab
+import sys
 
+# sys.stdout = open('output.txt', 'w')
 
 # Read data from CSV files
 print("\n[Step 1: Read and check input files.]")
@@ -424,16 +426,17 @@ class Prior_DSL23Mg_7333:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
-                sps.norm.logpdf(theta[:, 1], 7332.7, 1.2) +
+                sps.uniform.logpdf(theta[:, 1], 7331.5, 7336.0) +
                 sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
                 sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
-    
+                    # sps.norm.logpdf(theta[:, 1], 7335.1, 1.2) +
+
     def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
         return np.vstack((sps.uniform.rvs(0, 30, size=n),
-                          sps.norm.rvs(7332.7, 1.2, size=n),
+                          sps.uniform.rvs(7331.5, 7336.0, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n))).T
-
+                              # sps.norm.rvs(7335.1, 1.2, size=n),
 
 class Prior_DSL31S_1248:
     """ This defines the class instance of priors provided to the method. """
@@ -498,7 +501,7 @@ if peak == '23Mg7333':
                                            method='directbayeswoodbury',
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
-                                           args={'theta0': np.array([[7.0, 7332.7, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                           args={'theta0': np.array([[7.0, 7334.1, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
                                                       'sampler': 'metropolis_hastings',
                                                     # 'sampler': 'LMC',
                                                      # 'sampler': 'PTMC',
@@ -514,7 +517,7 @@ if peak == '23Mg7333':
                                             )
 
 # {Model calibration methods}
-# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator©\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'],
+# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator©\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'].
 
 # 2) `directbayeswoodbury': leverages the Woodbury identity to handle Gaussian covariance manipulations, which can be more efficient or numerically stable for large datasets. The final posterior samples are stored in fitinfo['thetarnd']. `directbayeswoodbury' is recommended for DSL analysis.
 
@@ -615,7 +618,7 @@ def plot_pred_interval(calib):
     # p2 = ax_post_predict.fill_between(data_x_values_fitrange, smoothed_model_lowcount, smoothed_model_highcount,
     #                  color='red', alpha=0.3, linewidth=0, zorder=1)
     
-    slope_value = (posterior_y_median[ num_bins_peak - 1]-posterior_y_median[0])/(peakrange_max-peakrange_min)
+    slope_value = (posterior_y_median[ num_bins_peak-1] - posterior_y_median[0]) / (peakrange_max - peakrange_min)
     intercept_value = posterior_y_median[0] - slope_value * peakrange_min
     
     p4 = ax_post_predict.fill_between(data_x_values_peakrange, posterior_y_lower, posterior_y_upper, color='blue', label='95% Credible Interval', alpha=0.3, linewidth=0, zorder=1)
@@ -635,16 +638,16 @@ def plot_pred_interval(calib):
 
     linear_x_values = np.linspace(fitrange_min, peakrange_min, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.08  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.91  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * (posterior_y_upper[0] / posterior_y_median[0])
+    linear_y_values_lower = linear_y_values_middle * (posterior_y_lower[0] / posterior_y_median[0])
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Left', color='blue', linewidth=2, zorder=2)
 
     linear_x_values = np.linspace(peakrange_max, fitrange_max, 200)
     linear_y_values_middle = slope_value * linear_x_values + intercept_value
-    linear_y_values_upper = linear_y_values_middle * 1.12  # Adjust this value as needed
-    linear_y_values_lower = linear_y_values_middle * 0.89  # Adjust this value as needed
+    linear_y_values_upper = linear_y_values_middle * (posterior_y_upper[num_bins_peak-1] / posterior_y_median[num_bins_peak-1])
+    linear_y_values_lower = linear_y_values_middle * (posterior_y_lower[num_bins_peak-1] / posterior_y_median[num_bins_peak-1])
 
     ax_post_predict.fill_between(linear_x_values, linear_y_values_lower, linear_y_values_upper, color='blue', alpha=0.3, linewidth=0, zorder=1)
     ax_post_predict.plot(linear_x_values, linear_y_values_middle, label='Linear Function Right', color='blue', linewidth=2, zorder=2)
@@ -796,13 +799,15 @@ for ax in g.axes[3,:]:
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-g.axes[1, 1].set(xlim=(7329.1, 7336.3), xticks=np.arange(7330, 7337, 2.0))
-#g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
+# g.axes[1, 1].set(xlim=(7329.1, 7336.3), xticks=np.arange(7330, 7337, 2.0))
+# g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
+g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-g.axes[1, 0].set(ylim=(7329.1, 7336.3), yticks=np.arange(7330, 7337, 2.0))
-#g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
+# g.axes[1, 0].set(ylim=(7329.1, 7336.3), yticks=np.arange(7330, 7337, 2.0))
+# g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
+g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 
@@ -837,3 +842,4 @@ plt.savefig(peak + dataset_Tau + '_posterior.png')
     
 
 print("\n[The End]")
+# sys.stdout.close()
