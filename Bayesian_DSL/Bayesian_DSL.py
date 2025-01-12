@@ -422,21 +422,73 @@ print('SSE =', np.round(np.sum((pred_m - model_y_values_peakrange_test.T)**2), 2
 
 # Define a class for prior of 4 parameters
 print("\n[Step 6: Prior class specification.]")
-class Prior_DSL23Mg_7333:
+
+# Mixture weights (should sum to 1)
+w1, w2 = 0.5, 0.5
+
+# Parameters for the two normal distributions
+mu, sigma = 7333.2, 1.1 # Basunia_NDS2021 ENSDF
+mu1, sigma1 = 7332.7, 1.2 # Sallaska_PRC2011
+mu2, sigma2 = 7333.7, 1.1 # Jenkins_PRL2004
+
+class Prior_DSL23Mg_7333_ENSDF:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
-                    sps.norm.logpdf(theta[:, 1], 7335.1, 1.2) +
+                    sps.norm.logpdf(theta[:, 1], mu, sigma) +
                     sps.norm.logpdf(theta[:, 2], 1.0, 0.1) +
                     sps.norm.logpdf(theta[:, 3], 1.0, 0.1)).reshape((len(theta), 1))
+    
 
-
-    def rnd(n):  # Generates n random variables (rvs) from a prior distribution.
+    def rnd(n):  # Generates n random samples from a prior distribution.
         return np.vstack((sps.uniform.rvs(0, 30, size=n),
-                          sps.norm.rvs(7335.1, 1.2, size=n),
+                          sps.norm.rvs(mu, sigma, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n),
                           sps.norm.rvs(1.0, 0.1, size=n))).T
-\
+
+
+class Prior_DSL23Mg_7333:
+
+    def lpdf(theta):
+        # Compute individual PDFs
+        pdf1 = sps.norm.pdf(theta[:, 1], mu1, sigma1)
+        pdf2 = sps.norm.pdf(theta[:, 1], mu2, sigma2)
+
+        # Mixture PDF
+        pdf_mixture = w1 * pdf1 + w2 * pdf2
+        pdf_mixture = np.maximum(pdf_mixture, 1e-300)  # Prevent log(0)
+
+        # Compute log-PDF
+        logpdf_theta1 = np.log(pdf_mixture)
+
+        # Log-PDFs for other parameters
+        logpdf_theta0 = sps.uniform.logpdf(theta[:, 0], 0, 30)
+        logpdf_theta2 = sps.norm.logpdf(theta[:, 2], 1.0, 0.1)
+        logpdf_theta3 = sps.norm.logpdf(theta[:, 3], 1.0, 0.1)
+
+        # Total log-PDF
+        return (logpdf_theta0 + logpdf_theta1 + logpdf_theta2 + logpdf_theta3).reshape((len(theta), 1))
+
+     
+    def rnd(n):
+        # Randomly choose which distribution to sample from
+        choices = np.random.choice([1, 2], size=n, p=[w1, w2])
+
+        # Generate samples for theta[:, 1]
+        samples_theta1 = np.where(choices == 1,
+          sps.norm.rvs(mu1, sigma1, size=n),
+          sps.norm.rvs(mu2, sigma2, size=n)
+          )
+
+        # Generate samples for other parameters
+        samples_theta0 = sps.uniform.rvs(0, 30, size=n)
+        samples_theta2 = sps.norm.rvs(1.0, 0.1, size=n)
+        samples_theta3 = sps.norm.rvs(1.0, 0.1, size=n)
+
+        # Combine all samples
+        return np.column_stack((samples_theta0, samples_theta1, samples_theta2, samples_theta3))
+
+
 
 class Prior_DSL31S_1248:
     """ This defines the class instance of priors provided to the method. """
@@ -501,11 +553,11 @@ if peak == '23Mg7333':
                                            method='directbayeswoodbury',
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
-                                           args={'theta0': np.array([[7.0, 7335.1, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                      'sampler': 'metropolis_hastings',
-                                                    # 'sampler': 'LMC',
+                                           args={'theta0': np.array([[7.0, 7333.2, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
+                                                     # 'sampler': 'metropolis_hastings',
+                                                     # 'sampler': 'LMC',
                                                      # 'sampler': 'PTMC',
-                                                     # 'sampler': 'PTLMC',
+                                                     'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -529,7 +581,7 @@ if peak == '23Mg7333':
 
 # 2) `LMC': Langevin Monte Carlo uses gradient-based proposals to guide samples toward high-posterior regions, often improving acceptance over plain metropoli\_hastings. Users do not need to set stepParam explicitly: by default, LMC will estimate an initial scale from the starting samples and adapt from there. Users do not need to set burn-in explicitly. Instead, LMC uses an iterative procedure (e.g., maxiters=10, numsamppc=200) and tries to adapt acceptance rates. It then returns a single final chain (theta) with size numsamp.
 
-# 3) `PTLMC': Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures and exchanging states periodically) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution exhibits numerous nearby local minima compared to that obtained using the Metropolis-Hastings sampler, indicating it is less suitable for DSL lineshape analysis. The overall credible intervals by integrating the posterior distributions are consistent with those from `metropolis\_hastings' sampling. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
+# 3) `PTLMC': Parallel Tempering Langevin Monte Carlo combines Parallel Tempering (running multiple chains at different temperatures and exchanging states periodically) and Langevin Monte Carlo (using gradient-based proposals). PTLMC has the advantages of faster convergence, especially for complex or multimodal distributions, and reduced risk of trapping in local minima. In the analysis of the S2193 7333-keV $\gamma$-ray data, the posterior distribution exhibits numerous nearby local minima compared to that obtained using the Metropolis-Hastings sampler, indicating it is less suitable for DSL lineshape analysis. `PTLMC' does not perform better than the default `metropolis\_hastings' when it comes to handling multimodal distributions. The overall credible intervals by integrating the posterior distributions are consistent with those from `metropolis\_hastings' sampling. The acceptance rate for PTLMC is approximately 0.004, while Metropolis-Hastings has an acceptance rate of about 0.22.
 
 # 4) `PTMC': required positional arguments: `log\_likelihood' and `log\_prior'. PTMC is not supported in the version 0.3.0 of \textsc{surmise}.
 
@@ -697,7 +749,8 @@ def plot_theta(calib, whichtheta):
 
     sigma_minus = percentile_values[50] - percentile_values[16]
     sigma_plus = percentile_values[84] - percentile_values[50]
-    print(f"\nTau = {percentile_values[50]:.3f} +{sigma_plus:.3f} -{sigma_minus:.3f}")
+    print(
+        f"\nTau = {percentile_values[50]:.3f} +{sigma_plus:.3f} -{sigma_minus:.3f} fs")
 
     # write the samples to a file
     with open(f"{peak}{dataset_Tau}_samples.dat", 'w') as samples_file:
@@ -800,14 +853,14 @@ for ax in g.axes[3,:]:
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-# g.axes[1, 1].set(xlim=(7329.1, 7336.3), xticks=np.arange(7330, 7337, 2.0))
-g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
+g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
+# g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-# g.axes[1, 0].set(ylim=(7329.1, 7336.3), yticks=np.arange(7330, 7337, 2.0))
-g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
+g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
+# g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
