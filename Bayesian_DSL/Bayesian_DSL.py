@@ -431,7 +431,7 @@ mu, sigma = 7333.2, 1.1 # Basunia_NDS2021 ENSDF
 mu1, sigma1 = 7332.7, 1.2 # Sallaska_PRC2011
 mu2, sigma2 = 7333.7, 1.1 # Jenkins_PRL2004
 
-class Prior_DSL23Mg_7333_ENSDF:
+class Prior_DSL23Mg_7333:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
@@ -447,7 +447,7 @@ class Prior_DSL23Mg_7333_ENSDF:
                           sps.norm.rvs(1.0, 0.1, size=n))).T
 
 
-class Prior_DSL23Mg_7333:
+class Prior_DSL23Mg_7333_Barry_Suggested:
 
     def lpdf(theta):
         # Compute individual PDFs
@@ -554,10 +554,10 @@ if peak == '23Mg7333':
                                            # method='mlbayeswoodbury',
                                            yvar=obsvar,
                                            args={'theta0': np.array([[7.0, 7333.2, 1.0, 1.0]]),  # initial guess ['Tau', 'Eg', 'Bkg', 'SP']
-                                                     # 'sampler': 'metropolis_hastings',
+                                                     'sampler': 'metropolis_hastings',
                                                      # 'sampler': 'LMC',
                                                      # 'sampler': 'PTMC',
-                                                     'sampler': 'PTLMC',
+                                                     # 'sampler': 'PTLMC',
                                                      'numsamp': total_mcmc_samples,
                                                      'numchain': 10,
                                                      'stepType': 'normal',
@@ -569,7 +569,7 @@ if peak == '23Mg7333':
                                             )
 
 # {Model calibration methods}
-# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator©\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'].
+# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulatorï¿½\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'].
 
 # 2) `directbayeswoodbury': leverages the Woodbury identity to handle Gaussian covariance manipulations, which can be more efficient or numerically stable for large datasets. The final posterior samples are stored in fitinfo['thetarnd']. `directbayeswoodbury' is recommended for DSL analysis.
 
