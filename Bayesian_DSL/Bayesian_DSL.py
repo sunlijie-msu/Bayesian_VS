@@ -424,14 +424,15 @@ print('SSE =', np.round(np.sum((pred_m - model_y_values_peakrange_test.T)**2), 2
 print("\n[Step 6: Prior class specification.]")
 
 # Mixture weights (should sum to 1)
-w1, w2 = 0.5, 0.5
+w1, w2, w3 = 0.333333333333, 0.333333333333, 0.333333333333
 
 # Parameters for the two normal distributions
 mu, sigma = 7333.2, 1.1 # Basunia_NDS2021 ENSDF
 mu1, sigma1 = 7332.7, 1.2 # Sallaska_PRC2011
 mu2, sigma2 = 7333.7, 1.1 # Jenkins_PRL2004
+mu3, sigma3 = 7335.09, 0.92  # Goldberg_Thesis2024
 
-class Prior_DSL23Mg_7333:
+class Prior_DSL23Mg_7333_ENSDF:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
@@ -447,15 +448,16 @@ class Prior_DSL23Mg_7333:
                           sps.norm.rvs(1.0, 0.1, size=n))).T
 
 
-class Prior_DSL23Mg_7333_Barry_Suggested:
+class Prior_DSL23Mg_7333:
 
     def lpdf(theta):
         # Compute individual PDFs
         pdf1 = sps.norm.pdf(theta[:, 1], mu1, sigma1)
         pdf2 = sps.norm.pdf(theta[:, 1], mu2, sigma2)
+        pdf3 = sps.norm.pdf(theta[:, 1], mu3, sigma3)
 
         # Mixture PDF
-        pdf_mixture = w1 * pdf1 + w2 * pdf2
+        pdf_mixture = w1 * pdf1 + w2 * pdf2 + w3 * pdf3
         pdf_mixture = np.maximum(pdf_mixture, 1e-300)  # Prevent log(0)
 
         # Compute log-PDF
@@ -472,13 +474,13 @@ class Prior_DSL23Mg_7333_Barry_Suggested:
      
     def rnd(n):
         # Randomly choose which distribution to sample from
-        choices = np.random.choice([1, 2], size=n, p=[w1, w2])
+        components = np.array([0, 1, 2])
+        mus = np.array([mu1, mu2, mu3])
+        sigmas = np.array([sigma1, sigma2, sigma3])
+        choices = np.random.choice(components, size=n, p=[w1, w2, w3])
 
         # Generate samples for theta[:, 1]
-        samples_theta1 = np.where(choices == 1,
-          sps.norm.rvs(mu1, sigma1, size=n),
-          sps.norm.rvs(mu2, sigma2, size=n)
-          )
+        samples_theta1 = sps.norm.rvs(loc=mus[choices], scale=sigmas[choices])
 
         # Generate samples for other parameters
         samples_theta0 = sps.uniform.rvs(0, 30, size=n)
@@ -853,13 +855,13 @@ for ax in g.axes[3,:]:
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 1].set(xlim=(7329.9, 7337.8), xticks=np.arange(7330, 7337, 2.0))
 # g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 0].set(ylim=(7329.9, 7337.8), yticks=np.arange(7330, 7337, 2.0))
 # g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
