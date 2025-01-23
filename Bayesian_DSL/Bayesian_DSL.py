@@ -425,14 +425,13 @@ print("\n[Step 6: Prior class specification.]")
 
 # Mixture weights (should sum to 1)
 w1, w2, w3 = 0.333333333333, 0.333333333333, 0.333333333333
-
-# Parameters for the two normal distributions
-mu, sigma = 7333.2, 1.1 # Basunia_NDS2021 ENSDF
 mu1, sigma1 = 7332.7, 1.2 # Sallaska_PRC2011
 mu2, sigma2 = 7333.7, 1.1 # Jenkins_PRL2004
 mu3, sigma3 = 7335.09, 0.92  # Goldberg_Thesis2024
 
-class Prior_DSL23Mg_7333_ENSDF:
+mu, sigma = 7333.2, 1.1 # Basunia_NDS2021 ENSDF
+
+class Prior_DSL23Mg_7333:
     """ This defines the class instance of priors provided to the method. """
     def lpdf(theta):  # log-probability density function of the prior for a given set of parameters theta ['Tau', 'Eg', 'Bkg', 'SP']
         return (sps.uniform.logpdf(theta[:, 0], 0, 30) +
@@ -448,7 +447,7 @@ class Prior_DSL23Mg_7333_ENSDF:
                           sps.norm.rvs(1.0, 0.1, size=n))).T
 
 
-class Prior_DSL23Mg_7333:
+class Prior_DSL23Mg_7333_Barry_suggestion:
 
     def lpdf(theta):
         # Compute individual PDFs
@@ -544,8 +543,8 @@ obsvar = (data_y_varlow_peakrange + data_y_varhigh_peakrange)/2
 
 # Calibrator 1
 print("\n[Step 7: MCMC sampling.]")
-total_mcmc_samples = 1000000
-plot_mcmc_samples = 100000  # for slow 2D corner plots
+total_mcmc_samples = 200000
+plot_mcmc_samples = 50000  # for slow 2D corner plots
 if peak == '23Mg7333':
     calibrator_1 = calibrator(emu=emulator_1,
                                            y=data_y_values_peakrange,
@@ -571,7 +570,7 @@ if peak == '23Mg7333':
                                             )
 
 # {Model calibration methods}
-# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator�\predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'].
+# 1) `directbayes': default calibration method. It builds a log-posterior by combining a prior (fitinfo[`'thetaprior']) with a likelihood (loglik) comparing emulator-predicted means/covariances to observed data. `directbayes' uses standard matrix operations. The final posterior samples are stored in fitinfo['thetarnd'].
 
 # 2) `directbayeswoodbury': leverages the Woodbury identity to handle Gaussian covariance manipulations, which can be more efficient or numerically stable for large datasets. The final posterior samples are stored in fitinfo['thetarnd']. `directbayeswoodbury' is recommended for DSL analysis.
 
@@ -855,13 +854,13 @@ for ax in g.axes[3,:]:
 
 
 g.axes[0, 0].set(xlim=(0, 30), xticks=np.arange(0, 31, 5))
-g.axes[1, 1].set(xlim=(7329.9, 7337.8), xticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 1].set(xlim=(7329.9, 7336.5), xticks=np.arange(7330, 7337, 2.0))
 # g.axes[1, 1].set(xlim=(7331.9, 7338.5), xticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 1].set(xlim=(7331.5, 7336.0), xticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 2].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 g.axes[3, 3].set(xlim=(0.6, 1.4), xticks=np.arange(0.6, 1.6, 0.3))
 
-g.axes[1, 0].set(ylim=(7329.9, 7337.8), yticks=np.arange(7330, 7337, 2.0))
+g.axes[1, 0].set(ylim=(7329.9, 7336.5), yticks=np.arange(7330, 7337, 2.0))
 # g.axes[1, 0].set(ylim=(7331.9, 7336.5), yticks=np.arange(7332, 7339, 2.0))
 # g.axes[1, 0].set(ylim=(7331.5, 7336.0), yticks=np.arange(7332, 7337, 2.0))
 g.axes[2, 0].set(ylim=(0.6, 1.4), yticks=np.arange(0.6, 1.6, 0.3))
