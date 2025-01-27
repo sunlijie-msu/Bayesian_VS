@@ -162,7 +162,7 @@ model_parameter_values_test = model_parameter_values[rndsample_test, :]
 # plots a list of profiles in the same figure. Each profile corresponds to a simulation replica for the given instance.
 plt.rcParams['axes.linewidth'] = 3.0
 plt.rcParams['font.size'] = 60
-font_family_options = ['Times New Roman', 'Georgia', 'Cambria', 'Courier New', 'serif']
+font_family_options = ['Times New Roman', 'Times', 'Cambria', 'Georgia', 'Courier New', 'serif']
 plt.rcParams['font.family'] = font_family_options
 # plt.rcParams['mathtext.default'] = 'regular'
 plt.rcParams['mathtext.fontset'] = 'custom'
@@ -811,7 +811,7 @@ pr.extend(ps)
 df['Distributions'] = pr
 #  The pr and ps lists are created to add a new column 'distribution' to the combined DataFrame indicating whether a row belongs to the prior or posterior distribution.
 
-font_family_options = ['Times New Roman', 'Georgia', 'Cambria', 'Courier New', 'serif']
+font_family_options = ['Times New Roman', 'Times', 'Cambria', 'Georgia', 'Courier New', 'serif']
 plt.rcParams['font.family'] = font_family_options
 # Set Seaborn style
 sns.set(style="white")
